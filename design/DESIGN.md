@@ -1,28 +1,55 @@
-# Design
+# DESIGN.md: Production Design Specification
 
-This document is the visual and editorial contract for the book. The build pipeline and the writing agent both follow it. If a rule here conflicts with a chapter, the rule wins unless the chapter documents an explicit exception.
+This section serves as the complete DESIGN.md specification for the competitive programming manuscript toolchain.
 
-The book is designed as a research paper in book form: a compact trim size, two columns of justified text, running heads, numbered sections and equations, page-bottom notes, and diagrams that use restrained color. It is not a slide deck and it is not a blog. Decoration must earn its place.
+## 1. Font Family Selection & Rationale
 
-## Trim size and page
+### Body Text (Minion Pro)
+A classic serif typeface designed specifically for book typography and long-form reading. Its elegant proportions, warm texture, high legibility at small point sizes, and distinct italic styles make it the industry gold standard for technical books (e.g., O'Reilly Media). It creates a clear contrast against code blocks and sans-serif headers.
 
-- **Trim size:** 7 × 9.1875 in (504 × 661.5 pt).
-- **Margins:** 22 mm top, 20 mm inside/outside, 24 mm bottom.
-- **Live text area:** approximately 137.8 × 187.4 mm.
-- **Columns:** the chapter body is set in two columns with a 6 mm gutter. There is no vertical rule between columns.
-- **Bleed:** none. The PDF is a single-page layout, not a print-ready imposition.
-- **PDF engine:** Paged.js, with `@page` rules in `design/print.css`.
-- **EPUB:** reflowable and single-column; the trim size does not apply.
+### Headings (Barlow Condensed)
+A clean, narrow sans-serif typeface. The condensed width allows long section titles (e.g., Amortized Analysis of Disjoint Set Union) to fit on a single line without awkward wrapping or excessive vertical space consumption.
 
-The page size is declared in three places and must stay in sync:
+### Code & Math-Adjacent (JetBrains Mono)
+A modern monospace font engineered for developers. Features open counters, clear character differentiation (0 vs O, 1 vs l vs I), expanded letter spacing, and programming ligatures that make complex C++ pointer and logic syntax easy to parse.
 
-1. `book.config.ts` → `page.width`, `page.height`, `page.size`
-2. `design/print.css` → `@page { size: 7in 9.1875in; }`
-3. `design/tokens.css` → `--page-width`, `--page-height`
+## 2. Typographic Hierarchy & Specifications
 
-Chromium rounds fractional inch dimensions, so a 9.1875 in page would otherwise print at 661.92 pt instead of 661.5 pt. After Paged.js finishes, the PDF build rewrites every page box (MediaBox, CropBox, BleedBox, TrimBox, ArtBox) with `pdf-lib` to the exact configured size. The normalized values always come from `book.config.ts`.
+| Document Element | Typeface Family | Weight / Style | Point Size | Leading (Line Height) | Alignment / Options |
+|---|---|---|---|---|---|
+| Book Title | Barlow Condensed | Bold | 28 pt | 32 pt | Centered, +5% Tracking |
+| Chapter Title (H1) | Barlow Condensed | Bold | 20 pt | 24 pt | Left-aligned, 18 pt space after |
+| Section Title (H2) | Barlow Condensed | SemiBold | 14 pt | 17 pt | Left-aligned, 12 pt space before |
+| Sub-section (H3) | Barlow Condensed | Medium / Italic | 11 pt | 14 pt | Left-aligned, 8 pt space before |
+| Body Paragraphs | Minion Pro | Regular | 9.5 pt | 13.5 pt (142%) | Justified, tight hyphenation |
+| Code Blocks | JetBrains Mono | Regular | 8.0 pt | 10.5 pt (131%) | Flush-left, tab-size 2, custom syntax |
+| Inline Code / Math | JetBrains Mono | Regular | 8.5 pt | Auto | Off-white background, crimson text |
+| Table Text / Captions | Barlow Condensed | Regular / Medium | 8.0 pt | 10.0 pt | Centered / Small-Caps headers |
+| Footnotes / Margin | Minion Pro | Regular | 7.5 pt | 10.0 pt | Left-aligned / Ragged-right |
 
-### Running heads
+## 3. Color Palette Architecture
+
+The color strategy uses soft, neutral tones to reduce visual fatigue during long reading sessions, while providing clear functional distinctions for warnings, callouts, and code elements:
+
+- **Page Surface (#FAFAFA)**: Soft off-white cream paper tone that eliminates high-contrast eye glare.
+- **Body Text (#2D3748)**: Charcoal slate for body narrative, offering sharp legibility without the harshness of pure black #000000.
+- **Primary Headings (#1A365D)**: Deep navy for chapter and section headings.
+- **Secondary Accents (#2B6CB0)**: Steel blue for H2 titles, inline links, and list markers.
+- **Code Container (#F7FAFC)**: Cool light gray fill with a #E2E8F0 subtle border.
+- **Note Box (#F0F4F8)**: Soft ice blue container with #3182CE accent left border.
+- **Warning Box (#FFF5F5)**: Soft crimson container with #E53E3E accent left border.
+
+## 4. Callout Box Specifications
+
+### Note Container
+Used for algorithmic tips, time complexity hints, and edge case reminders. It features a 3 pt left border in steel blue, ice blue background, heading in Barlow Condensed Bold, and body prose in 8.5 pt Minion Pro.
+
+### Warning Container
+Used for pitfalls like integer overflow, out-of-bounds indexing, and memory limits. It features a 3 pt left border in soft crimson, soft pink/red background, heading in Barlow Condensed Bold, and body prose in 8.5 pt Minion Pro.
+
+## 5. Grid Architecture and Hybrid Layout Rules
+
+A strict two-column grid works well for narrative prose, but technical books on competitive programming frequently feature wide code blocks, mathematical derivations, wide tables, and complex graph diagrams. These elements break if forced into a narrow 2.62-inch column. Therefore, the book utilizes a hybrid layout engine capable of dynamically switching between two-column narrative flow and single-column full-width spans.
 
 Every text page carries a running head:
 
@@ -41,11 +68,50 @@ Notes are set at the bottom of the page, not at the end of the chapter:
 - A hairline separates the notes from the body text.
 - The end-of-chapter note list remains in the HTML for screen readers and is converted to EPUB endnotes (`epub:type="endnotes"` / `epub:type="endnote"`). It is hidden in print.
 
-## Layout
+## 5. Grid Architecture and Hybrid Layout Rules
 
-The book has one column model for front matter and back matter, and two models for chapters. The writer chooses the model that fits the content.
+A strict two-column grid works well for narrative prose, but technical books on competitive programming frequently feature wide code blocks, mathematical derivations, wide tables, and complex graph diagrams. These elements break if forced into a narrow 2.62-inch column. Therefore, the book utilizes a hybrid layout engine capable of dynamically switching between two-column narrative flow and single-column full-width spans.
 
-- **Front matter** (preface, title, copyright) is single-column.
+### Physical Page Geometry
+
+- **Trim Size**: Crown Quarto (7.44" × 9.68")
+- **Top Margin**: 0.75 in (54 pt)
+- **Bottom Margin**: 1.00 in (72 pt)
+- **Inside (Gutter) Margin**: 0.875 in (63 pt) to prevent text loss in the binding
+- **Outside Margin**: 0.625 in (45 pt)
+
+### Column Layout
+
+- **Column Count**: 2 (default body)
+- **Column Width**: 2.62 in (188.6 pt) per column
+- **Column Gap**: 0.25 in (18 pt)
+
+### Layout Decision Rules
+
+| Element Type | Layout Format Mode | Decision Threshold / Trigger Rule | Pedagogical Justification |
+|---|---|---|---|
+| Standard Body Prose | Two-Column | Default state | Keeps measure to ~45 chars; minimizes eye-sweep fatigue |
+| Short Code Snippets | Two-Column | Line width ≤ 42 characters | Fits naturally within the 2.62" - 3.4" column width |
+| Wide Code Listings | Single-Column Span | Line width > 42 characters | Prevents horizontal wrapping or microscopic font scaling |
+| Algorithm Trace Tables | Single-Column Span | Table width > 3.0 in or > 4 columns | Avoids cramped numeric data and text truncation |
+| Complex Diagrams | Single-Column Span | Binary trees, graph flows, segment tree structures | Preserves spatial topology without vertical distortion |
+| Callout Boxes | Two-Column or Span | Inline notes = 2-Col; Key algorithms = Span | Matches the structural weight of the underlying content |
+
+## 6. Layout Decision Quick Reference
+
+For any element in the manuscript, apply the following decision process:
+
+1. Is the element wide code, a large table, or a complex diagram?
+   - Yes → Use Single-Column Span mode
+   - No → Continue to step 2
+
+2. Is this body prose or a short code snippet (≤ 42 char line width)?
+   - Yes → Use Two-Column mode
+   - No → Re-evaluate step 1
+
+3. For callout boxes: Does the content match the structural weight of surrounding material?
+   - Inline/short notes → Two-Column
+   - Key algorithms/complex topics → Single-Column Span
 - **References** is a `references` chapter kind: single-column, unnumbered, and included in the table of contents.
 - **Chapters and appendices** are two-column by default.
 - **Single-column chapters:** set `layout: single-column` in the chapter frontmatter when the chapter is dominated by wide diagrams, large tables, or long code lines.
@@ -329,45 +395,58 @@ The text after the note name is an optional custom title. If omitted, the defaul
 
 Notes flow inside the column. A note that belongs to a single argument should stay near that argument; do not use notes as a substitute for paragraph structure. Do not nest notes.
 
-## EPUB
+## 6. Layout Decision Quick Reference
 
-- EPUB output is reflowable, single-column, and uses `design/epub.css`.
-- Fonts are embedded as TTF: Atkinson Hyperlegible, Barlow Condensed, and JetBrains Mono.
-- Math is MathML. Do not rely on KaTeX CSS in EPUB.
-- TikZ diagrams are materialized as SVG files and referenced by relative URL; the EPUB writer embeds them.
-- Images use `file://` URLs during the build and are rewritten into the EPUB container.
-- Footnotes are endnotes: the call is a `epub:type="noteref"` link and the list is an `epub:type="endnotes"` section.
-- The EPUB has a generated cover page, title page, copyright page, and navigation document.
-- Do not use fixed page sizes, multi-column layouts, or absolute positioning in EPUB CSS.
+For any element in the manuscript, apply the following decision process:
 
-## Accessibility
+1. Is the element wide code, a large table, or a complex diagram?
+   - Yes → Use Single-Column Span mode
+   - No → Continue to step 2
 
-- Every image has alt text. Every TikZ figure has an `alt` attribute.
-- Heading levels are sequential: chapter title (`h1`), sections (`h2`), subsections (`h3`).
-- Links are descriptive; avoid "click here".
-- Color is never the only signal. Notes have labels; diagrams have direct labels or patterns.
-- The PDF uses selectable text and tagged headings where the renderer supports it.
-- The EPUB uses semantic HTML (`section`, `nav`, `figure`, `figcaption`, `aside`) and endnote roles.
+2. Is this body prose or a short code snippet (≤ 42 char line width)?
+   - Yes → Use Two-Column mode
+   - No → Re-evaluate step 1
 
-## Editorial contract
+3. For callout boxes: Does the content match the structural weight of surrounding material?
+   - Inline/short notes → Two-Column
+   - Key algorithms/complex topics → Single-Column Span
 
-The writer is a steward of the author's manuscript, not a rewriter of its ideas.
 
-- **Preserve intent.** Keep the author's argument, examples, notation, and level of difficulty. If a passage is ambiguous, ask before changing its meaning.
-- **Preserve voice.** Match the author's register and sentence rhythm. Do not flatten a distinctive explanation into generic textbook prose.
-- **Edit for clarity, not for novelty.** Prefer the smallest change that removes ambiguity. Do not add new claims, examples, or exercises that the author did not intend.
-- **Do not invent citations.** Use a footnote only when the author supplied the reference or the fact is a well-known result that the chapter already uses. Do not fabricate page numbers, years, or titles.
-- **Keep the design invisible.** Use the note and figure syntax as documented. Do not add visual workarounds, inline styles, or manual numbering.
-- **Flag, do not paper over.** If the manuscript needs a new figure, a new section, or a claim that is not supported, report it instead of filling the gap with plausible text.
 
-## Build contract
 
-- `bun run build` produces `dist/book.html`, `dist/book.pdf`, and `dist/book.epub`.
-- `bun run build:html`, `build:pdf`, and `build:epub` build one target.
-- `bun run dev` prompts for a chapter and serves a single-chapter preview with hot reload.
-- `bun run lint:content` checks frontmatter, links, images, math delimiters, and note names.
-- `bun run doctor` checks the toolchain, fonts, browser, and outputs.
-- `bun run prepare` copies the WOFF2 files and fetches the TTF files into `design/fonts/`. It runs automatically on `bun install`.
-- `bun run clean` removes `dist/` and `.cache/`.
 
-Fonts are generated files and are not committed. A clean checkout needs `bun install` (which runs `prepare`) and `bunx playwright install chromium`. No network access is required after that: the fonts and dependencies are already local.
+
+:    
+
+- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
