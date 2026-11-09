@@ -8,22 +8,6 @@ const fontsource = path.join(root, 'node_modules', '@fontsource')
 
 const woff2: Array<[string, string]> = [
   [
-    'atkinson-hyperlegible/files/atkinson-hyperlegible-latin-400-normal.woff2',
-    'AtkinsonHyperlegible-Regular.woff2',
-  ],
-  [
-    'atkinson-hyperlegible/files/atkinson-hyperlegible-latin-400-italic.woff2',
-    'AtkinsonHyperlegible-Italic.woff2',
-  ],
-  [
-    'atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-normal.woff2',
-    'AtkinsonHyperlegible-Bold.woff2',
-  ],
-  [
-    'atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-italic.woff2',
-    'AtkinsonHyperlegible-BoldItalic.woff2',
-  ],
-  [
     'jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2',
     'JetBrainsMono-Regular.woff2',
   ],
@@ -54,39 +38,15 @@ const woff2: Array<[string, string]> = [
 ]
 
 const ttf: Array<[string, string]> = [
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/atkinsonhyperlegible/AtkinsonHyperlegible-Regular.ttf',
-    'AtkinsonHyperlegible-Regular.ttf',
-  ],
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/atkinsonhyperlegible/AtkinsonHyperlegible-Italic.ttf',
-    'AtkinsonHyperlegible-Italic.ttf',
-  ],
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/atkinsonhyperlegible/AtkinsonHyperlegible-Bold.ttf',
-    'AtkinsonHyperlegible-Bold.ttf',
-  ],
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/atkinsonhyperlegible/AtkinsonHyperlegible-BoldItalic.ttf',
-    'AtkinsonHyperlegible-BoldItalic.ttf',
-  ],
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf',
-    'JetBrainsMono.ttf',
-  ],
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-Regular.ttf',
-    'BarlowCondensed-Regular.ttf',
-  ],
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-SemiBold.ttf',
-    'BarlowCondensed-SemiBold.ttf',
-  ],
-  [
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-Bold.ttf',
-    'BarlowCondensed-Bold.ttf',
-  ],
+  ['https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf', 'JetBrainsMono.ttf'],
+  ['https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-Regular.ttf', 'BarlowCondensed-Regular.ttf'],
+  ['https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-SemiBold.ttf', 'BarlowCondensed-SemiBold.ttf'],
+  ['https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-Bold.ttf', 'BarlowCondensed-Bold.ttf'],
 ]
+
+// Minion Pro WOFF2 and OTF files are already present locally in
+// design/fonts/minion-pro-webfont/ and design/fonts/minion-pro/.
+// They are proprietary (Adobe) and not available on @fontsource or Google Fonts.
 
 const legacy = [
   'DMSans-Regular.woff2',

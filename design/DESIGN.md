@@ -54,7 +54,7 @@ A strict two-column grid works well for narrative prose, but technical books on 
 Every text page carries a running head:
 
 - **Top left:** the chapter or section name, in Barlow Condensed, uppercase, muted gray.
-- **Top right:** the page number, in Atkinson Hyperlegible, tabular figures, muted gray.
+- **Top right:** the page number, in Minion Pro, tabular figures, muted gray.
 
 The running head is set with `string-set: chapter-title attr(data-running-title)`. The `runningTitle` frontmatter field overrides the visible chapter title when the title is too long for the head. Cover and part-title pages suppress the running head. There is no page number at the bottom of the page.
 
@@ -142,9 +142,9 @@ Rules:
 - Never use Barlow Condensed for body copy, captions, or code.
 - Do not set long paragraphs in Barlow Condensed; it is a display face, not a text face.
 
-### Atkinson Hyperlegible — body text
+### Minion Pro — body text
 
-Atkinson Hyperlegible is the text face. It is used for:
+Minion Pro is the text face. It is used for:
 
 - Paragraphs, lists, blockquotes, captions, notes, and table cells
 - Front matter and copyright pages
@@ -180,7 +180,7 @@ Rules:
 Every family has a fallback stack in `design/tokens.css`:
 
 - Display: `"Barlow Condensed", "Arial Narrow", system-ui, sans-serif`
-- Body: `"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif`
+- Body: `"Minion Pro", "Segoe UI", system-ui, sans-serif`
 - Mono: `"JetBrains Mono", ui-monospace, monospace`
 - Math: `"KaTeX_Main", "Latin Modern Math", "STIX Two Math", serif`
 
@@ -301,7 +301,7 @@ Rules:
 - Every chapter opens on a new page.
 - The chapter label (`Chapter 1`) is set in Barlow Condensed, uppercase, muted gray.
 - The chapter title is the largest text on the page.
-- The summary is set in Atkinson Hyperlegible, italic, with a hairline below it.
+- The summary is set in Minion Pro, italic, with a hairline below it.
 - The chapter body follows the layout rules above.
 - Sections use `##`; subsections use `###`. Do not use `#` in chapter Markdown.
 

@@ -30,7 +30,7 @@ body.book,
 
   @top-right {
     content: counter(page);
-    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-family: "Minion Pro", serif;
     font-size: 9pt;
     color: #6f6f6f;
     vertical-align: bottom;
@@ -253,7 +253,7 @@ pre,
 
 .page-footnote {
   float: footnote;
-  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-family: "Minion Pro", serif;
   font-size: 8pt;
   line-height: 1.35;
   text-align: left;

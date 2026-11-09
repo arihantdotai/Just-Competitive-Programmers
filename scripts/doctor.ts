@@ -67,8 +67,8 @@ await checkDirectory("node_modules", path.resolve("node_modules"));
 await checkFile("book.config.ts", path.resolve("book.config.ts"));
 
 await checkFile(
-  "Atkinson Hyperlegible (web)",
-  path.join(config.designDir, "fonts", "AtkinsonHyperlegible-Regular.woff2"),
+  "Minion Pro (web)",
+  path.join(config.designDir, "fonts", "minion-pro-webfont", "MinionPro-Regular.woff"),
 );
 await checkFile(
   "JetBrains Mono (web)",
@@ -79,8 +79,8 @@ await checkFile(
   path.join(config.designDir, "fonts", "BarlowCondensed-Regular.woff2"),
 );
 await checkFile(
-  "Atkinson Hyperlegible (EPUB)",
-  path.join(config.designDir, "fonts", "AtkinsonHyperlegible-Regular.ttf"),
+  "Minion Pro (EPUB)",
+  path.join(config.designDir, "fonts", "minion-pro", "MinionPro-Regular.otf"),
 );
 await checkFile(
   "JetBrains Mono (EPUB)",
@@ -167,7 +167,7 @@ if (failed.length > 0) {
   if (
     checks.some(
       (check) =>
-        !check.ok && /Atkinson|JetBrains|Barlow/.test(check.name),
+        !check.ok && /Minion|JetBrains|Barlow/.test(check.name),
     )
   ) {
     console.log("Missing fonts? Run: bun run prepare");

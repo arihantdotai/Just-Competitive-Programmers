@@ -1,27 +1,27 @@
 @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url("fonts/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+  font-family: "Minion Pro";
+  src: url("fonts/minion-pro/MinionPro-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url("fonts/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+  font-family: "Minion Pro";
+  src: url("fonts/minion-pro/MinionPro-It.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
 }
 
 @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url("fonts/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+  font-family: "Minion Pro";
+  src: url("fonts/minion-pro/MinionPro-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url("fonts/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
+  font-family: "Minion Pro";
+  src: url("fonts/minion-pro/MinionPro-BoldIt.otf") format("opentype");
   font-weight: 700;
   font-style: italic;
 }
@@ -63,7 +63,7 @@ body {
   padding: 0;
   color: #161616;
   background: #ffffff;
-  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-family: "Minion Pro", serif;
   font-size: 1em;
   line-height: 1.55;
   hyphens: auto;

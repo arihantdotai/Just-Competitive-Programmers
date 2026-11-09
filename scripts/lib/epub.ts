@@ -143,17 +143,17 @@ export async function buildEpub(
   }
 
   const fonts = [
-    "AtkinsonHyperlegible-Regular.ttf",
-    "AtkinsonHyperlegible-Italic.ttf",
-    "AtkinsonHyperlegible-Bold.ttf",
-    "AtkinsonHyperlegible-BoldItalic.ttf",
-    "JetBrainsMono.ttf",
-    "BarlowCondensed-Regular.ttf",
-    "BarlowCondensed-SemiBold.ttf",
-    "BarlowCondensed-Bold.ttf",
-  ].map((filename) => ({
+    { filename: "MinionPro-Regular.otf", subfolder: "minion-pro" },
+    { filename: "MinionPro-It.otf", subfolder: "minion-pro" },
+    { filename: "MinionPro-Bold.otf", subfolder: "minion-pro" },
+    { filename: "MinionPro-BoldIt.otf", subfolder: "minion-pro" },
+    { filename: "JetBrainsMono.ttf", subfolder: "" },
+    { filename: "BarlowCondensed-Regular.ttf", subfolder: "" },
+    { filename: "BarlowCondensed-SemiBold.ttf", subfolder: "" },
+    { filename: "BarlowCondensed-Bold.ttf", subfolder: "" },
+  ].map(({ filename, subfolder }) => ({
     filename,
-    url: pathToFileURL(path.join(config.designDir, "fonts", filename)).href,
+    url: pathToFileURL(path.join(config.designDir, "fonts", subfolder, filename)).href,
   }));
 
   const outputPath = path.join(config.distDir, "book.epub");
