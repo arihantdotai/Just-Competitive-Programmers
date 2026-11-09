@@ -1,0 +1,623 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: var(--leading);
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  text-rendering: optimizeLegibility;
+}
+
+.book {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 28px 96px;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+a:hover {
+  color: var(--accent-deep);
+}
+
+/* ------------------------------------------------------------------ */
+/* Cover and front matter                                              */
+/* ------------------------------------------------------------------ */
+
+.book-cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 88vh;
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4rem;
+  padding: 4rem 0;
+}
+
+.book-cover__eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+}
+
+.book-cover__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 14ch;
+}
+
+.book-cover__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--ink-soft);
+  margin: 1.2rem 0 0;
+  max-width: 34ch;
+}
+
+.book-cover__rule {
+  width: 64px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 999px;
+  margin: 2rem 0;
+}
+
+.book-cover__author {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  margin: 0;
+}
+
+.book-cover__edition {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  margin-top: 0.35rem;
+}
+
+.book-titlepage {
+  text-align: center;
+  margin: 0 auto 4rem;
+  max-width: 40rem;
+}
+
+.book-titlepage h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  line-height: 1.05;
+  margin: 0 0 0.6rem;
+}
+
+.book-titlepage p {
+  color: var(--ink-soft);
+  margin: 0.35rem 0;
+}
+
+.book-copyright {
+  max-width: 38rem;
+  margin: 0 auto 4rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+}
+
+/* ------------------------------------------------------------------ */
+/* Table of contents                                                   */
+/* ------------------------------------------------------------------ */
+
+.book-toc {
+  max-width: 44rem;
+  margin: 0 auto 5rem;
+}
+
+.book-toc > h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  margin: 0 0 1.5rem;
+}
+
+.toc-part {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 1.6rem 0 0.4rem;
+  list-style: none;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-entry {
+  margin: 0.18rem 0;
+}
+
+.toc-entry a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.toc-entry a:hover {
+  color: var(--accent);
+}
+
+.toc-title {
+  flex: 0 1 auto;
+}
+
+.toc-leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  border-bottom: 1px dotted var(--rule-strong);
+  transform: translateY(-0.2em);
+}
+
+.toc-page {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+.toc-page::after {
+  content: target-counter(attr(data-target), page);
+}
+
+.toc-number {
+  display: inline-block;
+  min-width: 2.2em;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/* Parts and chapters                                                  */
+/* ------------------------------------------------------------------ */
+
+.book-part {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin: 5rem 0;
+  padding: 4rem 1rem;
+}
+
+.book-part__eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+
+.book-part h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.05;
+  margin: 0;
+  max-width: 18ch;
+}
+
+.book-chapter {
+  counter-increment: chapter;
+  counter-reset: figure table;
+  margin: 0 auto 5rem;
+  max-width: var(--measure);
+}
+
+.chapter-label {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+}
+
+.chapter-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  margin: 0 0 1rem;
+}
+
+.chapter-summary {
+  font-size: var(--text-lg);
+  color: var(--ink-soft);
+  margin: 0 0 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.book-chapter h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 2.6rem 0 0.8rem;
+}
+
+.book-chapter h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 2rem 0 0.6rem;
+}
+
+.book-chapter h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin: 1.6rem 0 0.4rem;
+}
+
+.book-chapter p,
+.book-chapter li {
+  max-width: var(--measure);
+}
+
+.book-chapter ul,
+.book-chapter ol {
+  padding-left: 1.4rem;
+}
+
+.book-chapter li {
+  margin: 0.25rem 0;
+}
+
+.book-chapter blockquote {
+  margin: 1.5rem 0;
+  padding: 0.2rem 0 0.2rem 1.2rem;
+  border-left: 3px solid var(--rule-strong);
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.book-chapter hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Callouts                                                            */
+/* ------------------------------------------------------------------ */
+
+.callout {
+  margin: 1.5rem 0;
+  padding: 1rem 1.15rem;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--accent-soft);
+  break-inside: avoid;
+}
+
+.callout > :last-child {
+  margin-bottom: 0;
+}
+
+.callout__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  margin: 0 0 0.45rem;
+}
+
+.callout__icon {
+  font-size: 1em;
+  line-height: 1;
+}
+
+.callout--definition {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.callout--theorem {
+  border-color: var(--accent-deep);
+  background: #edf4f2;
+}
+
+.callout--example {
+  border-color: #6b7f2a;
+  background: var(--note-soft);
+}
+
+.callout--example .callout__title {
+  color: var(--note);
+}
+
+.callout--note {
+  border-color: #6b7280;
+  background: #f3f4f6;
+}
+
+.callout--note .callout__title {
+  color: #374151;
+}
+
+.callout--tip {
+  border-color: #7c5c1a;
+  background: var(--warning-soft);
+}
+
+.callout--tip .callout__title {
+  color: var(--warning);
+}
+
+.callout--warning {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.callout--warning .callout__title {
+  color: var(--danger);
+}
+
+.callout--complexity {
+  border-color: var(--accent);
+  background: #f0f7f5;
+}
+
+.callout--complexity .callout__title {
+  color: var(--accent-ink);
+}
+
+.callout--complexity p {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+/* ------------------------------------------------------------------ */
+/* Code                                                                */
+/* ------------------------------------------------------------------ */
+
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  font-feature-settings: "calt" 1, "liga" 1;
+}
+
+:not(pre) > code {
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.08em 0.34em;
+}
+
+pre {
+  margin: 1.4rem 0;
+  padding: 1rem 1.1rem;
+  background: var(--paper-code);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  break-inside: avoid;
+}
+
+pre.shiki {
+  background-color: var(--paper-code) !important;
+}
+
+pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tables                                                              */
+/* ------------------------------------------------------------------ */
+
+.table-wrap {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  break-inside: avoid;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+th,
+td {
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  background: var(--paper-deep);
+}
+
+tbody tr:hover {
+  background: #fbf8f1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Figures and math                                                    */
+/* ------------------------------------------------------------------ */
+
+.book-figure {
+  counter-increment: figure;
+  margin: 1.8rem 0;
+  text-align: center;
+  break-inside: avoid;
+}
+
+.book-figure__body {
+  display: flex;
+  justify-content: center;
+}
+
+.book-figure img,
+.book-figure svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.book-figure figcaption {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  margin-top: 0.55rem;
+  line-height: 1.45;
+}
+
+.book-figure figcaption::before {
+  content: "Figure " counter(chapter) "." counter(figure) " — ";
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.math-display {
+  margin: 1.1rem 0;
+  padding: 0.2rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+  break-inside: avoid;
+}
+
+.katex {
+  font-size: 1.06em;
+}
+
+.katex-display {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Footnotes and definition lists                                      */
+/* ------------------------------------------------------------------ */
+
+.footnotes-sep {
+  display: none;
+}
+
+.footnotes {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.footnotes-list {
+  padding-left: 1.2rem;
+}
+
+.footnote-item {
+  margin: 0.4rem 0;
+}
+
+dl {
+  margin: 1.4rem 0;
+}
+
+dt {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-top: 0.8rem;
+}
+
+dd {
+  margin: 0.15rem 0 0 1.2rem;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------ */
+/* Screen-only niceties                                                */
+/* ------------------------------------------------------------------ */
+
+@media screen {
+  .book-chapter + .book-chapter {
+    margin-top: 4rem;
+  }
+
+  .book-part {
+    background: var(--paper-deep);
+    border-radius: var(--radius);
+  }
+}
+
+@media (max-width: 640px) {
+  .book {
+    padding: 28px 18px 64px;
+  }
+
+  body {
+    font-size: 16px;
+  }
+}

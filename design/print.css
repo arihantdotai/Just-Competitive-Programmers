@@ -1,0 +1,121 @@
+/* Paged.js renders its own page boxes; the screen layout must not add
+   padding or a max-width around them. */
+body,
+body.book,
+.pagedjs_pages {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+@page {
+  size: 7in 9.1875in;
+  margin: 22mm 20mm 24mm;
+
+  @bottom-center {
+    content: counter(page);
+    font-family: "DM Sans", sans-serif;
+    font-size: 9pt;
+    color: #6d685e;
+  }
+
+  @top-right {
+    content: string(chapter-title);
+    font-family: "DM Sans", sans-serif;
+    font-size: 8.5pt;
+    color: #6d685e;
+  }
+}
+
+@page cover {
+  margin: 0;
+
+  @bottom-center {
+    content: none;
+  }
+
+  @top-right {
+    content: none;
+  }
+}
+
+.book-cover {
+  page: cover;
+  break-after: page;
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  padding: 30mm 24mm;
+  border: 0;
+}
+
+.book-titlepage {
+  break-after: page;
+}
+
+.book-copyright {
+  break-after: page;
+}
+
+.book-toc {
+  break-after: page;
+}
+
+.book-part {
+  break-before: page;
+  break-after: page;
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.book-chapter {
+  break-before: page;
+}
+
+.book-chapter:first-of-type {
+  break-before: auto;
+}
+
+h1.chapter-title {
+  string-set: chapter-title content();
+}
+
+.book-chapter h2,
+.book-chapter h3,
+.book-chapter h4 {
+  break-after: avoid;
+}
+
+.book-figure,
+.callout,
+pre,
+.table-wrap,
+.math-display,
+.footnotes {
+  break-inside: avoid;
+}
+
+p,
+li {
+  orphans: 3;
+  widows: 3;
+}
+
+.book-toc a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.toc-page::after {
+  content: target-counter(attr(data-target), page);
+}
+
+/* Screen preview of the print stylesheet: hide page-only affordances. */
+@media screen {
+  .toc-page::after {
+    content: "";
+  }
+}

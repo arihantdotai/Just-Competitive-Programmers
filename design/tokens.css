@@ -1,0 +1,140 @@
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("fonts/FunnelDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("fonts/FunnelDisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("fonts/FunnelDisplay-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("fonts/FunnelDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Code";
+  src: url("fonts/FiraCode-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Code";
+  src: url("fonts/FiraCode-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Code";
+  src: url("fonts/FiraCode-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Funnel Display", "Inter", system-ui, sans-serif;
+  --font-body: "DM Sans", "Inter", system-ui, sans-serif;
+  --font-mono: "Fira Code", "JetBrains Mono", ui-monospace, monospace;
+  --font-math: "KaTeX_Main", "Latin Modern Math", "STIX Two Math", serif;
+
+  --ink: #1c1b18;
+  --ink-soft: #46433c;
+  --ink-muted: #6d685e;
+  --paper: #fffdf8;
+  --paper-deep: #f6f1e6;
+  --paper-code: #fbf7ee;
+  --rule: #ddd5c6;
+  --rule-strong: #c8beac;
+
+  --accent: #0f6b62;
+  --accent-deep: #0a4f49;
+  --accent-soft: #e3f1ee;
+  --accent-ink: #08443f;
+
+  --warning: #9a5b12;
+  --warning-soft: #fbf0dd;
+  --danger: #9b2c2c;
+  --danger-soft: #fbe9e9;
+  --note: #365314;
+  --note-soft: #eef6e2;
+
+  --measure: 68ch;
+  --leading: 1.65;
+  --page-width: 7in;
+  --page-height: 9.1875in;
+  --page-margin: 22mm 20mm 24mm;
+  --radius: 6px;
+  --shadow: 0 1px 2px rgba(28, 27, 24, 0.06), 0 8px 24px rgba(28, 27, 24, 0.06);
+
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: 1.4rem;
+  --text-2xl: 1.8rem;
+  --text-3xl: 2.4rem;
+  --text-4xl: 3.2rem;
+}

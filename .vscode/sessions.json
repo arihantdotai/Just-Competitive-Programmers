@@ -1,0 +1,47 @@
+{
+  "$schema": "https://cdn.statically.io/gh/nguyenngoclongdev/cdn/main/schema/v11/terminal-keeper.json",
+  "theme": "tribe",
+  "active": "default",
+  "activateOnStartup": true,
+  "keepExistingTerminals": false,
+  "sessions": {
+    "default": [
+      {
+        "name": "Dev",
+        "autoExecuteCommands": true,
+        "icon": "play",
+        "color": "terminal.ansiGreen",
+        "commands": [
+          "bun run dev"
+        ]
+      },
+      {
+        "name": "Build",
+        "autoExecuteCommands": true,
+        "icon": "build",
+        "color": "terminal.ansiRed",
+        "commands": [
+          "bun run build"
+        ]
+      },
+      {
+        "name": "Lint",
+        "autoExecuteCommands": true,
+        "icon": "file",
+        "color": "terminal.ansiYellow",
+        "commands": [
+          "bun run lint:content"
+        ]
+      },
+      {
+        "name": "Doctor",
+        "autoExecuteCommands": true,
+        "icon": "pulse",
+        "color": "terminal.ansiBlue",
+        "commands": [
+          "bun run doctor"
+        ]
+      }
+    ]
+  }
+}
