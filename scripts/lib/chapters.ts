@@ -12,7 +12,14 @@ import type {
 } from './types'
 import { slugify, stripNumericPrefix } from './util'
 
-const KINDS: ChapterKind[] = ['chapter', 'preface', 'title', 'copyright', 'appendix']
+const KINDS: ChapterKind[] = [
+  'chapter',
+  'preface',
+  'title',
+  'copyright',
+  'appendix',
+  'references',
+]
 const STATUSES: ChapterStatus[] = ['draft', 'review', 'final']
 const LAYOUTS: ChapterLayout[] = ['two-column', 'single-column']
 
@@ -77,7 +84,13 @@ export async function discoverChapters(config: BookConfig): Promise<BookParts> {
     }
     seenSlugs.set(slug, relative)
 
-    const part = data.part ?? (kind === 'chapter' || kind === 'appendix' ? 'Chapters' : 'Front Matter')
+    const part =
+      data.part ??
+      (kind === 'chapter' || kind === 'appendix'
+        ? 'Chapters'
+        : kind === 'references'
+          ? 'Back Matter'
+          : 'Front Matter')
     const partOrder = data.partOrder ?? derivePartOrder(relativeDir, kind)
     const order = data.order ?? deriveOrder(base, folder)
     const number = data.number ?? (kind === 'chapter' ? order : undefined)
@@ -88,6 +101,7 @@ export async function discoverChapters(config: BookConfig): Promise<BookParts> {
       dir,
       slug,
       title: data.title,
+      runningTitle: data.runningTitle ?? data.title,
       part,
       partOrder,
       order,
@@ -125,7 +139,12 @@ export async function discoverChapters(config: BookConfig): Promise<BookParts> {
 }
 
 export function isTocEntry(chapter: Chapter): boolean {
-  return chapter.kind === 'chapter' || chapter.kind === 'preface' || chapter.kind === 'appendix'
+  return (
+    chapter.kind === 'chapter' ||
+    chapter.kind === 'preface' ||
+    chapter.kind === 'appendix' ||
+    chapter.kind === 'references'
+  )
 }
 
 export function tocEntries(parts: Part[]): Chapter[] {
@@ -140,6 +159,7 @@ export function chapterLabel(chapter: Chapter): string {
 
 function derivePartOrder(relativeDir: string, kind: ChapterKind): number {
   if (kind === 'title' || kind === 'copyright' || kind === 'preface') return 0
+  if (kind === 'references') return 98
   const match = relativeDir.match(/(?:^|[\\/])part-(\d+)/i)
   return match ? Number(match[1]) : 99
 }

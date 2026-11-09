@@ -14,6 +14,7 @@ const chapter: Chapter = {
   dir: '/book/manuscript/part-1/01-dummy',
   slug: 'dummy',
   title: 'Dummy',
+  runningTitle: 'Dummy',
   part: 'Part One',
   partOrder: 1,
   order: 1,

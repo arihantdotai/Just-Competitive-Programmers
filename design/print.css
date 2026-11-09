@@ -8,18 +8,15 @@ body.book,
   padding: 0;
 }
 
+/* ------------------------------------------------------------------ */
+/* Page furniture                                                      */
+/* ------------------------------------------------------------------ */
+
 @page {
   size: 7in 9.1875in;
   margin: 22mm 20mm 24mm;
 
-  @bottom-center {
-    content: counter(page);
-    font-family: "Atkinson Hyperlegible", sans-serif;
-    font-size: 8.5pt;
-    color: #6f6f6f;
-  }
-
-  @top-right {
+  @top-left {
     content: string(chapter-title);
     font-family: "Barlow Condensed", sans-serif;
     font-size: 8.5pt;
@@ -27,13 +24,30 @@ body.book,
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #6f6f6f;
+    vertical-align: bottom;
+    padding-bottom: 4mm;
+  }
+
+  @top-right {
+    content: counter(page);
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 9pt;
+    color: #6f6f6f;
+    vertical-align: bottom;
+    padding-bottom: 4mm;
+  }
+
+  @footnote {
+    border-top: 0.5pt solid #c7c7c7;
+    padding-top: 4pt;
+    margin-top: 8pt;
   }
 }
 
 @page cover {
   margin: 0;
 
-  @bottom-center {
+  @top-left {
     content: none;
   }
 
@@ -42,10 +56,27 @@ body.book,
   }
 }
 
-body {
-  font-size: 10.5pt;
-  line-height: 1.5;
+@page part {
+  @top-left {
+    content: none;
+  }
+
+  @top-right {
+    content: none;
+  }
 }
+
+.book-chapter,
+.book-part,
+.book-titlepage,
+.book-copyright,
+.book-toc {
+  string-set: chapter-title attr(data-running-title);
+}
+
+/* ------------------------------------------------------------------ */
+/* Page breaks                                                         */
+/* ------------------------------------------------------------------ */
 
 .book-cover {
   page: cover;
@@ -57,19 +88,14 @@ body {
   border: 0;
 }
 
-.book-titlepage {
-  break-after: page;
-}
-
-.book-copyright {
-  break-after: page;
-}
-
+.book-titlepage,
+.book-copyright,
 .book-toc {
   break-after: page;
 }
 
 .book-part {
+  page: part;
   break-before: page;
   break-after: page;
   min-height: 0;
@@ -83,13 +109,18 @@ body {
   break-before: page;
 }
 
-.book-chapter:first-of-type {
-  break-before: auto;
+/* ------------------------------------------------------------------ */
+/* Print typography                                                    */
+/* ------------------------------------------------------------------ */
+
+body {
+  font-size: 10.5pt;
+  line-height: 1.5;
+  hyphens: auto;
 }
 
 h1.chapter-title {
-  string-set: chapter-title content();
-  font-size: 28pt;
+  font-size: 24pt;
   line-height: 1.02;
 }
 
@@ -98,50 +129,23 @@ h1.chapter-title {
 }
 
 .chapter-summary {
-  font-size: 11.5pt;
-}
-
-/* Two-column chapter body. Wide material (figures, tables, code, callouts,
-   display math, footnotes) spans both columns so it stays readable. */
-.book-chapter__body {
-  column-count: 2;
-  column-gap: 6mm;
-  column-rule: 0.25pt solid var(--rule);
-  column-fill: auto;
-}
-
-.book-chapter--single .book-chapter__body {
-  column-count: 1;
-  column-rule: none;
-  max-width: none;
-}
-
-.book-chapter--single .book-chapter__header {
-  max-width: none;
-}
-
-.book-chapter__body > .book-figure,
-.book-chapter__body > .table-wrap,
-.book-chapter__body > pre,
-.book-chapter__body > .callout,
-.book-chapter__body > .math-display,
-.book-chapter__body > .footnotes,
-.book-wide {
-  column-span: all;
+  font-size: 10.5pt;
+  margin-bottom: 1.2em;
+  padding-bottom: 0.8em;
 }
 
 .book-chapter h2 {
-  font-size: 17pt;
-  margin: 1.2em 0 0.35em;
+  font-size: 14pt;
+  margin: 1.15em 0 0.3em;
 }
 
 .book-chapter h3 {
-  font-size: 13.5pt;
-  margin: 1em 0 0.25em;
+  font-size: 12pt;
+  margin: 0.95em 0 0.25em;
 }
 
 .book-chapter h4 {
-  font-size: 11.5pt;
+  font-size: 10.5pt;
   margin: 0.8em 0 0.2em;
 }
 
@@ -151,33 +155,126 @@ h1.chapter-title {
   break-after: avoid;
 }
 
-pre {
-  font-size: 8.2pt;
-}
-
-table {
-  font-size: 9pt;
-}
-
-.callout {
-  margin: 1rem 0;
-  padding: 0.7rem 0.8rem;
-}
-
-.book-figure,
-.callout,
-pre,
-.table-wrap,
-.math-display,
-.footnotes {
-  break-inside: avoid;
-}
-
 p,
 li {
   orphans: 3;
   widows: 3;
 }
+
+/* ------------------------------------------------------------------ */
+/* Two-column body                                                     */
+/* ------------------------------------------------------------------ */
+
+.book-chapter__body {
+  column-count: 2;
+  column-gap: 6mm;
+  column-rule: none;
+  column-fill: auto;
+}
+
+.book-chapter--single .book-chapter__body {
+  column-count: 1;
+  max-width: none;
+}
+
+.book-chapter--single .book-chapter__header {
+  max-width: none;
+}
+
+/* Code and tables use the full measure. Figures, notes, and display
+   equations stay inside the column unless the writer opts into `::: wide`. */
+.book-chapter__body > .table-wrap,
+.book-chapter__body > pre,
+.book-wide {
+  column-span: all;
+}
+
+.book-wide--page {
+  break-before: page;
+  break-after: page;
+}
+
+/* ------------------------------------------------------------------ */
+/* Figures, code, tables, notes                                        */
+/* ------------------------------------------------------------------ */
+
+.book-figure {
+  margin: 1.2em 0;
+}
+
+.book-figure figcaption {
+  font-size: 8.5pt;
+}
+
+pre {
+  font-size: 7.6pt;
+  margin: 1em 0;
+  padding: 0.6em 0;
+}
+
+table {
+  font-size: 8.5pt;
+}
+
+.table-wrap {
+  margin: 1em 0;
+}
+
+.note {
+  margin: 0.9em 0;
+}
+
+.math-display {
+  margin: 0.7em 0;
+}
+
+.math-display__number {
+  font-size: 9pt;
+}
+
+.book-figure,
+pre,
+.table-wrap,
+.math-display,
+.note {
+  break-inside: avoid;
+}
+
+/* ------------------------------------------------------------------ */
+/* Footnotes                                                           */
+/* ------------------------------------------------------------------ */
+
+/* The end-of-chapter list is for screen readers and EPUB. In print the
+   same note body floats to the bottom of the page through Paged.js. */
+.footnotes,
+.footnotes-sep {
+  display: none;
+}
+
+.page-footnote {
+  float: footnote;
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-size: 8pt;
+  line-height: 1.35;
+  text-align: left;
+  text-indent: 0;
+}
+
+.page-footnote::footnote-call,
+.page-footnote::footnote-marker,
+::footnote-call,
+::footnote-marker {
+  content: none;
+}
+
+.page-footnote__marker {
+  font-weight: 700;
+  margin-right: 0.25em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Table of contents                                                   */
+/* ------------------------------------------------------------------ */
 
 .book-toc a {
   color: inherit;

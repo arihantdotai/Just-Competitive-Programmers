@@ -51,6 +51,7 @@ const MATHML_ATTRIBUTES = [
   "definitionURL",
   "alttext",
   "xlink:href",
+  "xmlns:epub",
 ];
 
 for (const attribute of MATHML_ATTRIBUTES) {
@@ -119,7 +120,12 @@ export async function buildEpub(
       const html = await renderEpubChapter(chapter, config, options);
 
       content.push({
-        title: chapter.kind === "preface" ? "Preface" : chapter.title,
+        title:
+          chapter.kind === "preface"
+            ? "Preface"
+            : chapter.kind === "references"
+              ? "References"
+              : chapter.title,
         filename: `${chapter.slug}.xhtml`,
         content:
           `<section class="book-chapter book-chapter--single">\n` +

@@ -65,7 +65,8 @@ body {
   background: #ffffff;
   font-family: "Atkinson Hyperlegible", sans-serif;
   font-size: 1em;
-  line-height: 1.6;
+  line-height: 1.55;
+  hyphens: auto;
 }
 
 h1,
@@ -77,7 +78,8 @@ h6 {
   font-family: "Barlow Condensed", sans-serif;
   font-weight: 600;
   line-height: 1.15;
-  margin: 1.4em 0 0.5em;
+  margin: 1.4em 0 0.45em;
+  break-after: avoid;
 }
 
 h1 {
@@ -85,21 +87,75 @@ h1 {
 }
 
 h2 {
-  font-size: 1.5em;
+  font-size: 1.45em;
 }
 
 h3 {
-  font-size: 1.22em;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+h4 {
+  font-size: 1.05em;
+  font-weight: 500;
 }
 
 p {
-  margin: 0.75em 0;
+  margin: 0;
+  text-align: justify;
+  text-indent: 1.2em;
+}
+
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p,
+.book-figure + p,
+.table-wrap + p,
+pre + p,
+.math-display + p,
+.note + p,
+blockquote + p,
+ul + p,
+ol + p,
+dl + p {
+  text-indent: 0;
 }
 
 a {
   color: #111111;
   text-decoration: underline;
   text-underline-offset: 0.14em;
+}
+
+.section-number {
+  font-weight: 700;
+  margin-right: 0.35em;
+}
+
+ul,
+ol {
+  margin: 0.6em 0;
+  padding-left: 1.3em;
+}
+
+li {
+  margin: 0.2em 0;
+  text-align: left;
+  text-indent: 0;
+}
+
+blockquote {
+  margin: 1em 1.4em;
+  padding: 0;
+  border: 0;
+  color: #3f3f3f;
+  font-size: 0.96em;
+  font-style: italic;
+}
+
+blockquote p {
+  text-indent: 0;
 }
 
 code,
@@ -110,15 +166,18 @@ pre {
 code {
   font-size: 0.9em;
   background: #f4f4f4;
-  border-radius: 3px;
-  padding: 0.08em 0.3em;
+  border-radius: 2px;
+  padding: 0.06em 0.26em;
 }
 
 pre {
-  padding: 0.9em 1em;
+  margin: 1em 0;
+  padding: 0.7em 0;
   background: #f7f7f7;
-  border: 1px solid #e4e4e4;
-  border-radius: 5px;
+  border: 0;
+  border-top: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e4e4e4;
+  border-radius: 0;
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
@@ -131,90 +190,62 @@ pre code {
   padding: 0;
 }
 
-blockquote {
-  margin: 1.2em 0;
-  padding-left: 1em;
-  border-left: 3px solid #c7c7c7;
-  color: #3f3f3f;
+/* Notes are part of the running text: no container, no icon. */
+.note {
+  margin: 0.9em 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.note p {
+  text-indent: 0;
+  margin: 0;
+}
+
+.note__label {
+  font-weight: 700;
+}
+
+.note__title {
   font-style: italic;
 }
 
-.callout {
-  margin: 1.2em 0;
-  padding: 0.8em 1em;
-  border-left: 4px solid #111111;
-  border-radius: 0 5px 5px 0;
-  background: #f2f2f2;
+.note--italic {
+  font-style: italic;
 }
 
-.callout__title {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 0.86em;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #111111;
-  margin: 0 0 0.35em;
-}
-
-.callout--warning {
-  border-color: #8a1f1f;
-  background: #f8eded;
-}
-
-.callout--warning .callout__title {
-  color: #8a1f1f;
-}
-
-.callout--tip {
-  border-color: #7a4a00;
-  background: #f7f1e6;
-}
-
-.callout--tip .callout__title {
-  color: #7a4a00;
-}
-
-.callout--note {
-  border-color: #6f6f6f;
-  background: #f4f4f4;
-}
-
-.callout--note .callout__title {
-  color: #3f3f3f;
-}
-
-.callout--example {
-  border-color: #333333;
-  background: #f3f3f3;
-}
-
-.callout--example .callout__title {
-  color: #333333;
+.note--italic .note__label,
+.note--italic .note__title {
+  font-style: normal;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.2em 0;
+  margin: 1.1em 0;
+  border-top: 1.5px solid #161616;
+  border-bottom: 1.5px solid #161616;
   font-size: 0.9em;
 }
 
 th,
 td {
-  border-bottom: 1px solid #e4e4e4;
-  padding: 0.45em 0.6em;
+  border: 0;
+  padding: 0.4em 0.55em;
   text-align: left;
+  vertical-align: top;
 }
 
 th {
-  background: #f4f4f4;
+  background: none;
+  border-bottom: 1px solid #161616;
   font-family: "Barlow Condensed", sans-serif;
   font-weight: 600;
 }
 
 .book-figure {
-  margin: 1.4em 0;
+  margin: 1.2em 0;
   text-align: center;
 }
 
@@ -226,14 +257,35 @@ th {
 
 .book-figure figcaption {
   font-size: 0.86em;
-  color: #6f6f6f;
-  margin-top: 0.45em;
+  color: #3f3f3f;
+  margin-top: 0.4em;
+  text-align: left;
+  text-indent: 0;
+}
+
+.figure-number {
+  font-weight: 700;
+  color: #161616;
 }
 
 .math-display {
-  margin: 1em 0;
+  display: table;
+  width: 100%;
+  margin: 0.9em 0;
+}
+
+.math-display__body {
+  display: table-cell;
   text-align: center;
-  overflow-x: auto;
+}
+
+.math-display__number {
+  display: table-cell;
+  width: 2.5em;
+  text-align: right;
+  vertical-align: middle;
+  font-size: 0.88em;
+  color: #3f3f3f;
 }
 
 .katex {
@@ -245,8 +297,7 @@ dl {
 }
 
 dt {
-  font-family: "Barlow Condensed", sans-serif;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 dd {
@@ -254,32 +305,74 @@ dd {
   color: #3f3f3f;
 }
 
+/* Endnotes for screen readers and EPUB. Page footnotes are print-only. */
+.page-footnote {
+  display: none;
+}
+
 .footnotes {
   margin-top: 2em;
   padding-top: 0.8em;
   border-top: 1px solid #e4e4e4;
-  font-size: 0.88em;
+  font-size: 0.9em;
   color: #3f3f3f;
+}
+
+.footnotes__title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0 0 0.4em;
 }
 
 .footnotes-sep {
   display: none;
 }
 
+.footnotes-list {
+  padding-left: 1.2em;
+}
+
+.footnote-item {
+  margin: 0.35em 0;
+}
+
+.footnote-item p {
+  text-indent: 0;
+  margin: 0;
+}
+
+.footnote-ref {
+  font-size: 0.75em;
+  line-height: 0;
+}
+
+.footnote-ref a {
+  text-decoration: none;
+}
+
+.footnote-backref {
+  text-decoration: none;
+}
+
 .chapter-label {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 0.82em;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #111111;
+  color: #6f6f6f;
   margin-bottom: 0.3em;
 }
 
 .chapter-summary {
   color: #3f3f3f;
-  font-size: 1.05em;
+  font-size: 1em;
+  font-style: italic;
   margin-bottom: 1.4em;
+  padding-bottom: 0.8em;
+  border-bottom: 1px solid #e4e4e4;
+  text-indent: 0;
 }
 
 .book-chapter__body {

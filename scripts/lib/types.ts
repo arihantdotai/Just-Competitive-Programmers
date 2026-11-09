@@ -1,4 +1,10 @@
-export type ChapterKind = 'chapter' | 'preface' | 'title' | 'copyright' | 'appendix'
+export type ChapterKind =
+  | 'chapter'
+  | 'preface'
+  | 'title'
+  | 'copyright'
+  | 'appendix'
+  | 'references'
 export type ChapterStatus = 'draft' | 'review' | 'final'
 export type ChapterLayout = 'two-column' | 'single-column'
 export type MathOutput = 'html' | 'mathml'
@@ -6,6 +12,7 @@ export type RenderTarget = 'html' | 'pdf' | 'epub'
 
 export interface ChapterFrontmatter {
   title: string
+  runningTitle?: string
   slug?: string
   part?: string
   partOrder?: number
@@ -25,6 +32,7 @@ export interface Chapter {
   dir: string
   slug: string
   title: string
+  runningTitle: string
   part: string
   partOrder: number
   order: number

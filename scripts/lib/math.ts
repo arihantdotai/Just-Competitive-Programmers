@@ -6,6 +6,7 @@ export interface MathPluginOptions {
   output: MathOutput
   macros?: Record<string, string>
   throwOnError?: boolean
+  idPrefix?: string
 }
 
 const isSpace = (code: number): boolean =>
@@ -23,6 +24,10 @@ function renderMath(content: string, displayMode: boolean, options: MathPluginOp
 }
 
 export function mathPlugin(md: MarkdownIt, options: MathPluginOptions): void {
+  // Display equations are numbered per chapter. Each chapter gets a fresh
+  // MarkdownIt instance, so a plugin-local counter is chapter-local.
+  let equation = 0
+
   md.inline.ruler.after('backticks', 'math_inline', (state, silent) => {
     const start = state.pos
     const src = state.src
@@ -120,6 +125,15 @@ export function mathPlugin(md: MarkdownIt, options: MathPluginOptions): void {
 
   md.renderer.rules.math_block = (tokens, index) => {
     const token = tokens[index]
-    return `<div class="math-display">${renderMath(token.content, true, options)}</div>\n`
+    equation += 1
+    const body = renderMath(token.content, true, options)
+    const id = options.idPrefix ? `${options.idPrefix}-equation-${equation}` : `equation-${equation}`
+
+    return (
+      `<div class="math-display" id="${id}">` +
+      `<span class="math-display__body">${body}</span>` +
+      `<span class="math-display__number" aria-label="Equation ${equation}">(${equation})</span>` +
+      `</div>\n`
+    )
   }
 }

@@ -62,16 +62,16 @@ a:hover {
 .book-cover__eyebrow {
   font-family: var(--font-display);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink-muted);
   margin-bottom: 1.2rem;
 }
 
 .book-cover__title {
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.02em;
@@ -88,10 +88,9 @@ a:hover {
 }
 
 .book-cover__rule {
-  width: 64px;
-  height: 4px;
-  background: var(--accent);
-  border-radius: 999px;
+  width: 56px;
+  height: 2px;
+  background: var(--ink);
   margin: 2rem 0;
 }
 
@@ -117,6 +116,7 @@ a:hover {
 .book-titlepage h1 {
   font-family: var(--font-display);
   font-size: var(--text-4xl);
+  font-weight: 600;
   line-height: 1.05;
   margin: 0 0 0.6rem;
 }
@@ -148,6 +148,7 @@ a:hover {
 .book-toc > h1 {
   font-family: var(--font-display);
   font-size: var(--text-3xl);
+  font-weight: 600;
   margin: 0 0 1.5rem;
 }
 
@@ -157,7 +158,7 @@ a:hover {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink-soft);
   margin: 1.6rem 0 0.4rem;
   list-style: none;
 }
@@ -233,24 +234,23 @@ a:hover {
 .book-part__eyebrow {
   font-family: var(--font-display);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink-muted);
   margin-bottom: 0.8rem;
 }
 
 .book-part h1 {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
   line-height: 1.05;
   margin: 0;
   max-width: 18ch;
 }
 
 .book-chapter {
-  counter-increment: chapter;
-  counter-reset: figure table;
   margin: 0 auto 5rem;
   max-width: none;
 }
@@ -258,6 +258,7 @@ a:hover {
 .book-chapter__body {
   column-count: 2;
   column-gap: 3rem;
+  column-fill: auto;
 }
 
 .book-chapter--single .book-chapter__body {
@@ -271,29 +272,34 @@ a:hover {
   margin-inline: auto;
 }
 
-.book-chapter__body > .book-figure,
+/* Tables and code use the full measure; figures stay in one column by
+   default and opt into the full measure with a `::: wide` block. Notes and
+   display equations flow inside the column. */
 .book-chapter__body > .table-wrap,
 .book-chapter__body > pre,
-.book-chapter__body > .callout,
-.book-chapter__body > .math-display,
 .book-chapter__body > .footnotes,
 .book-wide {
   column-span: all;
 }
 
+.book-wide--page {
+  break-before: page;
+  break-after: page;
+}
+
 .chapter-label {
   font-family: var(--font-display);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink-muted);
   margin: 0 0 0.5rem;
 }
 
 .chapter-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2rem, 5vw, 2.8rem);
   font-weight: 600;
   line-height: 1.06;
   letter-spacing: -0.015em;
@@ -301,157 +307,137 @@ a:hover {
 }
 
 .chapter-summary {
-  font-size: var(--text-lg);
+  font-size: 1rem;
+  font-style: italic;
   color: var(--ink-soft);
-  margin: 0 0 2rem;
-  padding-bottom: 1.2rem;
+  margin: 0 0 1.6rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--rule);
+  text-align: justify;
+  text-indent: 0;
 }
 
 .book-chapter h2 {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
   font-weight: 600;
-  line-height: 1.15;
-  margin: 2.6rem 0 0.8rem;
+  line-height: var(--leading-tight);
+  margin: 2rem 0 0.55rem;
+  break-after: avoid;
 }
 
 .book-chapter h3 {
   font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
-  margin: 2rem 0 0.6rem;
+  margin: 1.5rem 0 0.4rem;
+  break-after: avoid;
 }
 
 .book-chapter h4 {
   font-family: var(--font-display);
   font-size: var(--text-lg);
-  font-weight: 600;
-  margin: 1.6rem 0 0.4rem;
+  font-weight: 500;
+  margin: 1.2rem 0 0.3rem;
+  break-after: avoid;
 }
 
-.book-chapter p,
-.book-chapter li {
-  max-width: var(--measure);
+.section-number {
+  font-weight: 700;
+  margin-right: 0.35em;
+  font-variant-numeric: tabular-nums;
+}
+
+.book-chapter p {
+  margin: 0;
+  text-align: justify;
+  text-indent: var(--paragraph-indent);
+  hyphens: auto;
+}
+
+.book-chapter__body > p:first-child,
+.book-chapter h2 + p,
+.book-chapter h3 + p,
+.book-chapter h4 + p,
+.book-chapter .book-figure + p,
+.book-chapter .table-wrap + p,
+.book-chapter pre + p,
+.book-chapter .math-display + p,
+.book-chapter .note + p,
+.book-chapter blockquote + p,
+.book-chapter ul + p,
+.book-chapter ol + p,
+.book-chapter dl + p {
+  text-indent: 0;
 }
 
 .book-chapter ul,
 .book-chapter ol {
-  padding-left: 1.4rem;
+  padding-left: 1.3rem;
+  margin: 0.6rem 0;
 }
 
 .book-chapter li {
-  margin: 0.25rem 0;
+  margin: 0.2rem 0;
+  text-align: left;
+  text-indent: 0;
 }
 
 .book-chapter blockquote {
-  margin: 1.5rem 0;
-  padding: 0.2rem 0 0.2rem 1.2rem;
-  border-left: 3px solid var(--rule-strong);
+  margin: 1rem 1.5rem;
+  padding: 0;
+  border: 0;
   color: var(--ink-soft);
+  font-size: 0.96em;
   font-style: italic;
+}
+
+.book-chapter blockquote p {
+  text-indent: 0;
 }
 
 .book-chapter hr {
   border: 0;
   border-top: 1px solid var(--rule);
-  margin: 2.5rem 0;
+  margin: 2rem 0;
 }
 
 /* ------------------------------------------------------------------ */
-/* Callouts                                                            */
+/* Notes                                                               */
 /* ------------------------------------------------------------------ */
 
-.callout {
-  margin: 1.5rem 0;
-  padding: 1rem 1.15rem;
-  border-left: 4px solid var(--accent);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  background: var(--accent-soft);
+.note {
+  margin: 1em 0;
+  padding: 0;
+  border: 0;
+  background: none;
   break-inside: avoid;
 }
 
-.callout > :last-child {
-  margin-bottom: 0;
+.note p {
+  text-indent: 0;
+  margin: 0;
 }
 
-.callout__title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent-ink);
-  margin: 0 0 0.45rem;
+.note__label {
+  font-weight: 700;
 }
 
-.callout__icon {
-  font-size: 1em;
-  line-height: 1;
+.note__title {
+  font-style: italic;
 }
 
-.callout--definition {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+.note--italic {
+  font-style: italic;
 }
 
-.callout--theorem {
-  border-color: var(--accent-deep);
-  background: var(--paper-deep);
+.note--italic .note__label {
+  font-style: normal;
 }
 
-.callout--example {
-  border-color: var(--note);
-  background: var(--note-soft);
-}
-
-.callout--example .callout__title {
-  color: var(--note);
-}
-
-.callout--note {
-  border-color: var(--ink-muted);
-  background: var(--paper-deep);
-}
-
-.callout--note .callout__title {
-  color: var(--ink-soft);
-}
-
-.callout--tip {
-  border-color: var(--warning);
-  background: var(--warning-soft);
-}
-
-.callout--tip .callout__title {
-  color: var(--warning);
-}
-
-.callout--warning {
-  border-color: var(--danger);
-  background: var(--danger-soft);
-}
-
-.callout--warning .callout__title {
-  color: var(--danger);
-}
-
-.callout--complexity {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.callout--complexity .callout__title {
-  color: var(--accent-ink);
-}
-
-.callout--complexity p {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
+.note--italic .note__title {
+  font-style: normal;
 }
 
 /* ------------------------------------------------------------------ */
@@ -468,17 +454,19 @@ samp {
 
 :not(pre) > code {
   background: var(--paper-deep);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  padding: 0.08em 0.34em;
+  border: 0;
+  border-radius: 2px;
+  padding: 0.06em 0.28em;
 }
 
 pre {
-  margin: 1.4rem 0;
-  padding: 1rem 1.1rem;
+  margin: 1.2rem 0;
+  padding: 0.8rem 0;
   background: var(--paper-code);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: 0.88rem;
@@ -502,7 +490,7 @@ pre code {
 /* ------------------------------------------------------------------ */
 
 .table-wrap {
-  margin: 1.5rem 0;
+  margin: 1.4rem 0;
   overflow-x: auto;
   break-inside: avoid;
 }
@@ -510,14 +498,16 @@ pre code {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.94rem;
-  line-height: 1.45;
+  border-top: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  font-size: 0.92rem;
+  line-height: 1.4;
 }
 
 th,
 td {
-  padding: 0.5rem 0.65rem;
-  border-bottom: 1px solid var(--rule);
+  padding: 0.4rem 0.6rem;
+  border: 0;
   text-align: left;
   vertical-align: top;
 }
@@ -525,11 +515,12 @@ td {
 th {
   font-family: var(--font-display);
   font-weight: 600;
-  background: var(--paper-deep);
+  background: none;
+  border-bottom: 1px solid var(--ink);
 }
 
 tbody tr:hover {
-  background: var(--paper-deep);
+  background: none;
 }
 
 /* ------------------------------------------------------------------ */
@@ -537,8 +528,7 @@ tbody tr:hover {
 /* ------------------------------------------------------------------ */
 
 .book-figure {
-  counter-increment: figure;
-  margin: 1.8rem 0;
+  margin: 1.5rem 0;
   text-align: center;
   break-inside: avoid;
 }
@@ -555,25 +545,39 @@ tbody tr:hover {
 }
 
 .book-figure figcaption {
-  font-size: var(--text-sm);
-  color: var(--ink-muted);
-  margin-top: 0.55rem;
-  line-height: 1.45;
+  font-size: 0.86em;
+  color: var(--ink-soft);
+  margin-top: 0.45rem;
+  line-height: 1.4;
+  text-align: left;
+  text-indent: 0;
 }
 
-.book-figure figcaption::before {
-  content: "Figure " counter(chapter) "." counter(figure) " — ";
-  font-weight: 600;
-  color: var(--ink-soft);
+.figure-number {
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .math-display {
-  margin: 1.1rem 0;
-  padding: 0.2rem 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.9rem 0;
+  break-inside: avoid;
+}
+
+.math-display__body {
+  min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
   text-align: center;
-  break-inside: avoid;
+}
+
+.math-display__number {
+  font-size: 0.9em;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
 }
 
 .katex {
@@ -588,16 +592,36 @@ tbody tr:hover {
 /* Footnotes and definition lists                                      */
 /* ------------------------------------------------------------------ */
 
+.footnote-ref {
+  font-size: 0.75em;
+  line-height: 0;
+}
+
+.footnote-ref a {
+  text-decoration: none;
+}
+
+.page-footnote {
+  display: none;
+}
+
 .footnotes-sep {
   display: none;
 }
 
 .footnotes {
-  margin-top: 2.5rem;
-  padding-top: 1rem;
+  margin-top: 2rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--rule);
   font-size: var(--text-sm);
   color: var(--ink-soft);
+}
+
+.footnotes__title {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin: 0 0 0.4rem;
 }
 
 .footnotes-list {
@@ -605,17 +629,25 @@ tbody tr:hover {
 }
 
 .footnote-item {
-  margin: 0.4rem 0;
+  margin: 0.35rem 0;
+}
+
+.footnote-item p {
+  text-indent: 0;
+  margin: 0;
+}
+
+.footnote-backref {
+  text-decoration: none;
 }
 
 dl {
-  margin: 1.4rem 0;
+  margin: 1.2rem 0;
 }
 
 dt {
-  font-family: var(--font-display);
-  font-weight: 600;
-  margin-top: 0.8rem;
+  font-weight: 700;
+  margin-top: 0.7rem;
 }
 
 dd {
@@ -628,13 +660,12 @@ dd {
 /* ------------------------------------------------------------------ */
 
 @media screen {
-  .book-chapter + .book-chapter {
-    margin-top: 4rem;
+  .page-footnote {
+    display: none;
   }
 
-  .book-part {
-    background: var(--paper-deep);
-    border-radius: var(--radius);
+  .book-chapter + .book-chapter {
+    margin-top: 4rem;
   }
 }
 

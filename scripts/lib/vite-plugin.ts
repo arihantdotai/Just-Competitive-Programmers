@@ -90,7 +90,7 @@ export function bookDevPlugin(): Plugin {
 
     return `<section class="book-chapter${layoutClass}" id="ch-${escapeAttr(chapter.slug)}" data-chapter="${escapeAttr(
       chapter.slug,
-    )}" data-layout="${escapeAttr(chapter.layout)}">
+    )}" data-layout="${escapeAttr(chapter.layout)}" data-running-title="${escapeAttr(chapter.runningTitle)}">
   <header class="book-chapter__header">
   ${label ? `<p class="chapter-label">${escapeHtml(label)}</p>` : ""}
   <h1 class="chapter-title">${escapeHtml(chapter.title)}</h1>

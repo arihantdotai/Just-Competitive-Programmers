@@ -69,7 +69,7 @@ function renderTitlePage(
 ): string {
   const content = chapter ? (rendered.get(chapter.slug)?.html ?? '') : ''
 
-  return `<section class="book-titlepage" id="ch-title">
+  return `<section class="book-titlepage" id="ch-title" data-running-title="${escapeAttr(config.title)}">
   <h1>${escapeHtml(config.title)}</h1>
   <p>${escapeHtml(config.subtitle)}</p>
   <p>${escapeHtml(config.author)}</p>
@@ -84,7 +84,7 @@ function renderCopyright(
 ): string {
   if (!chapter) return ''
 
-  return `<section class="book-copyright" id="ch-copyright">
+  return `<section class="book-copyright" id="ch-copyright" data-running-title="Copyright">
   ${rendered.get(chapter.slug)?.html ?? ''}
 </section>`
 }
@@ -120,7 +120,7 @@ function renderToc(parts: Part[]): string {
     .filter(Boolean)
     .join('\n')
 
-  return `<nav class="book-toc" id="toc" aria-label="Table of contents">
+  return `<nav class="book-toc" id="toc" aria-label="Table of contents" data-running-title="Contents">
   <h1>Contents</h1>
   <ol class="toc-list">
 ${entries}
@@ -139,7 +139,7 @@ function renderParts(parts: Part[], rendered: Map<string, RenderResult>): string
     if (chapters.length === 0) continue
 
     if (part.order > 0) {
-      output.push(`<section class="book-part" id="part-${part.order}">
+      output.push(`<section class="book-part" id="part-${part.order}" data-running-title="Part ${roman(part.order)} · ${escapeAttr(part.title)}">
   <p class="book-part__eyebrow">Part ${roman(part.order)}</p>
   <h1>${escapeHtml(part.title)}</h1>
 </section>`)
@@ -158,7 +158,7 @@ function renderChapterSection(chapter: Chapter, result: RenderResult | undefined
   const html = result?.html ?? ''
   const layoutClass = chapter.layout === 'single-column' ? ' book-chapter--single' : ''
 
-  return `<section class="book-chapter${layoutClass}" id="ch-${escapeAttr(chapter.slug)}" data-chapter="${escapeAttr(chapter.slug)}" data-layout="${escapeAttr(chapter.layout)}">
+  return `<section class="book-chapter${layoutClass}" id="ch-${escapeAttr(chapter.slug)}" data-chapter="${escapeAttr(chapter.slug)}" data-layout="${escapeAttr(chapter.layout)}" data-running-title="${escapeAttr(chapter.runningTitle)}">
   <header class="book-chapter__header">
   ${label ? `<p class="chapter-label">${escapeHtml(label)}</p>` : ''}
   <h1 class="chapter-title">${escapeHtml(chapter.title)}</h1>

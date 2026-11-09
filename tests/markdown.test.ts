@@ -9,6 +9,7 @@ const chapter: Chapter = {
   dir: '/tmp',
   slug: 'test-chapter',
   title: 'Test Chapter',
+  runningTitle: 'Test Chapter',
   part: 'Part One',
   partOrder: 1,
   order: 1,
@@ -69,6 +70,21 @@ describe('renderChapter (HTML)', () => {
     expect(html).toContain('<h2 id="test-chapter-a-section"')
   })
 
+  test('numbers top-level sections and leaves subsections unnumbered', async () => {
+    const { html } = await renderChapter(
+      {
+        ...chapter,
+        content: '## First\n\nText.\n\n### Subsection\n\nText.\n\n## Second\n\nText.\n',
+      },
+      config,
+      options(),
+    )
+
+    expect(html).toContain('<span class="section-number">1.</span>')
+    expect(html).toContain('<span class="section-number">2.</span>')
+    expect(html).toContain('<h3 id="test-chapter-subsection" tabindex="-1">Subsection</h3>')
+  })
+
   test('renders inline and display math with KaTeX', async () => {
     const { html } = await rendered
     expect(html).toContain('class="math-inline"')
@@ -77,17 +93,27 @@ describe('renderChapter (HTML)', () => {
     expect(html).not.toContain('<math')
   })
 
-  test('renders callouts with their labels', async () => {
+  test('numbers display equations per chapter', async () => {
     const { html } = await rendered
-    expect(html).toContain('class="callout callout--theorem"')
-    expect(html).toContain('Range sums')
+    expect(html).toContain('class="math-display__number"')
+    expect(html).toContain('aria-label="Equation 1"')
+    expect(html).toContain('(1)')
+  })
+
+  test('renders notes with a run-in label and no box', async () => {
+    const { html } = await rendered
+    expect(html).toContain('class="note note--theorem note--italic"')
+    expect(html).toContain('class="note__label">Theorem.')
+    expect(html).toContain('Range sums.')
+    expect(html).not.toContain('callout')
   })
 
   test('renders a figure without a paragraph wrapper', async () => {
     const { html } = await rendered
     expect(html).toContain('<figure class="book-figure book-figure--image">')
     expect(html).toContain('/resolved/figures/array.svg')
-    expect(html).toContain('<figcaption>An array of five integers.</figcaption>')
+    expect(html).toContain('<span class="figure-number">Figure 1.1.</span>')
+    expect(html).toContain('An array of five integers.')
     expect(html).not.toContain('<p><figure')
   })
 
@@ -116,10 +142,13 @@ describe('renderChapter (HTML)', () => {
     expect(html).toContain('<div class="table-wrap">')
   })
 
-  test('renders footnotes', async () => {
+  test('renders page footnotes at the call site', async () => {
     const { html } = await rendered
     expect(html).toContain('footnote-ref')
-    expect(html).toContain('footnote-backref')
+    expect(html).toContain('class="page-footnote"')
+    expect(html).toContain('role="doc-footnote"')
+    expect(html).toContain('The footnote body.')
+    expect(html).toContain('role="doc-endnotes"')
   })
 
   test('highlights fenced code with Shiki', async () => {
@@ -153,6 +182,16 @@ describe('renderChapter (HTML)', () => {
 
     expect(html).toContain('<div class="book-wide">')
   })
+
+  test('forces ::: wide page blocks onto their own page', async () => {
+    const { html } = await renderChapter(
+      { ...chapter, content: '::: wide page\nA full-page block.\n:::\n' },
+      config,
+      options(),
+    )
+
+    expect(html).toContain('<div class="book-wide book-wide--page">')
+  })
 })
 
 describe('renderChapter (EPUB)', () => {
@@ -172,6 +211,13 @@ describe('renderChapter (EPUB)', () => {
     const { html } = await rendered
     expect(html).toContain('href="dummy.xhtml#dummy-the-array-model"')
     expect(html).toContain('href="preface.xhtml"')
+  })
+
+  test('marks footnotes as EPUB endnotes', async () => {
+    const { html } = await rendered
+    expect(html).toContain('epub:type="noteref"')
+    expect(html).toContain('epub:type="endnotes"')
+    expect(html).toContain('epub:type="endnote"')
   })
 
   test('keeps external links but marks them safe', async () => {

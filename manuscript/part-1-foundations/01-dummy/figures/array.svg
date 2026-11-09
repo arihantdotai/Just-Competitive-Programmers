@@ -2,22 +2,22 @@
   <title id="array-title">An array of five integers</title>
   <desc id="array-desc">Five cells containing 3, 1, 4, 1, and 5, with zero-based indices 0 through 4 above them.</desc>
   <style>
-    .cell { fill: #ffffff; stroke: #111111; stroke-width: 2; }
-    .value { fill: #161616; font: 700 24px "JetBrains Mono", monospace; text-anchor: middle; dominant-baseline: central; }
-    .index { fill: #6f6f6f; font: 400 14px "Atkinson Hyperlegible", sans-serif; text-anchor: middle; }
-    .label { fill: #111111; font: 600 15px "Barlow Condensed", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
-    .tick { stroke: #c7c7c7; stroke-width: 1.5; }
+    .cell { fill: #e8edf2; stroke: #55657a; stroke-width: 1.5; }
+    .value { fill: #2b2b2b; font: 700 24px "JetBrains Mono", monospace; text-anchor: middle; dominant-baseline: central; }
+    .index { fill: #55657a; font: 400 14px "Atkinson Hyperlegible", sans-serif; text-anchor: middle; }
+    .label { fill: #55657a; font: 600 15px "Barlow Condensed", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .tick { stroke: #d8d8d8; stroke-width: 1.5; }
   </style>
 
   <text class="label" x="20" y="24">a</text>
   <line class="tick" x1="20" y1="32" x2="520" y2="32" />
 
   <g>
-    <rect class="cell" x="20" y="48" width="88" height="60" rx="4" />
-    <rect class="cell" x="116" y="48" width="88" height="60" rx="4" />
-    <rect class="cell" x="212" y="48" width="88" height="60" rx="4" />
-    <rect class="cell" x="308" y="48" width="88" height="60" rx="4" />
-    <rect class="cell" x="404" y="48" width="88" height="60" rx="4" />
+    <rect class="cell" x="20" y="48" width="88" height="60" rx="2" />
+    <rect class="cell" x="116" y="48" width="88" height="60" rx="2" />
+    <rect class="cell" x="212" y="48" width="88" height="60" rx="2" />
+    <rect class="cell" x="308" y="48" width="88" height="60" rx="2" />
+    <rect class="cell" x="404" y="48" width="88" height="60" rx="2" />
   </g>
 
   <g class="value">
