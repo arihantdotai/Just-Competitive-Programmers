@@ -68,7 +68,7 @@ export async function buildPdf(config: BookConfig, options: PdfOptions = {}): Pr
           displayHeaderFooter: true,
           headerTemplate: '<span></span>',
           footerTemplate:
-            '<div style="width:100%;text-align:center;font-size:9px;color:#6d685e;"><span class="pageNumber"></span></div>',
+            '<div style="width:100%;text-align:center;font-size:9px;color:#6f6f6f;"><span class="pageNumber"></span></div>',
           margin: parseMargin(config.page.margin),
         })
       } else {

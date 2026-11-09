@@ -122,22 +122,29 @@ export async function buildEpub(
         title: chapter.kind === "preface" ? "Preface" : chapter.title,
         filename: `${chapter.slug}.xhtml`,
         content:
-          `<section class="book-chapter">\n` +
+          `<section class="book-chapter book-chapter--single">\n` +
+          `<header class="book-chapter__header">\n` +
           (label ? `<p class="chapter-label">${escapeHtml(label)}</p>\n` : "") +
           `<h1 class="chapter-title">${escapeHtml(chapter.title)}</h1>\n` +
           (chapter.summary
             ? `<p class="chapter-summary">${escapeHtml(chapter.summary)}</p>\n`
             : "") +
-          `${html}\n</section>`,
+          `</header>\n` +
+          `<div class="book-chapter__body">\n${html}\n</div>\n</section>`,
         excludeFromToc: false,
       });
     }
   }
 
   const fonts = [
-    "DMSans.ttf",
-    "FunnelDisplay.ttf",
-    "FiraCode.ttf",
+    "AtkinsonHyperlegible-Regular.ttf",
+    "AtkinsonHyperlegible-Italic.ttf",
+    "AtkinsonHyperlegible-Bold.ttf",
+    "AtkinsonHyperlegible-BoldItalic.ttf",
+    "JetBrainsMono.ttf",
+    "BarlowCondensed-Regular.ttf",
+    "BarlowCondensed-SemiBold.ttf",
+    "BarlowCondensed-Bold.ttf",
   ].map((filename) => ({
     filename,
     url: pathToFileURL(path.join(config.designDir, "fonts", filename)).href,

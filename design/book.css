@@ -22,9 +22,9 @@ body {
 }
 
 .book {
-  max-width: 900px;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 48px 28px 96px;
+  padding: 48px 36px 96px;
 }
 
 img,
@@ -252,7 +252,33 @@ a:hover {
   counter-increment: chapter;
   counter-reset: figure table;
   margin: 0 auto 5rem;
+  max-width: none;
+}
+
+.book-chapter__body {
+  column-count: 2;
+  column-gap: 3rem;
+}
+
+.book-chapter--single .book-chapter__body {
+  column-count: 1;
   max-width: var(--measure);
+  margin-inline: auto;
+}
+
+.book-chapter--single .book-chapter__header {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+.book-chapter__body > .book-figure,
+.book-chapter__body > .table-wrap,
+.book-chapter__body > pre,
+.book-chapter__body > .callout,
+.book-chapter__body > .math-display,
+.book-chapter__body > .footnotes,
+.book-wide {
+  column-span: all;
 }
 
 .chapter-label {
@@ -375,11 +401,11 @@ a:hover {
 
 .callout--theorem {
   border-color: var(--accent-deep);
-  background: #edf4f2;
+  background: var(--paper-deep);
 }
 
 .callout--example {
-  border-color: #6b7f2a;
+  border-color: var(--note);
   background: var(--note-soft);
 }
 
@@ -388,16 +414,16 @@ a:hover {
 }
 
 .callout--note {
-  border-color: #6b7280;
-  background: #f3f4f6;
+  border-color: var(--ink-muted);
+  background: var(--paper-deep);
 }
 
 .callout--note .callout__title {
-  color: #374151;
+  color: var(--ink-soft);
 }
 
 .callout--tip {
-  border-color: #7c5c1a;
+  border-color: var(--warning);
   background: var(--warning-soft);
 }
 
@@ -416,7 +442,7 @@ a:hover {
 
 .callout--complexity {
   border-color: var(--accent);
-  background: #f0f7f5;
+  background: var(--accent-soft);
 }
 
 .callout--complexity .callout__title {
@@ -503,7 +529,7 @@ th {
 }
 
 tbody tr:hover {
-  background: #fbf8f1;
+  background: var(--paper-deep);
 }
 
 /* ------------------------------------------------------------------ */
@@ -609,6 +635,12 @@ dd {
   .book-part {
     background: var(--paper-deep);
     border-radius: var(--radius);
+  }
+}
+
+@media (max-width: 960px) {
+  .book-chapter__body {
+    column-count: 1;
   }
 }
 

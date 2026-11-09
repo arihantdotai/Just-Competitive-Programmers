@@ -156,12 +156,17 @@ function renderParts(parts: Part[], rendered: Map<string, RenderResult>): string
 function renderChapterSection(chapter: Chapter, result: RenderResult | undefined): string {
   const label = chapterLabel(chapter)
   const html = result?.html ?? ''
+  const layoutClass = chapter.layout === 'single-column' ? ' book-chapter--single' : ''
 
-  return `<section class="book-chapter" id="ch-${escapeAttr(chapter.slug)}" data-chapter="${escapeAttr(chapter.slug)}">
+  return `<section class="book-chapter${layoutClass}" id="ch-${escapeAttr(chapter.slug)}" data-chapter="${escapeAttr(chapter.slug)}" data-layout="${escapeAttr(chapter.layout)}">
+  <header class="book-chapter__header">
   ${label ? `<p class="chapter-label">${escapeHtml(label)}</p>` : ''}
   <h1 class="chapter-title">${escapeHtml(chapter.title)}</h1>
   ${chapter.summary ? `<p class="chapter-summary">${escapeHtml(chapter.summary)}</p>` : ''}
+  </header>
+  <div class="book-chapter__body">
 ${html}
+  </div>
 </section>`
 }
 

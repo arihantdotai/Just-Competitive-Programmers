@@ -18,6 +18,7 @@ const chapter: Chapter = {
   partOrder: 1,
   order: 1,
   kind: 'chapter',
+  layout: 'two-column',
   topics: [],
   summary: '',
   status: 'draft',

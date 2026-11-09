@@ -21,7 +21,7 @@ Read these files in order:
 3. `manuscript/_TEMPLATE/index.md` — the chapter skeleton.
 4. The chapter you are revising, and the chapters it links to.
 
-The page is 7 × 9.1875 in (504 × 661.5 pt). Code lines should stay under 88 characters. Diagrams should fit the 137.8 mm live text width. If a diagram is too wide, simplify it or scale it down.
+The page is 7 × 9.1875 in (504 × 661.5 pt). The body is set in two columns by default; the design is neutral, with pure white pages, Atkinson Hyperlegible for body text, Barlow Condensed for headers, and JetBrains Mono for code. Code lines should stay under 88 characters. Diagrams should fit one column when possible, or use a `::: wide` block when they need the full page width. If a diagram is too wide even for that, simplify it.
 
 ## What to produce
 
@@ -60,6 +60,7 @@ Use `kind: chapter` for normal chapters, `kind: appendix` for appendices, and `k
 - Define notation before using it.
 - Prefer a concrete example over an abstract description.
 - Every section should earn its place. Delete filler.
+- Choose the format that fits the content. Chapters are two-column by default; set `layout: single-column` in the frontmatter when the chapter is dominated by wide diagrams, large tables, or long code lines. Use a `::: wide` block for an individual figure, table, or code sample that needs the full page width inside a two-column chapter.
 - Use `##` for sections and `###` for subsections. Never use `#` in chapter content; the chapter title is generated from the frontmatter.
 - Use the macros in `book.config.ts` (`\N`, `\Z`, `\R`, `\C`, `\bigO`, `\dp`, `\dist`, `\argmax`, `\argmin`, `\mod`, `\gcd`, `\eps`).
 - Inline math uses `$...$`. Display math uses `$$...$$` on its own lines.
@@ -91,6 +92,14 @@ Use a `tikz` fence with `caption` and `alt`:
 ````
 
 Only use packages and libraries listed in `book.config.ts`. The WASM renderer does not include every LaTeX package. Keep diagrams simple, use `scale` when needed, and avoid fonts that are not available in the TeX distribution.
+
+Clarity rules for diagrams:
+
+- Prefer SVG for hand-drawn or heavily labelled diagrams; use TikZ when the diagram is easier to describe as code.
+- Give every node a readable label and enough space. Do not shrink text below the body size.
+- Keep arrow directions and reading order obvious. Use a caption that explains what the reader should notice.
+- A diagram should fit one column if it can. If it needs the full page, wrap it in a `::: wide` block rather than squeezing it.
+- If a diagram is still cramped, split it into two simpler figures or replace it with a short table or code fragment.
 
 ## Before you finish
 

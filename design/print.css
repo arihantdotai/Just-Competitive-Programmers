@@ -14,16 +14,19 @@ body.book,
 
   @bottom-center {
     content: counter(page);
-    font-family: "DM Sans", sans-serif;
-    font-size: 9pt;
-    color: #6d685e;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 8.5pt;
+    color: #6f6f6f;
   }
 
   @top-right {
     content: string(chapter-title);
-    font-family: "DM Sans", sans-serif;
+    font-family: "Barlow Condensed", sans-serif;
     font-size: 8.5pt;
-    color: #6d685e;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #6f6f6f;
   }
 }
 
@@ -37,6 +40,11 @@ body.book,
   @top-right {
     content: none;
   }
+}
+
+body {
+  font-size: 10.5pt;
+  line-height: 1.5;
 }
 
 .book-cover {
@@ -81,12 +89,79 @@ body.book,
 
 h1.chapter-title {
   string-set: chapter-title content();
+  font-size: 28pt;
+  line-height: 1.02;
+}
+
+.chapter-label {
+  font-size: 9pt;
+}
+
+.chapter-summary {
+  font-size: 11.5pt;
+}
+
+/* Two-column chapter body. Wide material (figures, tables, code, callouts,
+   display math, footnotes) spans both columns so it stays readable. */
+.book-chapter__body {
+  column-count: 2;
+  column-gap: 6mm;
+  column-rule: 0.25pt solid var(--rule);
+  column-fill: auto;
+}
+
+.book-chapter--single .book-chapter__body {
+  column-count: 1;
+  column-rule: none;
+  max-width: none;
+}
+
+.book-chapter--single .book-chapter__header {
+  max-width: none;
+}
+
+.book-chapter__body > .book-figure,
+.book-chapter__body > .table-wrap,
+.book-chapter__body > pre,
+.book-chapter__body > .callout,
+.book-chapter__body > .math-display,
+.book-chapter__body > .footnotes,
+.book-wide {
+  column-span: all;
+}
+
+.book-chapter h2 {
+  font-size: 17pt;
+  margin: 1.2em 0 0.35em;
+}
+
+.book-chapter h3 {
+  font-size: 13.5pt;
+  margin: 1em 0 0.25em;
+}
+
+.book-chapter h4 {
+  font-size: 11.5pt;
+  margin: 0.8em 0 0.2em;
 }
 
 .book-chapter h2,
 .book-chapter h3,
 .book-chapter h4 {
   break-after: avoid;
+}
+
+pre {
+  font-size: 8.2pt;
+}
+
+table {
+  font-size: 9pt;
+}
+
+.callout {
+  margin: 1rem 0;
+  padding: 0.7rem 0.8rem;
 }
 
 .book-figure,

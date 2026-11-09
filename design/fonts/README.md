@@ -2,25 +2,27 @@
 
 These files are self-hosted so the book renders identically on the web, in the PDF, and in EPUB readers that honor embedded fonts.
 
+The font files are generated, not committed. This keeps the repository small; a fresh checkout gets them from `bun run prepare`, which runs automatically after `bun install`.
+
 | Family | Role | Web (WOFF2) | EPUB (TTF) |
 | --- | --- | --- | --- |
-| Funnel Display | Headers, display text | `FunnelDisplay-Regular.woff2`, `-Medium`, `-SemiBold`, `-Bold` | `FunnelDisplay.ttf` (variable) |
-| DM Sans | Body text | `DMSans-Regular.woff2`, `-Italic`, `-Medium`, `-SemiBold`, `-Bold` | `DMSans.ttf` (variable) |
-| Fira Code | Code blocks, inline code | `FiraCode-Regular.woff2`, `-Medium`, `-Bold` | `FiraCode.ttf` (variable) |
+| Barlow Condensed | Headers, display text | `BarlowCondensed-Regular.woff2`, `-Medium`, `-SemiBold`, `-Bold` | `BarlowCondensed-Regular.ttf`, `-SemiBold`, `-Bold` |
+| Atkinson Hyperlegible | Body text | `AtkinsonHyperlegible-Regular.woff2`, `-Italic`, `-Bold`, `-BoldItalic` | `AtkinsonHyperlegible-Regular.ttf`, `-Italic`, `-Bold`, `-BoldItalic` |
+| JetBrains Mono | Code blocks, inline code | `JetBrainsMono-Regular.woff2`, `-Medium`, `-Bold` | `JetBrainsMono.ttf` (variable) |
 
 ## Source
 
-- WOFF2 files are copied from the Fontsource packages (`@fontsource/dm-sans`, `@fontsource/funnel-display`, `@fontsource/fira-code`).
-- TTF files are fetched from the Google Fonts repository (`ofl/funneldisplay`, `ofl/dmsans`, `ofl/firacode`).
+- WOFF2 files are copied from the Fontsource packages (`@fontsource/barlow-condensed`, `@fontsource/atkinson-hyperlegible`, `@fontsource/jetbrains-mono`).
+- TTF files are fetched from the Google Fonts repository (`ofl/barlowcondensed`, `ofl/atkinsonhyperlegible`, `ofl/jetbrainsmono`).
 - All three families are licensed under the SIL Open Font License 1.1.
 
 ## Regenerating
 
 ```bash
-bun run fonts
+bun run prepare
 ```
 
-The script copies the WOFF2 files and downloads the variable TTF files if they are missing. It is idempotent.
+`bun run fonts` is kept as an alias. The script copies the WOFF2 files, downloads the TTF files if they are missing, and removes the old font set from previous builds. It is idempotent.
 
 ## Usage
 

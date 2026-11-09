@@ -1,21 +1,56 @@
 @font-face {
-  font-family: "DM Sans";
-  src: url("fonts/DMSans.ttf") format("truetype");
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Funnel Display";
-  src: url("fonts/FunnelDisplay.ttf") format("truetype");
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/JetBrainsMono.ttf") format("truetype");
   font-weight: 400 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Fira Code";
-  src: url("fonts/FiraCode.ttf") format("truetype");
-  font-weight: 400 700;
+  font-family: "Barlow Condensed";
+  src: url("fonts/BarlowCondensed-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("fonts/BarlowCondensed-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("fonts/BarlowCondensed-Bold.ttf") format("truetype");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -26,9 +61,9 @@ html {
 body {
   margin: 0;
   padding: 0;
-  color: #1c1b18;
-  background: #fffdf8;
-  font-family: "DM Sans", sans-serif;
+  color: #161616;
+  background: #ffffff;
+  font-family: "Atkinson Hyperlegible", sans-serif;
   font-size: 1em;
   line-height: 1.6;
 }
@@ -39,22 +74,22 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Funnel Display", sans-serif;
+  font-family: "Barlow Condensed", sans-serif;
   font-weight: 600;
   line-height: 1.15;
   margin: 1.4em 0 0.5em;
 }
 
 h1 {
-  font-size: 1.9em;
+  font-size: 2em;
 }
 
 h2 {
-  font-size: 1.45em;
+  font-size: 1.5em;
 }
 
 h3 {
-  font-size: 1.2em;
+  font-size: 1.22em;
 }
 
 p {
@@ -62,30 +97,32 @@ p {
 }
 
 a {
-  color: #0f6b62;
+  color: #111111;
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
 }
 
 code,
 pre {
-  font-family: "Fira Code", monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 code {
-  font-size: 0.92em;
-  background: #f6f1e6;
+  font-size: 0.9em;
+  background: #f4f4f4;
   border-radius: 3px;
   padding: 0.08em 0.3em;
 }
 
 pre {
   padding: 0.9em 1em;
-  background: #fbf7ee;
-  border: 1px solid #ddd5c6;
+  background: #f7f7f7;
+  border: 1px solid #e4e4e4;
   border-radius: 5px;
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
-  font-size: 0.86em;
+  font-size: 0.82em;
   line-height: 1.5;
 }
 
@@ -97,82 +134,82 @@ pre code {
 blockquote {
   margin: 1.2em 0;
   padding-left: 1em;
-  border-left: 3px solid #c8beac;
-  color: #46433c;
+  border-left: 3px solid #c7c7c7;
+  color: #3f3f3f;
   font-style: italic;
 }
 
 .callout {
   margin: 1.2em 0;
   padding: 0.8em 1em;
-  border-left: 4px solid #0f6b62;
+  border-left: 4px solid #111111;
   border-radius: 0 5px 5px 0;
-  background: #e3f1ee;
+  background: #f2f2f2;
 }
 
 .callout__title {
-  font-family: "Funnel Display", sans-serif;
+  font-family: "Barlow Condensed", sans-serif;
   font-size: 0.86em;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #08443f;
+  color: #111111;
   margin: 0 0 0.35em;
 }
 
 .callout--warning {
-  border-color: #9b2c2c;
-  background: #fbe9e9;
+  border-color: #8a1f1f;
+  background: #f8eded;
 }
 
 .callout--warning .callout__title {
-  color: #9b2c2c;
+  color: #8a1f1f;
 }
 
 .callout--tip {
-  border-color: #9a5b12;
-  background: #fbf0dd;
+  border-color: #7a4a00;
+  background: #f7f1e6;
 }
 
 .callout--tip .callout__title {
-  color: #9a5b12;
+  color: #7a4a00;
 }
 
 .callout--note {
-  border-color: #6b7280;
-  background: #f3f4f6;
+  border-color: #6f6f6f;
+  background: #f4f4f4;
 }
 
 .callout--note .callout__title {
-  color: #374151;
+  color: #3f3f3f;
 }
 
 .callout--example {
-  border-color: #6b7f2a;
-  background: #eef6e2;
+  border-color: #333333;
+  background: #f3f3f3;
 }
 
 .callout--example .callout__title {
-  color: #365314;
+  color: #333333;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.2em 0;
-  font-size: 0.92em;
+  font-size: 0.9em;
 }
 
 th,
 td {
-  border-bottom: 1px solid #ddd5c6;
+  border-bottom: 1px solid #e4e4e4;
   padding: 0.45em 0.6em;
   text-align: left;
 }
 
 th {
-  background: #f6f1e6;
-  font-family: "Funnel Display", sans-serif;
+  background: #f4f4f4;
+  font-family: "Barlow Condensed", sans-serif;
   font-weight: 600;
 }
 
@@ -189,7 +226,7 @@ th {
 
 .book-figure figcaption {
   font-size: 0.86em;
-  color: #6d685e;
+  color: #6f6f6f;
   margin-top: 0.45em;
 }
 
@@ -208,21 +245,21 @@ dl {
 }
 
 dt {
-  font-family: "Funnel Display", sans-serif;
+  font-family: "Barlow Condensed", sans-serif;
   font-weight: 600;
 }
 
 dd {
   margin: 0.15em 0 0.6em 1.2em;
-  color: #46433c;
+  color: #3f3f3f;
 }
 
 .footnotes {
   margin-top: 2em;
   padding-top: 0.8em;
-  border-top: 1px solid #ddd5c6;
+  border-top: 1px solid #e4e4e4;
   font-size: 0.88em;
-  color: #46433c;
+  color: #3f3f3f;
 }
 
 .footnotes-sep {
@@ -230,17 +267,21 @@ dd {
 }
 
 .chapter-label {
-  font-family: "Funnel Display", sans-serif;
-  font-size: 0.8em;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 0.82em;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #0f6b62;
+  color: #111111;
   margin-bottom: 0.3em;
 }
 
 .chapter-summary {
-  color: #46433c;
+  color: #3f3f3f;
   font-size: 1.05em;
   margin-bottom: 1.4em;
+}
+
+.book-chapter__body {
+  column-count: 1;
 }

@@ -1,4 +1,7 @@
-import { describe, expect, test } from 'bun:test'
+import { afterAll, describe, expect, test } from 'bun:test'
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
 import config from '../book.config'
 import {
   chapterLabel,
@@ -78,5 +81,61 @@ describe('chapter helpers', () => {
     expect(entries.some((chapter) => chapter.kind === 'copyright')).toBe(false)
     expect(entries.some((chapter) => chapter.kind === 'title')).toBe(false)
     expect(entries.length).toBeLessThanOrEqual(chapters.length)
+  })
+})
+
+const tempDirs: string[] = []
+
+async function manuscript(files: Record<string, string>): Promise<string> {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'ocph-chapters-'))
+  tempDirs.push(dir)
+  for (const [relative, content] of Object.entries(files)) {
+    await Bun.write(path.join(dir, relative), content)
+  }
+  return dir
+}
+
+afterAll(async () => {
+  await Promise.all(tempDirs.map((dir) => rm(dir, { recursive: true, force: true })))
+})
+
+describe('chapter layout', () => {
+  test('defaults chapters and appendices to two columns, front matter to one', async () => {
+    const manuscriptDir = await manuscript({
+      'part-1/01-alpha/index.md': '---\ntitle: Alpha\nkind: chapter\n---\n\nBody.\n',
+      'preface.md': '---\ntitle: Preface\nkind: preface\n---\n\nBody.\n',
+      'appendix.md': '---\ntitle: Appendix\nkind: appendix\nnumber: 1\n---\n\nBody.\n',
+    })
+    const { chapters } = await discoverChapters({ ...config, manuscriptDir })
+    const bySlug = new Map(chapters.map((chapter) => [chapter.slug, chapter]))
+
+    expect(bySlug.get('alpha')?.layout).toBe('two-column')
+    expect(bySlug.get('preface')?.layout).toBe('single-column')
+    expect(bySlug.get('appendix')?.layout).toBe('two-column')
+  })
+
+  test('honors an explicit layout override', async () => {
+    const manuscriptDir = await manuscript({
+      'part-1/01-alpha/index.md':
+        '---\ntitle: Alpha\nlayout: single-column\n---\n\nBody.\n',
+      'part-1/02-beta/index.md':
+        '---\ntitle: Beta\nkind: preface\nlayout: two-column\n---\n\nBody.\n',
+    })
+    const { chapters } = await discoverChapters({ ...config, manuscriptDir })
+    const bySlug = new Map(chapters.map((chapter) => [chapter.slug, chapter]))
+
+    expect(bySlug.get('alpha')?.layout).toBe('single-column')
+    expect(bySlug.get('beta')?.layout).toBe('two-column')
+  })
+
+  test('rejects an unknown layout', async () => {
+    const manuscriptDir = await manuscript({
+      'part-1/01-alpha/index.md':
+        '---\ntitle: Alpha\nlayout: three-column\n---\n\nBody.\n',
+    })
+
+    await expect(discoverChapters({ ...config, manuscriptDir })).rejects.toThrow(
+      /invalid layout "three-column"/,
+    )
   })
 })

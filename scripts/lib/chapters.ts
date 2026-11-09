@@ -6,6 +6,7 @@ import type {
   Chapter,
   ChapterFrontmatter,
   ChapterKind,
+  ChapterLayout,
   ChapterStatus,
   Part,
 } from './types'
@@ -13,6 +14,7 @@ import { slugify, stripNumericPrefix } from './util'
 
 const KINDS: ChapterKind[] = ['chapter', 'preface', 'title', 'copyright', 'appendix']
 const STATUSES: ChapterStatus[] = ['draft', 'review', 'final']
+const LAYOUTS: ChapterLayout[] = ['two-column', 'single-column']
 
 export async function discoverChapters(config: BookConfig): Promise<BookParts> {
   const manuscriptDir = path.resolve(config.manuscriptDir)
@@ -50,6 +52,13 @@ export async function discoverChapters(config: BookConfig): Promise<BookParts> {
       throw new Error(`${relative}: invalid status "${status}" (expected ${STATUSES.join(', ')})`)
     }
 
+    const defaultLayout: ChapterLayout =
+      kind === 'chapter' || kind === 'appendix' ? 'two-column' : 'single-column'
+    const layout = (data.layout ?? defaultLayout) as ChapterLayout
+    if (!LAYOUTS.includes(layout)) {
+      throw new Error(`${relative}: invalid layout "${layout}" (expected ${LAYOUTS.join(', ')})`)
+    }
+
     const dir = path.dirname(file)
     const relativeDir = path.dirname(relative)
     const folder = path.basename(relativeDir)
@@ -84,6 +93,7 @@ export async function discoverChapters(config: BookConfig): Promise<BookParts> {
       order,
       number,
       kind,
+      layout,
       topics: Array.isArray(data.topics) ? data.topics.map(String) : [],
       summary: data.summary ?? '',
       status,

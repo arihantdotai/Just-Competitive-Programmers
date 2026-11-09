@@ -1,5 +1,6 @@
 export type ChapterKind = 'chapter' | 'preface' | 'title' | 'copyright' | 'appendix'
 export type ChapterStatus = 'draft' | 'review' | 'final'
+export type ChapterLayout = 'two-column' | 'single-column'
 export type MathOutput = 'html' | 'mathml'
 export type RenderTarget = 'html' | 'pdf' | 'epub'
 
@@ -11,6 +12,7 @@ export interface ChapterFrontmatter {
   order?: number
   number?: number
   kind?: ChapterKind
+  layout?: ChapterLayout
   topics?: string[]
   summary?: string
   status?: ChapterStatus
@@ -28,6 +30,7 @@ export interface Chapter {
   order: number
   number?: number
   kind: ChapterKind
+  layout: ChapterLayout
   topics: string[]
   summary: string
   status: ChapterStatus

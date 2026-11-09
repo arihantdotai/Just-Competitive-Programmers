@@ -2,8 +2,10 @@ import Shiki from '@shikijs/markdown-it'
 import MarkdownIt from 'markdown-it'
 import anchor from 'markdown-it-anchor'
 import attrs from 'markdown-it-attrs'
+import container from 'markdown-it-container'
 import deflist from 'markdown-it-deflist'
 import footnote from 'markdown-it-footnote'
+import type Token from 'markdown-it/lib/token.mjs'
 import type { BookConfig } from '../../book.config'
 import { calloutsPlugin } from './callouts'
 import { mathPlugin } from './math'
@@ -55,6 +57,19 @@ export async function renderChapter(
   md.use(attrs as unknown as (md: MarkdownIt) => void)
   md.use(calloutsPlugin)
   md.use(await getShiki())
+
+  // A two-column chapter can opt a block out of the columns. This is useful
+  // for wide diagrams, large tables, and code that would be cramped in a
+  // single column. `single-column` is an alias for the same behavior.
+  for (const name of ['wide', 'single-column']) {
+    md.use(container, name, {
+      render(tokens: Token[], index: number) {
+        return tokens[index].nesting === 1
+          ? '<div class="book-wide">\n'
+          : '</div>\n'
+      },
+    })
+  }
 
   md.renderer.rules.image = (tokens, index, _options, env) => {
     const token = tokens[index]

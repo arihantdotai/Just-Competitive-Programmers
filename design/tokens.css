@@ -1,125 +1,117 @@
 @font-face {
-  font-family: "DM Sans";
-  src: url("fonts/DMSans-Regular.woff2") format("woff2");
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "DM Sans";
-  src: url("fonts/DMSans-Italic.woff2") format("woff2");
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "DM Sans";
-  src: url("fonts/DMSans-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DM Sans";
-  src: url("fonts/DMSans-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DM Sans";
-  src: url("fonts/DMSans-Bold.woff2") format("woff2");
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Funnel Display";
-  src: url("fonts/FunnelDisplay-Regular.woff2") format("woff2");
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/AtkinsonHyperlegible-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/JetBrainsMono-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Funnel Display";
-  src: url("fonts/FunnelDisplay-Medium.woff2") format("woff2");
+  font-family: "JetBrains Mono";
+  src: url("fonts/JetBrainsMono-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Funnel Display";
-  src: url("fonts/FunnelDisplay-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Funnel Display";
-  src: url("fonts/FunnelDisplay-Bold.woff2") format("woff2");
+  font-family: "JetBrains Mono";
+  src: url("fonts/JetBrainsMono-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Fira Code";
-  src: url("fonts/FiraCode-Regular.woff2") format("woff2");
+  font-family: "Barlow Condensed";
+  src: url("fonts/BarlowCondensed-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Fira Code";
-  src: url("fonts/FiraCode-Medium.woff2") format("woff2");
+  font-family: "Barlow Condensed";
+  src: url("fonts/BarlowCondensed-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Fira Code";
-  src: url("fonts/FiraCode-Bold.woff2") format("woff2");
+  font-family: "Barlow Condensed";
+  src: url("fonts/BarlowCondensed-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("fonts/BarlowCondensed-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --font-display: "Funnel Display", "Inter", system-ui, sans-serif;
-  --font-body: "DM Sans", "Inter", system-ui, sans-serif;
-  --font-mono: "Fira Code", "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-math: "KaTeX_Main", "Latin Modern Math", "STIX Two Math", serif;
 
-  --ink: #1c1b18;
-  --ink-soft: #46433c;
-  --ink-muted: #6d685e;
-  --paper: #fffdf8;
-  --paper-deep: #f6f1e6;
-  --paper-code: #fbf7ee;
-  --rule: #ddd5c6;
-  --rule-strong: #c8beac;
+  --ink: #161616;
+  --ink-soft: #3f3f3f;
+  --ink-muted: #6f6f6f;
+  --paper: #ffffff;
+  --paper-deep: #f4f4f4;
+  --paper-code: #f7f7f7;
+  --rule: #e4e4e4;
+  --rule-strong: #c7c7c7;
 
-  --accent: #0f6b62;
-  --accent-deep: #0a4f49;
-  --accent-soft: #e3f1ee;
-  --accent-ink: #08443f;
+  --accent: #111111;
+  --accent-deep: #000000;
+  --accent-soft: #f2f2f2;
+  --accent-ink: #111111;
 
-  --warning: #9a5b12;
-  --warning-soft: #fbf0dd;
-  --danger: #9b2c2c;
-  --danger-soft: #fbe9e9;
-  --note: #365314;
-  --note-soft: #eef6e2;
+  --warning: #7a4a00;
+  --warning-soft: #f7f1e6;
+  --danger: #8a1f1f;
+  --danger-soft: #f8eded;
+  --note: #333333;
+  --note-soft: #f3f3f3;
 
   --measure: 68ch;
   --leading: 1.65;
@@ -127,7 +119,7 @@
   --page-height: 9.1875in;
   --page-margin: 22mm 20mm 24mm;
   --radius: 6px;
-  --shadow: 0 1px 2px rgba(28, 27, 24, 0.06), 0 8px 24px rgba(28, 27, 24, 0.06);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.05);
 
   --text-xs: 0.78rem;
   --text-sm: 0.9rem;

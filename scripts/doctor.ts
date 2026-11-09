@@ -66,21 +66,30 @@ await checkFile("package.json", path.resolve("package.json"));
 await checkDirectory("node_modules", path.resolve("node_modules"));
 await checkFile("book.config.ts", path.resolve("book.config.ts"));
 
-await checkFile("DM Sans (web)", path.join(config.designDir, "fonts", "DMSans-Regular.woff2"));
 await checkFile(
-  "Funnel Display (web)",
-  path.join(config.designDir, "fonts", "FunnelDisplay-Regular.woff2"),
+  "Atkinson Hyperlegible (web)",
+  path.join(config.designDir, "fonts", "AtkinsonHyperlegible-Regular.woff2"),
 );
 await checkFile(
-  "Fira Code (web)",
-  path.join(config.designDir, "fonts", "FiraCode-Regular.woff2"),
+  "JetBrains Mono (web)",
+  path.join(config.designDir, "fonts", "JetBrainsMono-Regular.woff2"),
 );
-await checkFile("DM Sans (EPUB)", path.join(config.designDir, "fonts", "DMSans.ttf"));
 await checkFile(
-  "Funnel Display (EPUB)",
-  path.join(config.designDir, "fonts", "FunnelDisplay.ttf"),
+  "Barlow Condensed (web)",
+  path.join(config.designDir, "fonts", "BarlowCondensed-Regular.woff2"),
 );
-await checkFile("Fira Code (EPUB)", path.join(config.designDir, "fonts", "FiraCode.ttf"));
+await checkFile(
+  "Atkinson Hyperlegible (EPUB)",
+  path.join(config.designDir, "fonts", "AtkinsonHyperlegible-Regular.ttf"),
+);
+await checkFile(
+  "JetBrains Mono (EPUB)",
+  path.join(config.designDir, "fonts", "JetBrainsMono.ttf"),
+);
+await checkFile(
+  "Barlow Condensed (EPUB)",
+  path.join(config.designDir, "fonts", "BarlowCondensed-Regular.ttf"),
+);
 
 await checkFile(
   "KaTeX stylesheet",
@@ -155,6 +164,14 @@ console.log(`Outputs: ${config.distDir}/`);
 
 if (failed.length > 0) {
   console.log("");
+  if (
+    checks.some(
+      (check) =>
+        !check.ok && /Atkinson|JetBrains|Barlow/.test(check.name),
+    )
+  ) {
+    console.log("Missing fonts? Run: bun run prepare");
+  }
   console.log(`${failed.length} required check(s) failed.`);
   process.exit(1);
 }

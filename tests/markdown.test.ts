@@ -14,6 +14,7 @@ const chapter: Chapter = {
   order: 1,
   number: 1,
   kind: 'chapter',
+  layout: 'two-column',
   topics: [],
   summary: '',
   status: 'draft',
@@ -130,6 +131,27 @@ describe('renderChapter (HTML)', () => {
   test('reports no TikZ figures when the chapter has none', async () => {
     const { figures } = await rendered
     expect(figures).toEqual([])
+  })
+
+  test('wraps ::: wide blocks in a full-width container', async () => {
+    const { html } = await renderChapter(
+      { ...chapter, content: '::: wide\nA wide block.\n:::\n' },
+      config,
+      options(),
+    )
+
+    expect(html).toContain('<div class="book-wide">')
+    expect(html).toContain('A wide block.')
+  })
+
+  test('accepts ::: single-column as an alias for wide blocks', async () => {
+    const { html } = await renderChapter(
+      { ...chapter, content: '::: single-column\nA wide block.\n:::\n' },
+      config,
+      options(),
+    )
+
+    expect(html).toContain('<div class="book-wide">')
   })
 })
 
