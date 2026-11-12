@@ -11,13 +11,13 @@ summary: "Why this handbook exists, who it is for, and how to get the most out o
 status: draft
 ---
 
-## Who this book is for
+## Who This Book Is For
 
 This handbook is for programmers who already know how to write code and want to get better at solving algorithmic problems under time pressure. It is not an introduction to programming. It assumes familiarity with variables, loops, functions, recursion, and basic data structures.
 
 The chapters are short on purpose. Each one introduces a technique, shows the core idea, and then gets out of the way so you can practice. The goal is not to replace a textbook or a course. The goal is to give you a compact reference that you can revisit before a contest or an interview.
 
-## How the book is organized
+## How the Book Is Organized
 
 The material is divided into parts, and each part contains chapters that build on one another. A typical chapter follows the same shape:
 
@@ -31,7 +31,7 @@ You can read the book front to back, but it is also designed for browsing. If yo
 
 ## Conventions
 
-Mathematics is typeset with KaTeX. Inline expressions look like $O(n \log n)$, and displayed equations are set on their own line:
+Mathematics is typeset with $\KaTeX$. Inline expressions look like $O(n \log n)$, and displayed equations are set on their own line:
 
 $$
 T(n) = 2T(n/2) + \Theta(n) = \Theta(n \log n).
@@ -43,7 +43,7 @@ Code is written in modern C++ unless a chapter says otherwise. The examples use 
 The title, author, publisher, edition, and ISBN in this scaffold are placeholders. Replace them in `book.config.ts` and in the front-matter files before publishing.
 :::
 
-## A note on practice
+## A Note on Practice
 
 Reading about an algorithm is not the same as being able to implement it. After each chapter, close the book and try to reproduce the main idea from memory. Then solve at least two problems that use it. If you get stuck, go back to the definition and the proof, not to the code. The code is the least interesting part.
 
