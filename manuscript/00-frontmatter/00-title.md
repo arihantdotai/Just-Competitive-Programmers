@@ -1,5 +1,5 @@
 ---
-title: "Only Competitive Programmer's Handbook"
+title: "Just Competitive Programmers"
 slug: title
 part: Front Matter
 partOrder: 0

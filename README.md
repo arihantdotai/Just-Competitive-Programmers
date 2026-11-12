@@ -1,4 +1,4 @@
-# Only Competitive Programmer's Handbook
+# Just Competitive Programmers
 
 A Bun + TypeScript book pipeline that turns chapter-wise Markdown into a portable HTML book, a print-ready PDF, and a reflowable EPUB. Mathematics is typeset with KaTeX, diagrams with TikZ (or SVG), and code with Shiki. The print design follows a research-paper model: two justified columns, running heads, numbered sections and equations, and notes at the bottom of the page.
 

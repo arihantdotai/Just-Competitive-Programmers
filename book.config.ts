@@ -50,7 +50,7 @@ export interface BookConfig {
 }
 
 const config: BookConfig = {
-  title: "Only Competitive Programmer's Handbook",
+  title: "Just Competitive Programmers",
   subtitle: "A Practical Guide to Algorithms and Problem Solving",
   author: "Author Name",
   publisher: "Self-published",
