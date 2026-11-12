@@ -191,6 +191,18 @@ TikZ fences are rendered to SVG and cached by source hash:
 
 The default backend is `auto`: it uses the system TeX toolchain (`latex` or `pdflatex`, plus `dvisvgm`) when available, and falls back to `node-tikzjax` otherwise. Rendering is serialized because the WASM renderer is not safe to run concurrently.
 
+## License
+
+Copyright © 2026 **Arihant Jain**.
+
+This work is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA 4.0). See the [`LICENSE`](LICENSE) file for the full text.
+
+- **Attribution** — credit the author, Arihant Jain, link the license, and indicate any changes.
+- **NonCommercial** — no commercial use.
+- **ShareAlike** — adaptations must be released under the same license.
+
+No spreading or redistribution without the author's name and the license name is permitted.
+
 ## Troubleshooting
 
 **PDF build fails with "Chromium is not installed"**  

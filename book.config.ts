@@ -52,7 +52,7 @@ export interface BookConfig {
 const config: BookConfig = {
   title: "Just Competitive Programmers",
   subtitle: "A Practical Guide to Algorithms and Problem Solving",
-  author: "Author Name",
+  author: "Arihant Jain",
   publisher: "Self-published",
   edition: "First Edition",
   language: "en",
