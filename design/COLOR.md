@@ -1,8 +1,8 @@
 # COLOR.md — Palette Specification
 
-Values only. The single source of truth is `design/tokens.css` — if a value here and
-there differ, `tokens.css` wins and this file is stale. Usage rules (what may be bold,
-how diagrams are composed) live in `manuscript/STYLE.md` and `ARCHITECTURE.md`.
+Values only. The single source of truth is `design/css/tokens.css` — if a value here and
+there differ, `design/css/tokens.css` wins and this file is stale. Usage rules (what may be bold,
+how diagrams are composed) live in `manuscript/_STYLE.md` and `ARCHITECTURE.md`.
 
 ## 1. Core tokens
 
@@ -35,7 +35,7 @@ how diagrams are composed) live in `manuscript/STYLE.md` and `ARCHITECTURE.md`.
   replace one.
 - Color alone never conveys meaning.
 - Dark mode (website) is a second variable set under `:root[data-theme="dark"]` in
-  `tokens.css`; type sizes and leading do not change between themes.
+  `design/css/tokens.css`; type sizes and leading do not change between themes.
 
 ## 3. Diagram palette
 

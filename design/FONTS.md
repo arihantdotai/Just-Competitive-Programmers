@@ -1,8 +1,8 @@
 # FONTS.md — Typeface Specification
 
 Values only. Usage rules (when to use which family, emphasis policy) live in
-`manuscript/STYLE.md`. The single source of truth for font loading is
-`design/tokens.css`; the file inventory is `design/fonts/` (+ `design/fonts/README.md`
+`manuscript/_STYLE.md`. The single source of truth for font loading is
+`design/css/tokens.css`; the file inventory is `design/fonts/` (+ `design/fonts/README.md`
 for sources and regeneration).
 
 ## 1. Families
@@ -14,7 +14,7 @@ for sources and regeneration).
 | Code / mono | JetBrains Mono | `JetBrainsMono-{Regular,Medium,Bold}.woff2`, `JetBrainsMono.ttf` | 400, 500, 700 |
 | Math | KaTeX fonts | bundled by the build | — |
 
-No fourth family without updating this file, `tokens.css`, and the font pipeline.
+No fourth family without updating this file, `design/css/tokens.css`, and the font pipeline.
 
 ## 2. Print type scale (authoritative)
 
@@ -45,7 +45,7 @@ width is the measure). Paragraph indent: `--paragraph-indent: 1.2em`; the first
 paragraph after a heading, figure, table, code block, display equation, note, or list
 is not indented.
 
-## 4. Screen size ramp (`tokens.css`)
+## 4. Screen size ramp (`design/css/tokens.css`)
 
 | Token | Value | Token | Value |
 | --- | --- | --- | --- |

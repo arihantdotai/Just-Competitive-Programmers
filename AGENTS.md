@@ -2,7 +2,7 @@
 
 This is the operational contract for any agent converting `manuscript/` chapters into
 `latex/` chapters. The design rationale lives in `ARCHITECTURE.md`; the writing rules
-and the author-marks language live in `manuscript/STYLE.md`. Read all three before
+and the author-marks language live in `manuscript/_STYLE.md`. Read all three before
 converting anything.
 
 **One chapter per invocation.** The agent writes exactly one file:
@@ -74,9 +74,9 @@ until agreed, keep the construct as a `\todo{}` with the original text quoted.
 
 ## 3. Workflow
 
-1. **Read** the manuscript chapter, `manuscript/STYLE.md`, the design specs it
-   invokes (`design/FONTS.md`, `design/COLOR.md`, `design/CALLOUTS.md`,
-   `design/FOOTNOTES.md`), and this file.
+1. **Read** the manuscript chapter, `manuscript/_STYLE.md`, the design specs it
+   invokes (`design/DESIGN.md` — callouts and footnotes are §§7–8 —,
+   `design/FONTS.md`, `design/COLOR.md`), and this file.
 2. **Scan marks first.** Collect all `%%` directives. If any `%% ask:` exists, ask
    before converting. If a `%% scribe:` command conflicts with the content around it,
    the mark wins.

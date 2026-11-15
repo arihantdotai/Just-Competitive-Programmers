@@ -19,7 +19,7 @@ export async function prepareAssets(
   await ensureDir(fontsDir)
 
   for (const file of ['tokens.css', 'book.css', 'print.css']) {
-    await copyFile(path.join(config.designDir, file), path.join(assetsDir, file))
+    await copyFile(path.join(config.designDir, 'css', file), path.join(assetsDir, file))
   }
 
   const katexDir = path.resolve('node_modules', 'katex', 'dist')

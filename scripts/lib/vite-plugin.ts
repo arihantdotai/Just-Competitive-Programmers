@@ -171,7 +171,7 @@ ${result.html}
     }
 
     if (["tokens.css", "book.css", "print.css"].includes(relative)) {
-      return serveFile(res, path.join(config.designDir, relative));
+      return serveFile(res, path.join(config.designDir, "css", relative));
     }
 
     return false;

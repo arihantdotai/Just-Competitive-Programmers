@@ -22,12 +22,12 @@ write in the author's voice, and never rewrite the manuscript itself.
 
 ## Before converting — read these, in order
 
-1. `manuscript/STYLE.md` — the writing & markup guide: voice, paragraphs, emphasis,
+1. `manuscript/_STYLE.md` — the writing & markup guide: voice, paragraphs, emphasis,
    callout discipline, and the `%%` marks language (§1).
 2. `AGENTS.md` — your conversion contract: hard rules, the construct → LaTeX table,
    workflow, and the list of things you must never do.
-3. `design/FONTS.md`, `design/COLOR.md`, `design/CALLOUTS.md`,
-   `design/FOOTNOTES.md` — the typography, palette, callout, and footnote specs
+3. `design/DESIGN.md` (callouts/footnotes), `design/FONTS.md`,
+   `design/COLOR.md` — the typography, palette, callout, and footnote specs
    (values only; layout is not your concern).
 4. `ARCHITECTURE.md` §7 and §9 — the artifact protocol and the pinpoint-URL id scheme.
 5. The target chapter's manuscript and any figures it references.

@@ -91,18 +91,13 @@ JustCompetitiveProgrammers/
 │   ├── artifacts/               #   one TS module per artifact, registered by id
 │   │   ├── registry.ts          #   maps artifact id → component
 │   │   └── prefix-sum-grid.ts   #   example artifact component
-│   └── styles/                  #   reuses design/tokens.css, design/book.css
+│   └── styles/                  #   reuses design/css/tokens.css, design/css/book.css
 │
 ├── design/                      # existing design system (kept)
-│   ├── DESIGN.md                #   design index + layout/structure/numbering spec
+│   ├── DESIGN.md                #   design spec: layout/structure/numbering/callouts/footnotes
 │   ├── FONTS.md                 #   families and type-scale values
 │   ├── COLOR.md                 #   palette and diagram color values
-│   ├── CALLOUTS.md              #   note/callout rendering spec
-│   ├── FOOTNOTES.md             #   footnote/citation spec
-│   ├── tokens.css               #   palette + fonts; gains dark-mode variable set (§8)
-│   ├── book.css                 #   screen styles (sidebar layout lives here or site/styles)
-│   ├── print.css                #   kept for the legacy EPUB step only
-│   ├── epub.css                 #   kept for EPUB
+│   ├── css/                     #   tokens.css, book.css, print.css, epub.css
 │   └── fonts/                   #   OTF/WOFF2 — consumed by BOTH LuaLaTeX and the site
 │
 ├── scripts/
@@ -195,7 +190,7 @@ the preamble discussion, and the preamble is updated once, by a human-approved e
 - **Every conversion is verified.** After writing the `.tex`, the agent compiles that
   chapter standalone (`latexmk -lualatex` on a scratch wrapper) and fixes its own
   compile errors before declaring done.
-- **Style authority** is `manuscript/STYLE.md` (usage), the `design/*.md` specs
+- **Style authority** is `manuscript/_STYLE.md` (usage), the `design/*.md` specs
   (values), and this file. Where the design specs describe
   *print layout* (two-column rules etc.), the agent ignores the *layout* parts — layout
   belongs to the preamble/classes, not to chapter files. Chapter files are layout-free.
@@ -207,13 +202,13 @@ the preamble discussion, and the preamble is updated once, by a human-approved e
 - Engine: **LuaLaTeX** (`latexmk -lualatex -interaction=nonstopmode`), chosen so the
   actual font files in `design/fonts/` load directly via `fontspec`.
 - `preamble.tex` reproduces the design specs (`design/FONTS.md`, `design/COLOR.md`,
-  `design/CALLOUTS.md`, `design/FOOTNOTES.md`):
+  `design/DESIGN.md` §§7–8):
   - `fontspec`: Minion Pro (body, from `design/fonts/minion-pro/*.otf`),
     Barlow Condensed (display, via `\setmainfont`-style family), JetBrains Mono
     (`\setmonofont`);
   - `microtype` for justified, tightly hyphenated paragraphs;
   - custom environments for the seven note types (run-in bold label, italic body for
-    theorem/definition — no boxes, per `design/CALLOUTS.md`);
+    theorem/definition — no boxes, per `design/DESIGN.md` §7);
   - per-chapter numbering of sections, display equations, figures (chapter.n), and
     footnotes;
   - print geometry and running heads from `book.config.ts` (`page.size`, margins).
@@ -312,7 +307,7 @@ export default {
 
 ### 8.2 Dark mode
 
-- `design/tokens.css` gains a second variable set: `:root[data-theme="dark"]`.
+- `design/css/tokens.css` gains a second variable set: `:root[data-theme="dark"]`.
 - Toggle in the sidebar footer; persisted in `localStorage`; defaults to the OS
   `prefers-color-scheme`. A tiny inline script sets the attribute before first paint
   to avoid a flash.
@@ -451,7 +446,7 @@ deleted up front:
    pinpoint system (stable ids, `?p=` handling, hover pins) from day one — retrofitting
    ids after content exists is painful; generating them during conversion is free.
 4. **Repoint EPUB.** Feed the existing `epub.ts` from LaTeXML HTML instead of
-   markdown-rendered HTML; keep `print.css`/`epub.css` as-is.
+   markdown-rendered HTML; keep `design/css/print.css` and `design/css/epub.css` as-is.
 5. **Retire.** Remove the markdown → HTML/PDF path (`html.ts`, `pdf.ts`, Paged.js,
    `markdown.ts` and friends) once LaTeX output is trusted for every chapter.
 6. **Ongoing.** Chapters migrate as their manuscripts reach `review`; the agent converts

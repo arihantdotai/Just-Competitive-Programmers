@@ -16,7 +16,7 @@ The book generates **three different outputs**, each requiring a different font 
 
 1. **EPUB** (reflowable ebook): Requires **OTF** fonts embedded in the ebook container. These are in `minion-pro/` with `.otf` extensions.
 
-2. **HTML & PDF (Paged.js)**: Requires **WOFF2** fonts for the web build, declared in `design/tokens.css` `@font-face` rules. These are in `minion-pro-webfont/` with `.woff` extensions.
+2. **HTML & PDF (Paged.js)**: Requires **WOFF2** fonts for the web build, declared in `design/css/tokens.css` `@font-face` rules. These are in `minion-pro-webfont/` with `.woff` extensions.
 
 3. **Print/PDF quality**: The Paged.js PDF builder also uses the OTF files for highest-quality print output, same files as EPUB but accessed from the `minion-pro/` folder.
 
@@ -42,8 +42,8 @@ bun run prepare
 
 ## Usage
 
-- `design/tokens.css` declares the WOFF2 `@font-face` rules for HTML and PDF.
-- `design/epub.css` declares the TTF `@font-face` rules for EPUB.
+- `design/css/tokens.css` declares the WOFF2 `@font-face` rules for HTML and PDF.
+- `design/css/epub.css` declares the TTF `@font-face` rules for EPUB.
 - The build copies `design/fonts/` into `dist/assets/fonts/` for HTML/PDF and embeds the TTF/OTF files in the EPUB container.
 
 Do not reference fonts by a remote URL. The build must work offline.

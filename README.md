@@ -69,15 +69,14 @@ bun run build -- --epub            # EPUB only
 ```text
 book.config.ts          Book metadata, page size, math macros, TikZ packages
 design/
-  DESIGN.md             Design index, layout, structure, numbering spec
+  DESIGN.md             Design spec: layout, structure, numbering, callouts, footnotes
   FONTS.md              Typeface families and type-scale values
   COLOR.md              Color tokens and diagram palette values
-  CALLOUTS.md           Note/callout rendering spec
-  FOOTNOTES.md          Footnote and citation spec
-  tokens.css            Font faces, palette, and CSS variables
-  book.css              Screen layout, notes, code, figures, TOC
-  print.css             @page rules, running heads, footnotes, columns
-  epub.css              EPUB typography, endnotes, and embedded fonts
+  css/
+    tokens.css          Font faces, palette, and CSS variables
+    book.css            Screen layout, notes, code, figures, TOC
+    print.css           @page rules, running heads, footnotes, columns
+    epub.css            EPUB typography, endnotes, and embedded fonts
   fonts/                Self-hosted WOFF2 and TTF files
 manuscript/
   _TEMPLATE/            Chapter template (ignored by the build)
@@ -139,9 +138,9 @@ Rules:
 - Use the `::: definition`, `::: theorem`, `::: example`, `::: note`, `::: tip`, `::: warning`, and `::: complexity` notes. They render as run-in labels with no box or icon. Theorem and definition bodies are italic.
 - Use `$...$` for inline math and `$$...$$` for display math. Display equations are numbered per chapter. The macros in `book.config.ts` are available.
 - Use Markdown footnotes for short asides and citations: `Text.[^source]` and `[^source]: The note.` In print they appear at the bottom of the page; in EPUB they become endnotes.
-- Keep bold and italic structural. See the usage policy in `manuscript/STYLE.md` §5 and the values in `design/FONTS.md`.
+- Keep bold and italic structural. See the usage policy in `manuscript/_STYLE.md` §5 and the values in `design/FONTS.md`.
 
-See `manuscript/_TEMPLATE/index.md` for a complete starter file, `manuscript/STYLE.md` for writing rules, and the specs in `design/` (`DESIGN.md`, `FONTS.md`, `COLOR.md`, `CALLOUTS.md`, `FOOTNOTES.md`) for the visual rules.
+See `manuscript/_TEMPLATE/index.md` for a complete starter file, `manuscript/_STYLE.md` for writing rules, and the design specs in `design/` (`DESIGN.md`, `FONTS.md`, `COLOR.md`) for the visual rules.
 
 ## Design at a glance
 
@@ -168,8 +167,8 @@ All three are self-hosted in `design/fonts/`. The build copies WOFF2 files for H
 The PDF trim size is **7 × 9.1875 in (504 × 661.5 pt)**. It is declared in:
 
 - `book.config.ts` → `page.width` / `page.height`
-- `design/print.css` → `@page { size: 7in 9.1875in; }`
-- `design/tokens.css` → `--page-width` / `--page-height`
+- `design/css/print.css` → `@page { size: 7in 9.1875in; }`
+- `design/css/tokens.css` → `--page-width` / `--page-height`
 
 If you change the trim size, update all three.
 

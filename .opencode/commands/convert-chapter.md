@@ -7,9 +7,9 @@ Convert the manuscript at $ARGUMENTS into LaTeX for this book.
 
 Rules:
 
-1. Read `manuscript/STYLE.md`, `AGENTS.md`, the design specs (`design/FONTS.md`,
-   `design/COLOR.md`, `design/CALLOUTS.md`, `design/FOOTNOTES.md`),
-   `ARCHITECTURE.md`, and the target chapter first.
+1. Read `manuscript/_STYLE.md`, `AGENTS.md`, the design specs (`design/DESIGN.md`,
+   `design/FONTS.md`, `design/COLOR.md`), `ARCHITECTURE.md`, and the target chapter
+   first.
 2. Convert **one chapter only**: the folder named in $ARGUMENTS
    (e.g. `manuscript/part-2-trees/03-segment-trees`), writing
    `latex/chapters/chNN-<slug>.tex` per the `AGENTS.md` §2 table.

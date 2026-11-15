@@ -69,7 +69,7 @@ export async function buildEpub(
   config: BookConfig,
   options: EpubRenderOptions,
 ): Promise<string> {
-  const css = await Bun.file(path.join(config.designDir, "epub.css")).text();
+  const css = await Bun.file(path.join(config.designDir, "css", "epub.css")).text();
   const content: EpubChapter[] = [];
 
   content.push({
