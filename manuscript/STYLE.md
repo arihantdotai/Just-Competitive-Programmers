@@ -107,8 +107,8 @@ Two buckets: one for small values, one for large.
 
 ## 5. Emphasis — bold and italic
 
-Bold and italic are **structural signals, not decoration** (full policy:
-`design/DESIGN.md`).
+Bold and italic are **structural signals, not decoration**. This section is the usage
+policy; the values (sizes, weights, families) live in `design/FONTS.md`.
 
 **Bold — use for:**
 

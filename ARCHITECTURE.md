@@ -13,7 +13,7 @@ piece (EPUB, fonts, design tokens), this document says what to keep and what to 
 One repo, two products, one source of truth:
 
 1. **A PDF book** — typeset in *pure LaTeX*, using the exact typography of
-   `design/DESIGN.md` (Minion Pro body, Barlow Condensed headings, JetBrains Mono code).
+   `design/FONTS.md` (Minion Pro body, Barlow Condensed headings, JetBrains Mono code).
 2. **A book website** — not a normal website. A reading environment with:
    - a **left sidebar**: book name on top, then the chapter / part / subsection tree;
    - a **one-column main content area** on the right (never two columns on screen);
@@ -94,7 +94,11 @@ JustCompetitiveProgrammers/
 │   └── styles/                  #   reuses design/tokens.css, design/book.css
 │
 ├── design/                      # existing design system (kept)
-│   ├── DESIGN.md                #   typography/color/layout spec — still authoritative
+│   ├── DESIGN.md                #   design index + layout/structure/numbering spec
+│   ├── FONTS.md                 #   families and type-scale values
+│   ├── COLOR.md                 #   palette and diagram color values
+│   ├── CALLOUTS.md              #   note/callout rendering spec
+│   ├── FOOTNOTES.md             #   footnote/citation spec
 │   ├── tokens.css               #   palette + fonts; gains dark-mode variable set (§8)
 │   ├── book.css                 #   screen styles (sidebar layout lives here or site/styles)
 │   ├── print.css                #   kept for the legacy EPUB step only
@@ -191,8 +195,9 @@ the preamble discussion, and the preamble is updated once, by a human-approved e
 - **Every conversion is verified.** After writing the `.tex`, the agent compiles that
   chapter standalone (`latexmk -lualatex` on a scratch wrapper) and fixes its own
   compile errors before declaring done.
-- **Style authority** is `design/DESIGN.md` + this file. Where DESIGN.md describes
-  print layout (two-column rules etc.), the agent ignores the *layout* parts — layout
+- **Style authority** is `manuscript/STYLE.md` (usage), the `design/*.md` specs
+  (values), and this file. Where the design specs describe
+  *print layout* (two-column rules etc.), the agent ignores the *layout* parts — layout
   belongs to the preamble/classes, not to chapter files. Chapter files are layout-free.
 
 ---
@@ -201,13 +206,14 @@ the preamble discussion, and the preamble is updated once, by a human-approved e
 
 - Engine: **LuaLaTeX** (`latexmk -lualatex -interaction=nonstopmode`), chosen so the
   actual font files in `design/fonts/` load directly via `fontspec`.
-- `preamble.tex` reproduces `design/DESIGN.md`:
+- `preamble.tex` reproduces the design specs (`design/FONTS.md`, `design/COLOR.md`,
+  `design/CALLOUTS.md`, `design/FOOTNOTES.md`):
   - `fontspec`: Minion Pro (body, from `design/fonts/minion-pro/*.otf`),
     Barlow Condensed (display, via `\setmainfont`-style family), JetBrains Mono
     (`\setmonofont`);
   - `microtype` for justified, tightly hyphenated paragraphs;
   - custom environments for the seven note types (run-in bold label, italic body for
-    theorem/definition — no boxes, per DESIGN.md);
+    theorem/definition — no boxes, per `design/CALLOUTS.md`);
   - per-chapter numbering of sections, display equations, figures (chapter.n), and
     footnotes;
   - print geometry and running heads from `book.config.ts` (`page.size`, margins).
@@ -296,7 +302,8 @@ export default {
 - Shared **sidebar shell**: book name on top (links home), then the part/chapter/
   subsection tree built from the LaTeX sectioning. Current chapter highlighted;
   subsection entries scroll-link to headings on the page.
-- **One column, always.** Content measure follows DESIGN.md (68 characters). No
+- **One column, always.** Content measure follows `design/FONTS.md` §3 (68
+  characters). No
   two-column behavior on any screen size — the wide-material machinery of the old
   print design does not apply to the site.
 - Site pages are plain, crawlable HTML; JS only adds dark mode, artifact hydration,
@@ -309,9 +316,10 @@ export default {
 - Toggle in the sidebar footer; persisted in `localStorage`; defaults to the OS
   `prefers-color-scheme`. A tiny inline script sets the attribute before first paint
   to avoid a flash.
-- Typography sizes/leading stay identical between themes (DESIGN.md hierarchy is
-  theme-independent).
-- **Figures stay legible**: SVG diagrams keep their literal palette (per DESIGN.md) and
+- Typography sizes/leading stay identical between themes (`design/FONTS.md` hierarchy
+  is theme-independent).
+- **Figures stay legible**: SVG diagrams keep their literal palette (per
+  `design/COLOR.md` §3) and
   sit on a light "plate" surface in dark mode rather than being inverted; artifacts are
   theme-aware because they read CSS variables.
 

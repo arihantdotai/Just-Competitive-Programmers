@@ -74,8 +74,9 @@ until agreed, keep the construct as a `\todo{}` with the original text quoted.
 
 ## 3. Workflow
 
-1. **Read** the manuscript chapter, `manuscript/STYLE.md`, `design/DESIGN.md`
-   (voice + typography sections), and this file.
+1. **Read** the manuscript chapter, `manuscript/STYLE.md`, the design specs it
+   invokes (`design/FONTS.md`, `design/COLOR.md`, `design/CALLOUTS.md`,
+   `design/FOOTNOTES.md`), and this file.
 2. **Scan marks first.** Collect all `%%` directives. If any `%% ask:` exists, ask
    before converting. If a `%% scribe:` command conflicts with the content around it,
    the mark wins.
