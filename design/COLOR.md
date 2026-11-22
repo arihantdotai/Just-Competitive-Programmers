@@ -64,6 +64,10 @@ Rules:
 - One primary color per diagram; a second color only to mark a distinct state or path.
 - Fills are always light; strokes and labels always dark. No dark fill behind
   body-sized text.
+- Prefer thin dark strokes on the page surface; use light gray shading only to mark a
+  state, a compressed block, or a modified row.
+- Keep the diagram vocabulary consistent: cylinders for storage, rectangles for
+  services and memory pages, arrows for dataflow, timelines flowing left to right.
 - Color is never the only distinction between two series — add a pattern, dashed
   stroke, shape, or direct label.
 - Every diagram must pass a grayscale check.

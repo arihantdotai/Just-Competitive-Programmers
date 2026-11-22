@@ -6,11 +6,12 @@ import { buildEpub } from "./lib/epub";
 import { renderBook } from "./lib/html";
 import { renderChapter as renderChapterMarkdown } from "./lib/markdown";
 import { buildPdf } from "./lib/pdf";
+import { buildSite } from "./lib/site";
 import { ensureDir, parseArgs } from "./lib/util";
 
 const args = parseArgs();
 const requested = new Set(
-  ["html", "pdf", "epub"].filter((target) => args.flags.has(target)),
+  ["html", "pdf", "epub", "site"].filter((target) => args.flags.has(target)),
 );
 if (args.flags.has("simple-pdf")) requested.add("pdf");
 const explicit = requested.size > 0;
@@ -18,18 +19,20 @@ const explicit = requested.size > 0;
 let doHtml = explicit ? requested.has("html") || requested.has("pdf") : config.outputs.html;
 let doPdf = explicit ? requested.has("pdf") : config.outputs.pdf;
 let doEpub = explicit ? requested.has("epub") : config.outputs.epub;
+let doSite = explicit ? requested.has("site") : config.outputs.site;
 
 if (args.flags.has("no-html")) doHtml = false;
 if (args.flags.has("no-pdf")) doPdf = false;
 if (args.flags.has("no-epub")) doEpub = false;
+if (args.flags.has("no-site")) doSite = false;
 
 if (doPdf && !doHtml) {
   console.warn("PDF output requires HTML; enabling the HTML build.");
   doHtml = true;
 }
 
-if (!doHtml && !doPdf && !doEpub) {
-  console.error("Nothing to build. Use --html, --pdf, or --epub.");
+if (!doHtml && !doPdf && !doEpub && !doSite) {
+  console.error("Nothing to build. Use --html, --pdf, --epub, or --site.");
   process.exit(1);
 }
 
@@ -90,6 +93,24 @@ try {
         }),
     });
     console.log(`  epub   done (${seconds(step)})`);
+  }
+
+  if (doSite) {
+    const step = performance.now();
+    const siteDir = await buildSite(chapters, parts, config, {
+      renderChapter: (chapter) =>
+        renderChapterMarkdown(chapter, config, {
+          mathOutput: "html",
+          target: "site",
+          assetBase: "",
+          artifacts: true,
+          resolveImage: (src) =>
+            `../${resolveBuildImage(src, chapter, imageMap, config, "html")}`,
+          chapterHref: (slug, anchor) =>
+            `../${slug}/${anchor ? `#${slug}-${anchor}` : ""}`,
+        }),
+    });
+    console.log(`  site   ${path.relative(process.cwd(), siteDir)}/ (${seconds(step)})`);
   }
 
   console.log(`\nBuild complete in ${seconds(started)}. Output: ${config.distDir}/`);

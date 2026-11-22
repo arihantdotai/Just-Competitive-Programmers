@@ -18,7 +18,7 @@ export async function prepareAssets(
   await ensureDir(assetsDir)
   await ensureDir(fontsDir)
 
-  for (const file of ['tokens.css', 'book.css', 'print.css']) {
+  for (const file of ['tokens.css', 'book.css', 'print.css', 'site.css']) {
     await copyFile(path.join(config.designDir, 'css', file), path.join(assetsDir, file))
   }
 

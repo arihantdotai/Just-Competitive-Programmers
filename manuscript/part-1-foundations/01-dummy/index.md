@@ -49,7 +49,7 @@ $$
 \sum_{i=l}^{r-1} a_i = S_r - S_l.
 $$
 
-%% link: the range-sum identity above -> pin:ch-01-eq-2
+%% link: the range-sum identity above -> pin:ch-01-eq-1
 
 ::: theorem Range-sum queries
 After $\bigO(n)$ preprocessing, any range sum can be answered in $\bigO(1)$ time.
@@ -146,7 +146,7 @@ $10^9$, the total passes the range of a 32-bit signed integer. Use `long long`, 
 switch to an arbitrary-precision type when the problem demands it.
 :::
 
-%% link: the Fenwick tree, if updates are interleaved with queries -> https://cp-algorithms.com/data_structures/fenwick.html
+%% link: the Fenwick tree on CP-Algorithms -> https://cp-algorithms.com/data_structures/fenwick.html
 
 One convention is worth fixing now: if the input is zero-based, keep the prefix
 array zero-based too, with $S_k$ denoting the sum of the first $k$ elements. Mixing

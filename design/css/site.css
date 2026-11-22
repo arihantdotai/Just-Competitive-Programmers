@@ -1,0 +1,1032 @@
+/* ------------------------------------------------------------------ */
+/* Reading site                                                        */
+/*                                                                     */
+/* The website shares the book's tokens and text styles (tokens.css,   */
+/* book.css) and adds a fixed sidebar, a one-column reading measure,   */
+/* pinpoint affordances, and the artifact frame.                        */
+/* ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body.site {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: var(--leading);
+  -webkit-text-size-adjust: 100%;
+}
+
+.site-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-display);
+  text-decoration: none;
+}
+
+.site-skip:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell                                                               */
+/* ------------------------------------------------------------------ */
+
+.site-shell {
+  display: grid;
+  grid-template-columns: 18rem minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.site-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.site-content {
+  flex: 1 1 auto;
+  padding: 2.75rem 2.5rem 5rem;
+}
+
+.site-content:focus {
+  outline: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Sidebar                                                             */
+/* ------------------------------------------------------------------ */
+
+.site-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 1.75rem 1.35rem 1.5rem;
+  border-right: 1px solid var(--rule);
+  background: var(--paper);
+  font-family: var(--font-display);
+  overscroll-behavior: contain;
+}
+
+.site-sidebar__home {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-sidebar__title {
+  display: block;
+  font-size: 1.32rem;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.site-sidebar__home:hover .site-sidebar__title {
+  color: var(--ink-muted);
+}
+
+.site-sidebar__subtitle {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--ink-muted);
+}
+
+.site-nav {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.site-nav__part {
+  margin: 0 0 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.site-nav__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__item {
+  margin: 0.1rem 0;
+}
+
+.site-nav__link {
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 2px;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.site-nav__link:hover {
+  color: var(--ink);
+  background: var(--paper-deep);
+}
+
+.site-nav__item.is-current > .site-nav__link {
+  color: var(--ink);
+  font-weight: 600;
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 0 var(--ink);
+  padding-left: 0.7rem;
+}
+
+.site-nav__num {
+  min-width: 1.1em;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.site-nav__subs {
+  margin: 0.15rem 0 0.4rem 0.85rem;
+  padding: 0 0 0 0.65rem;
+  border-left: 1px solid var(--rule);
+  list-style: none;
+}
+
+.site-nav__sub {
+  display: block;
+  padding: 0.16rem 0;
+  font-family: var(--font-body);
+  font-size: 0.79rem;
+  line-height: 1.35;
+  color: var(--ink-muted);
+  text-decoration: none;
+}
+
+.site-nav__sub:hover,
+.site-nav__sub.is-active {
+  color: var(--ink);
+}
+
+.site-nav__subs--nested {
+  margin-left: 0.35rem;
+}
+
+.site-sidebar__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.site-sidebar__meta {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Theme toggle                                                        */
+/* ------------------------------------------------------------------ */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.34rem 0.55rem;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--ink);
+  border-color: var(--ink-muted);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.theme-toggle__icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle__icon {
+  background: transparent;
+  box-shadow: inset -3px -3px 0 0 currentColor;
+}
+
+/* ------------------------------------------------------------------ */
+/* Top bar                                                             */
+/* ------------------------------------------------------------------ */
+
+.site-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 3rem;
+  padding: 0.6rem 2rem;
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-display);
+}
+
+.site-crumb {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.site-crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-crumb a:hover {
+  color: var(--ink);
+}
+
+.site-crumb__sep {
+  color: var(--rule-strong);
+}
+
+.site-crumb__label {
+  color: var(--ink-soft);
+}
+
+.site-crumb [aria-current="page"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-menu {
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.site-menu__bars,
+.site-menu__bars::before,
+.site-menu__bars::after {
+  display: block;
+  width: 0.9rem;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.site-menu__bars {
+  position: relative;
+}
+
+.site-menu__bars::before {
+  position: absolute;
+  top: -4px;
+}
+
+.site-menu__bars::after {
+  position: absolute;
+  top: 4px;
+}
+
+.site-topbar__theme {
+  display: none;
+}
+
+.site-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* ------------------------------------------------------------------ */
+/* Reading column                                                      */
+/* ------------------------------------------------------------------ */
+
+.book-chapter--site {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.book-chapter--site > .book-chapter__header {
+  margin-bottom: 1.5rem;
+}
+
+.book-chapter--site .book-chapter__body {
+  max-width: none;
+}
+
+.book-chapter--site .chapter-title {
+  text-wrap: balance;
+}
+
+.chapter-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: var(--measure);
+  margin: 3rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.chapter-pager__slot {
+  display: block;
+}
+
+.chapter-pager__link {
+  display: block;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--rule);
+  color: inherit;
+  text-decoration: none;
+}
+
+.chapter-pager__link:hover {
+  border-color: var(--ink-muted);
+  background: var(--paper-deep);
+}
+
+.chapter-pager__link--next {
+  text-align: right;
+}
+
+.chapter-pager__direction {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.chapter-pager__title {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* ------------------------------------------------------------------ */
+/* Cover and table of contents                                         */
+/* ------------------------------------------------------------------ */
+
+.site-cover {
+  max-width: var(--measure);
+  margin: 4vh auto 4.5rem;
+  text-align: center;
+}
+
+.site-cover__eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.site-cover__title {
+  margin: 0.9rem 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.site-cover__subtitle {
+  max-width: 34ch;
+  margin: 0 auto;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.site-cover__author {
+  margin: 1.7rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+.site-cover__meta {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+.site-cover__actions {
+  margin: 2rem 0 0;
+}
+
+.site-button {
+  display: inline-block;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.site-button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.site-toc {
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+.site-toc__title {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+}
+
+.site-toc__part + .site-toc__part {
+  margin-top: 2rem;
+}
+
+.site-toc__part-title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.site-toc__list {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+  list-style: none;
+}
+
+.site-toc__entry {
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-toc__entry a {
+  display: flex;
+  gap: 1rem;
+  padding: 0.85rem 0.3rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-toc__entry a:hover {
+  background: var(--paper-deep);
+}
+
+.site-toc__num {
+  min-width: 1.6rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.site-toc__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.site-toc__summary {
+  display: block;
+  max-width: 60ch;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Pinpoint links                                                      */
+/* ------------------------------------------------------------------ */
+
+[data-pin] {
+  position: relative;
+}
+
+.pin-button {
+  position: absolute;
+  top: 0.15rem;
+  right: 0.15rem;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.pin-button svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+[data-pin]:hover > .pin-button,
+.pin-button:focus-visible {
+  opacity: 1;
+}
+
+/* An equation's number owns the right edge; pin the link to the left. */
+.math-display > .pin-button {
+  right: auto;
+  left: 0.15rem;
+}
+
+.pin-button:hover {
+  color: var(--ink);
+  border-color: var(--ink-muted);
+}
+
+.pin-button.is-pinpoint {
+  opacity: 1;
+}
+
+.pin-button.is-copied {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.pin-button::after {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  padding: 0.2rem 0.4rem;
+  background: var(--ink);
+  color: var(--paper);
+  content: attr(data-copied);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.pin-button[data-copied]::after {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .pin-button {
+    opacity: 0.5;
+  }
+}
+
+@keyframes pinpoint-flash {
+  0% {
+    background-color: var(--accent-soft);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 4px transparent;
+  }
+}
+
+.is-pinpoint {
+  animation: pinpoint-flash 1.6s ease-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-pinpoint {
+    animation: none;
+    outline: 2px solid var(--ink-muted);
+    outline-offset: 3px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Artifacts                                                           */
+/* ------------------------------------------------------------------ */
+
+.book-figure--artifact {
+  text-align: left;
+}
+
+.book-figure--artifact figcaption {
+  text-align: left;
+}
+
+.artifact {
+  padding: 1rem;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-deep);
+}
+
+.artifact__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 7rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.artifact__fallback img {
+  max-width: 100%;
+  height: auto;
+}
+
+.artifact__fallback-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.artifact-number {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* prefix-sum-grid -------------------------------------------------- */
+
+.psg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.psg-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.psg-rowlabel {
+  fill: var(--ink-muted);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.psg-cell__box {
+  fill: var(--paper);
+  stroke: var(--rule-strong);
+  stroke-width: 1.2;
+}
+
+.psg-cell__value {
+  fill: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  text-anchor: middle;
+}
+
+.psg-cell__index {
+  fill: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.psg-cell.is-past .psg-cell__box {
+  fill: var(--paper);
+}
+
+.psg-cell.is-current .psg-cell__box,
+.psg-cell.is-new .psg-cell__box {
+  fill: var(--diagram-ochre-soft);
+  stroke: var(--diagram-ochre);
+  stroke-width: 2;
+}
+
+.psg-cell.is-new {
+  animation: psg-pulse 0.9s ease-out 1;
+}
+
+.psg-cell.is-empty .psg-cell__box {
+  fill: transparent;
+  stroke-dasharray: 4 3;
+}
+
+.psg-cell.is-empty .psg-cell__value {
+  fill: var(--ink-muted);
+  opacity: 0.5;
+}
+
+@keyframes psg-pulse {
+  0% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.psg-arrow line {
+  stroke: var(--rule-strong);
+  stroke-width: 1.1;
+}
+
+.psg-arrowhead {
+  fill: var(--rule-strong);
+}
+
+.psg-arrow.is-new line {
+  stroke: var(--diagram-ochre);
+  stroke-width: 2;
+}
+
+.psg-arrow.is-new .psg-arrowhead {
+  fill: var(--diagram-ochre);
+}
+
+.psg-line {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+
+.psg-scale {
+  fill: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.psg-dot {
+  fill: var(--diagram-ochre);
+  stroke: var(--paper);
+  stroke-width: 2;
+  transition: cx 0.25s ease;
+}
+
+.psg-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-body);
+}
+
+.psg-controls button {
+  padding: 0.3rem 0.85rem;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.psg-controls button:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+
+.psg-controls button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.psg-controls button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.psg-status {
+  margin: 0 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.psg-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dark-mode adjustments                                               */
+/* ------------------------------------------------------------------ */
+
+/* Diagrams keep their literal palette and sit on a light plate so strokes
+   stay visible against the dark page. */
+:root[data-theme="dark"] .book-figure--image img,
+:root[data-theme="dark"] .book-figure--tikz svg {
+  padding: 0.6rem;
+  background: #fafafa;
+}
+
+/* Code highlighting uses the light theme by default; switch to the dark
+   palette that Shiki emits alongside it. */
+:root[data-theme="dark"] pre.shiki,
+:root[data-theme="dark"] pre.shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--paper-code) !important;
+}
+
+:root[data-theme="dark"] .artifact {
+  background: var(--paper-deep);
+}
+
+:root[data-theme="dark"] .psg-cell__box {
+  fill: var(--paper);
+}
+
+:root[data-theme="dark"] .psg-cell.is-empty .psg-cell__box {
+  fill: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+  .site-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .site-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 50;
+    width: min(20rem, 86vw);
+    height: 100%;
+    border-right: 1px solid var(--rule-strong);
+    transform: translateX(-102%);
+    transition: transform 0.2s ease;
+    visibility: hidden;
+  }
+
+  body.sidebar-open .site-sidebar {
+    transform: none;
+    visibility: visible;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .site-menu {
+    display: inline-flex;
+  }
+
+  .site-topbar__theme {
+    display: inline-flex;
+  }
+
+  .site-topbar {
+    padding: 0.55rem 1.1rem;
+  }
+
+  .site-content {
+    padding: 2rem 1.35rem 4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  body.site {
+    font-size: 16px;
+  }
+
+  .site-topbar__theme .theme-toggle__label {
+    display: none;
+  }
+
+  .chapter-pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chapter-pager__link--next {
+    text-align: left;
+  }
+
+  .site-toc__entry a {
+    gap: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-sidebar {
+    transition: none;
+  }
+
+  .psg-dot,
+  .pin-button {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Print                                                               */
+/* ------------------------------------------------------------------ */
+
+@media print {
+  .site-sidebar,
+  .site-topbar,
+  .site-scrim,
+  .pin-button,
+  .chapter-pager,
+  .site-skip {
+    display: none !important;
+  }
+
+  .site-shell {
+    display: block;
+  }
+
+  .site-content {
+    padding: 0;
+  }
+
+  body.site {
+    font-size: 10pt;
+  }
+}

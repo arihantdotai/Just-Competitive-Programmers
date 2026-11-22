@@ -8,7 +8,7 @@ export type ChapterKind =
 export type ChapterStatus = 'draft' | 'review' | 'final'
 export type ChapterLayout = 'two-column' | 'single-column'
 export type MathOutput = 'html' | 'mathml'
-export type RenderTarget = 'html' | 'pdf' | 'epub'
+export type RenderTarget = 'html' | 'pdf' | 'epub' | 'site'
 
 export interface ChapterFrontmatter {
   title: string
@@ -70,6 +70,12 @@ export interface RenderOptions {
   target: RenderTarget
   assetBase: string
   resolveImage: (src: string) => string
+  /** Render `%% artifact:` marks as hydratable figures (the website). */
+  artifacts?: boolean
+  /** Resolve a `chapter:` link for the current target. */
+  chapterHref?: (slug: string, anchor?: string) => string
+  /** Resolve a `pin:` target to an href for the current target. */
+  pinHref?: (pin: string) => string
 }
 
 export interface BookParts {

@@ -1,10 +1,11 @@
 # Just Competitive Programmers
 
-A Bun + TypeScript book pipeline that turns chapter-wise Markdown into a portable HTML book, a print-ready PDF, and a reflowable EPUB. Mathematics is typeset with KaTeX, diagrams with TikZ (or SVG), and code with Shiki. The print design follows a research-paper model: two justified columns, running heads, numbered sections and equations, and notes at the bottom of the page.
+A Bun + TypeScript book pipeline that turns chapter-wise Markdown into a portable HTML book, a print-ready PDF, a reflowable EPUB, and a reading website. Mathematics is typeset with KaTeX, diagrams with TikZ (or SVG), and code with Shiki. The print design is a single-column 7 × 9 in book: one justified measure, running heads, numbered sections and equations, and notes at the bottom of the page.
 
 - **HTML** — a portable page in `dist/book.html` with local CSS, fonts, KaTeX, and figures.
-- **PDF** — `dist/book.pdf`, paginated by Paged.js at 7 × 9.1875 in (504 × 661.5 pt).
+- **PDF** — `dist/book.pdf`, paginated by Paged.js at 7 × 9 in (504 × 648 pt).
 - **EPUB** — `dist/book.epub`, reflowable, with MathML and embedded fonts.
+- **Website** — `dist/site/`, one page per chapter, with a contents sidebar, dark mode, interactive artifacts, and pinpoint links.
 
 ## Requirements
 
@@ -27,9 +28,14 @@ dist/
   book.html
   book.pdf
   book.epub
+  site/
+    index.html
+    <chapter-slug>/index.html
+    assets/
   assets/
     book.css
     print.css
+    site.css
     tokens.css
     katex.min.css
     fonts/
@@ -44,10 +50,11 @@ dist/
 | `bun run dev` | Prompts for a chapter, starts Vite, and hot-reloads the preview |
 | `bun run dev -- --chapter dummy` | Starts the preview on a specific chapter |
 | `bun run dev -- --all` | Previews the whole book in one scroll |
-| `bun run build` | Builds HTML, PDF, and EPUB |
+| `bun run build` | Builds HTML, PDF, EPUB, and the website |
 | `bun run build:html` | Builds only `dist/book.html` |
 | `bun run build:pdf` | Builds HTML, then `dist/book.pdf` |
 | `bun run build:epub` | Builds only `dist/book.epub` |
+| `bun run build:site` | Builds only `dist/site/` |
 | `bun run lint:content` | Checks frontmatter, links, images, math delimiters, and callouts |
 | `bun run doctor` | Reports the toolchain, fonts, browser, and output status |
 | `bun run prepare` | Copies WOFF2 fonts and fetches the TTF fonts into `design/fonts/` |
@@ -58,10 +65,11 @@ dist/
 Build flags:
 
 ```bash
-bun run build -- --no-pdf          # HTML + EPUB
+bun run build -- --no-pdf          # HTML + EPUB + site
 bun run build -- --simple-pdf      # HTML + PDF without Paged.js pagination
 bun run build -- --pdf             # HTML + PDF only
 bun run build -- --epub            # EPUB only
+bun run build -- --site            # website only
 ```
 
 ## Project layout
@@ -74,8 +82,9 @@ design/
   COLOR.md              Color tokens and diagram palette values
   css/
     tokens.css          Font faces, palette, and CSS variables
-    book.css            Screen layout, notes, code, figures, TOC
-    print.css           @page rules, running heads, footnotes, columns
+    book.css            Shared book typography: notes, code, figures, TOC
+    print.css           @page rules, running heads, footnotes, single column
+    site.css            Website shell, sidebar, pins, artifact frame
     epub.css            EPUB typography, endnotes, and embedded fonts
   fonts/                Self-hosted WOFF2 and TTF files
 manuscript/
@@ -83,6 +92,9 @@ manuscript/
   00-frontmatter/       Title, copyright, preface
   part-1-foundations/
     01-dummy/           Sample chapter + figures/
+site/
+  runtime.js            Theme, sidebar, scroll-spy, pinpoint links, artifacts
+  artifacts/            Artifact registry and interactive components
 scripts/
   build.ts              Full build
   dev.ts                Vite dev server with a chapter picker
@@ -90,7 +102,7 @@ scripts/
   doctor.ts             Environment checks
   clean.ts              Output cleanup
   fonts.ts              Font preparation
-  lib/                  Markdown, KaTeX, TikZ, HTML, PDF, EPUB, assets
+  lib/                  Markdown, KaTeX, TikZ, HTML, PDF, EPUB, site, assets
 tests/                  Unit and rendering tests
 ```
 
@@ -131,8 +143,8 @@ Rules:
 - `references` chapters are single-column, unnumbered, and included in the table of contents. Put the reference list in `manuscript/99-references/index.md` or a similarly ordered directory.
 - `status` is one of `draft`, `review`, `final`. A `final` chapter cannot contain `TODO`, `FIXME`, or `TBD`.
 - Use `##` for sections. They are numbered 1, 2, 3 per chapter. `###` subsections are unnumbered. Do not use `#`; the chapter title is generated from the frontmatter.
-- Chapters are two-column by default. Set `layout: single-column` in the frontmatter when the chapter is dominated by wide diagrams, large tables, or long code lines.
-- Figures are set to column width by default. Wrap a figure, table, or code sample in a `::: wide` block when it needs the full page width. Use `::: wide page` to force the block onto its own page.
+- Chapters are single-column. `layout: single-column` is the default for every chapter kind; `two-column` is still accepted but has no layout effect.
+- Figures are set to the text measure. Wrap a figure, table, or code sample in a `::: wide` block when it needs the full page width. Use `::: wide page` to force the block onto its own page.
 - Put images in `figures/` next to the chapter and reference them relatively: `![Alt](figures/tree.svg "Caption")`.
 - Use `chapter:slug` links to cross-reference chapters: `[prefix sums](chapter:dummy)`.
 - Use the `::: definition`, `::: theorem`, `::: example`, `::: note`, `::: tip`, `::: warning`, and `::: complexity` notes. They render as run-in labels with no box or icon. Theorem and definition bodies are italic.
@@ -142,14 +154,43 @@ Rules:
 
 See `manuscript/_TEMPLATE/index.md` for a complete starter file, `manuscript/_STYLE.md` for writing rules, and the design specs in `design/` (`DESIGN.md`, `FONTS.md`, `COLOR.md`) for the visual rules.
 
+### Author marks
+
+Lines starting with `%%` are commands to the conversion agent, not prose. They never appear in an output.
+
+| Mark | Effect |
+| --- | --- |
+| `%% add: <text>` | Inserts the text verbatim at that point |
+| `%% artifact: <id> \| <caption>` | Declares an interactive artifact; an indented block below it describes the fallback |
+| `%% link: <text> -> pin:<id>` | Generates a "see also" line to a pinpoint target |
+| `%% link: <text> -> https://…` | Generates a "see also" line to an external URL |
+| `%% todo: <text>` | Leaves a visible TODO in every output |
+| `%% ask: <text>` | Stops the agent and asks the author |
+| `%% scribe: <instruction>` | Instructs the LaTeX conversion agent |
+| `%% qr: <pin-id>` | Adds a QR companion block in print |
+
+A mark that cannot be satisfied is surfaced as a visible TODO, never silently dropped.
+
+## Website
+
+`bun run build:site` writes a static reading site to `dist/site/`: a cover and contents page, one page per chapter, and copied assets. The layout is a fixed left sidebar (book name, parts, chapters, the current chapter's sections) and a single reading column on the right.
+
+- **Dark mode** follows the system preference, can be toggled, and is remembered in `localStorage`.
+- **Pinpoint links** target any numbered element: equations (`ch-01-eq-1`), notes (`ch-01-note-3`), figures (`ch-01-fig-1`), artifacts (`ch-01-art-prefix-sum-grid`), and sections (`ch-01-sec-2`). Hover an element and click the link button to copy its canonical URL; `?p=<id>` opens the page scrolled to that element.
+- **Artifacts** declared with `%% artifact:` become a static figure by default. The runtime lazily imports a component from `site/artifacts/registry.js` and mounts it over the fallback; an unregistered id keeps the fallback visible.
+- **No build step for site JavaScript**: `site/` is plain ES modules, copied as-is and served natively.
+
+The canonical base URL for copied links and QR codes is `site.baseUrl` in `book.config.ts`.
+
 ## Design at a glance
 
-- **Page:** 7 × 9.1875 in, two justified columns, 6 mm gutter, no column rule.
+- **Page:** 7 × 9 in, one justified column, mirrored margins for verso and recto.
 - **Running heads:** chapter name at the top left, page number at the top right. No bottom page number.
+- **Chapter anatomy:** chapter number and title, one-line summary, optional epigraph, body, a "what comes next" close, and exercises.
 - **Footnotes:** Markdown footnotes are floated to the bottom of the page in print and become endnotes in EPUB.
-- **Numbering:** `##` sections and display equations are numbered per chapter; figures use chapter-based numbering.
+- **Numbering:** `##` sections and display equations are numbered per chapter; figures and artifacts use chapter-based numbering (`Figure 1-1`).
 - **Notes:** `::: theorem`, `::: definition`, and the other note blocks are run-in labels with no box or icon. Theorem and definition bodies are italic.
-- **Wide material:** figures stay in one column by default. Tables and code span both columns. Use `::: wide` for a full-measure figure, and `::: wide page` to give it its own page.
+- **Wide material:** the text is one measure. Use `::: wide` for a full-measure figure, table, or code sample, and `::: wide page` to give it its own page.
 - **Diagrams:** soft slate, sage, clay, ochre, plum, and teal fills with dark strokes. Every diagram must remain legible in grayscale.
 
 ## Fonts
@@ -164,15 +205,15 @@ All three are self-hosted in `design/fonts/`. The build copies WOFF2 files for H
 
 ## Page size
 
-The PDF trim size is **7 × 9.1875 in (504 × 661.5 pt)**. It is declared in:
+The PDF trim size is **7 × 9 in (504 × 648 pt)**. It is declared in:
 
 - `book.config.ts` → `page.width` / `page.height`
-- `design/css/print.css` → `@page { size: 7in 9.1875in; }`
+- `design/css/print.css` → `@page { size: 7in 9in; }`
 - `design/css/tokens.css` → `--page-width` / `--page-height`
 
 If you change the trim size, update all three.
 
-Chromium rounds fractional inch page sizes, so the PDF build post-processes every page with `pdf-lib` to force the MediaBox, CropBox, BleedBox, TrimBox, and ArtBox to exactly 504 × 661.5 pt. The normalized size is derived from `book.config.ts`, so the config remains the source of truth.
+Chromium can round page sizes, so the PDF build post-processes every page with `pdf-lib` to force the MediaBox, CropBox, BleedBox, TrimBox, and ArtBox to exactly 504 × 648 pt. The normalized size is derived from `book.config.ts`, so the config remains the source of truth.
 
 ## Metadata
 

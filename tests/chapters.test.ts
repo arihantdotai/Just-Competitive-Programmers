@@ -107,7 +107,7 @@ afterAll(async () => {
 })
 
 describe('chapter layout', () => {
-  test('defaults chapters and appendices to two columns, front matter to one', async () => {
+  test('defaults every chapter to the single-column book layout', async () => {
     const manuscriptDir = await manuscript({
       'part-1/01-alpha/index.md': '---\ntitle: Alpha\nkind: chapter\n---\n\nBody.\n',
       'preface.md': '---\ntitle: Preface\nkind: preface\n---\n\nBody.\n',
@@ -117,9 +117,9 @@ describe('chapter layout', () => {
     const { chapters } = await discoverChapters({ ...config, manuscriptDir })
     const bySlug = new Map(chapters.map((chapter) => [chapter.slug, chapter]))
 
-    expect(bySlug.get('alpha')?.layout).toBe('two-column')
+    expect(bySlug.get('alpha')?.layout).toBe('single-column')
     expect(bySlug.get('preface')?.layout).toBe('single-column')
-    expect(bySlug.get('appendix')?.layout).toBe('two-column')
+    expect(bySlug.get('appendix')?.layout).toBe('single-column')
     expect(bySlug.get('references')?.layout).toBe('single-column')
   })
 

@@ -256,18 +256,12 @@ a:hover {
 }
 
 .book-chapter__body {
-  column-count: 2;
-  column-gap: 3rem;
-  column-fill: auto;
-}
-
-.book-chapter--single .book-chapter__body {
   column-count: 1;
   max-width: var(--measure);
   margin-inline: auto;
 }
 
-.book-chapter--single .book-chapter__header {
+.book-chapter__header {
   max-width: var(--measure);
   margin-inline: auto;
 }
@@ -310,11 +304,30 @@ a:hover {
   font-size: 1rem;
   font-style: italic;
   color: var(--ink-muted);
-  font-family:'Courier New', Courier, monospace;
   margin: 0 0 1.6rem;
-  padding-bottom: 2.5rem;
-  text-align: right;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
   text-indent: 0;
+}
+
+.chapter-epigraph {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: 0 0 1.6rem;
+  padding-left: 1.2rem;
+  border-left: 2px solid var(--rule-strong);
+  text-indent: 0;
+}
+
+.chapter-epigraph cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.85em;
+  color: var(--ink-muted);
+  margin-top: 0.4rem;
 }
 
 .book-chapter h2 {
@@ -365,6 +378,8 @@ a:hover {
 .book-chapter pre + p,
 .book-chapter .math-display + p,
 .book-chapter .note + p,
+.book-chapter .book-seealso + p,
+.book-chapter .book-todo + p,
 .book-chapter blockquote + p,
 .book-chapter ul + p,
 .book-chapter ol + p,
@@ -438,6 +453,62 @@ a:hover {
 
 .note--italic .note__title {
   font-style: normal;
+}
+
+/* ------------------------------------------------------------------ */
+/* Generated cross-references and author notes                         */
+/* ------------------------------------------------------------------ */
+
+/* The `%% link:` mark renders as a generated "see also" line. */
+.book-chapter .book-seealso {
+  margin: 0.9rem 0;
+  padding-left: 1.1rem;
+  text-indent: 0;
+  font-size: 0.94rem;
+  color: var(--ink-soft);
+}
+
+.book-chapter .book-seealso::before {
+  float: left;
+  margin-left: -1.1rem;
+  color: var(--ink-muted);
+  content: "→";
+}
+
+.book-chapter .book-seealso a {
+  color: var(--ink);
+  text-decoration-color: var(--rule-strong);
+}
+
+/* Unresolved author marks stay visible in every output. */
+.book-todo {
+  margin: 1rem 0;
+  padding: 0.6rem 0.8rem;
+  border-left: 2px solid var(--warning);
+  background: var(--warning-soft);
+  font-size: 0.92rem;
+}
+
+.book-todo--ask {
+  border-left-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.book-todo__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--warning);
+}
+
+.book-todo--ask .book-todo__label {
+  color: var(--danger);
+}
+
+.book-todo__text {
+  color: var(--ink-soft);
 }
 
 /* ------------------------------------------------------------------ */

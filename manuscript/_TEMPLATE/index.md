@@ -7,7 +7,6 @@ partOrder: 2
 order: 1
 number: 1
 kind: chapter
-layout: two-column
 topics:
   - topic-one
   - topic-two

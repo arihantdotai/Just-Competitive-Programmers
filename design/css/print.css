@@ -13,11 +13,11 @@ body.book,
 /* ------------------------------------------------------------------ */
 
 @page {
-  size: 7in 9.1875in;
-  margin: 22mm 20mm 24mm;
+  size: 7in 9in;
+  /* top right bottom left; inside/outside are corrected per page side. */
+  margin: 0.75in 0.625in 1in 0.875in;
 
   @top-left {
-    content: string(chapter-title);
     font-family: "Barlow Condensed", sans-serif;
     font-size: 8.5pt;
     font-weight: 500;
@@ -29,7 +29,6 @@ body.book,
   }
 
   @top-right {
-    content: counter(page);
     font-family: "Minion Pro", serif;
     font-size: 9pt;
     color: #6f6f6f;
@@ -41,6 +40,34 @@ body.book,
     border-top: 0.5pt solid #c7c7c7;
     padding-top: 4pt;
     margin-top: 8pt;
+  }
+}
+
+/* Verso: page number at the outer edge, book title on the right. */
+@page:left {
+  margin-left: 0.625in;
+  margin-right: 0.875in;
+
+  @top-left {
+    content: counter(page);
+  }
+
+  @top-right {
+    content: string(book-title);
+  }
+}
+
+/* Recto: chapter title on the left, page number at the outer edge. */
+@page:right {
+  margin-left: 0.875in;
+  margin-right: 0.625in;
+
+  @top-left {
+    content: string(chapter-title);
+  }
+
+  @top-right {
+    content: counter(page);
   }
 }
 
@@ -72,6 +99,13 @@ body.book,
 .book-copyright,
 .book-toc {
   string-set: chapter-title attr(data-running-title);
+}
+
+/* Paged.js records one selector per named string, so the book title gets its
+   own rule. `string-set` on `body` is not picked up; seed it from the title
+   page instead, and it persists on every later verso. */
+.book-titlepage {
+  string-set: book-title attr(data-running-title);
 }
 
 /* ------------------------------------------------------------------ */
@@ -114,38 +148,43 @@ body.book,
 /* ------------------------------------------------------------------ */
 
 body {
-  font-size: 10.5pt;
-  line-height: 1.5;
+  font-size: 10pt;
+  line-height: 1.25;
   hyphens: auto;
 }
 
 h1.chapter-title {
-  font-size: 24pt;
-  line-height: 1.02;
+  font-size: 22pt;
+  line-height: 1.05;
 }
 
 .chapter-label {
-  font-size: 9pt;
+  font-size: 8.5pt;
 }
 
 .chapter-summary {
-  font-size: 10.5pt;
+  font-size: 10pt;
   margin-bottom: 1.2em;
   padding-bottom: 0.8em;
 }
 
+.chapter-epigraph {
+  font-size: 9.5pt;
+}
+
 .book-chapter h2 {
-  font-size: 14pt;
+  font-size: 15pt;
   margin: 1.15em 0 0.3em;
 }
 
 .book-chapter h3 {
-  font-size: 12pt;
+  font-size: 12.5pt;
   margin: 0.95em 0 0.25em;
 }
 
 .book-chapter h4 {
   font-size: 10.5pt;
+  font-style: italic;
   margin: 0.8em 0 0.2em;
 }
 
@@ -162,31 +201,16 @@ li {
 }
 
 /* ------------------------------------------------------------------ */
-/* Two-column body                                                     */
+/* Single-column body                                                  */
 /* ------------------------------------------------------------------ */
 
 .book-chapter__body {
-  column-count: 2;
-  column-gap: 6mm;
-  column-rule: none;
-  column-fill: auto;
-}
-
-.book-chapter--single .book-chapter__body {
   column-count: 1;
   max-width: none;
 }
 
-.book-chapter--single .book-chapter__header {
+.book-chapter__header {
   max-width: none;
-}
-
-/* Code and tables use the full measure. Figures, notes, and display
-   equations stay inside the column unless the writer opts into `::: wide`. */
-.book-chapter__body > .table-wrap,
-.book-chapter__body > pre,
-.book-wide {
-  column-span: all;
 }
 
 .book-wide--page {
@@ -207,7 +231,7 @@ li {
 }
 
 pre {
-  font-size: 7.6pt;
+  font-size: 8.5pt;
   margin: 1em 0;
   padding: 0.6em 0;
 }
@@ -232,11 +256,16 @@ table {
   font-size: 9pt;
 }
 
+.sidebar {
+  font-size: 9pt;
+}
+
 .book-figure,
 pre,
 .table-wrap,
 .math-display,
-.note {
+.note,
+.sidebar {
   break-inside: avoid;
 }
 

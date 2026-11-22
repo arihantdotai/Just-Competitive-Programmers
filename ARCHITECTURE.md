@@ -3,8 +3,10 @@
 This document is the plan of record for how this repo is organized and how a rough
 manuscript becomes a print-ready PDF and an interactive website.
 
-Status: **plan, not yet implemented.** Where the current pipeline already provides a
-piece (EPUB, fonts, design tokens), this document says what to keep and what to retire.
+Status: **plan.** The LaTeX product (§5–§6) is not yet implemented. The current
+pipeline already provides EPUB, fonts, design tokens, and an interim reading website
+(`bun run build:site`) built from Markdown until `latex/` exists. This document says
+what to keep, what the interim site must match, and what to retire.
 
 ---
 
@@ -192,8 +194,9 @@ the preamble discussion, and the preamble is updated once, by a human-approved e
   compile errors before declaring done.
 - **Style authority** is `manuscript/_STYLE.md` (usage), the `design/*.md` specs
   (values), and this file. Where the design specs describe
-  *print layout* (two-column rules etc.), the agent ignores the *layout* parts — layout
-  belongs to the preamble/classes, not to chapter files. Chapter files are layout-free.
+  *page layout* (trim, margins, running heads), the agent ignores the *layout* parts —
+  layout belongs to the preamble/classes, not to chapter files. Chapter files are
+  layout-free.
 
 ---
 
@@ -213,7 +216,7 @@ the preamble discussion, and the preamble is updated once, by a human-approved e
     footnotes;
   - print geometry and running heads from `book.config.ts` (`page.size`, margins).
 - Output: `dist/book.pdf`, post-processed with the existing `pdf-lib` MediaBox
-  normalization so trim size stays exactly 7 × 9.1875 in.
+  normalization so trim size stays exactly 7 × 9 in.
 - `book.config.ts` gains a `latex` section (engine, packages, compile settings) so the
   config remains the single source of configuration truth.
 

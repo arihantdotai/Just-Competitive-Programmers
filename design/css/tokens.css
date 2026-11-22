@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: "Minion Pro";
-  src: url("fonts/minion-pro-webfont/MinionPro-Italic.woff") format("woff");
+  src: url("fonts/minion-pro-webfont/MinionPro-It.woff") format("woff");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -24,7 +24,7 @@
 
 @font-face {
   font-family: "Minion Pro";
-  src: url("fonts/minion-pro-webfont/MinionPro-BoldItalic.woff") format("woff");
+  src: url("fonts/minion-pro-webfont/MinionPro-BoldIt.woff") format("woff");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -134,8 +134,8 @@
   --leading-tight: 1.2;
   --paragraph-indent: 1.2em;
   --page-width: 7in;
-  --page-height: 9.1875in;
-  --page-margin: 22mm 20mm 24mm;
+  --page-height: 9in;
+  --page-margin: 0.75in 0.625in 1in 0.875in;
   --radius: 0;
   --shadow: none;
 
@@ -147,4 +147,49 @@
   --text-2xl: 1.55rem;
   --text-3xl: 1.9rem;
   --text-4xl: 2.4rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dark theme (website). Values only; type sizes never change.         */
+/* ------------------------------------------------------------------ */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ink: #e8e8e8;
+  --ink-soft: #c3c3c3;
+  --ink-muted: #9b9b9b;
+  --paper: #121212;
+  --paper-deep: #1e1e1e;
+  --paper-code: #191919;
+  --rule: #2d2d2d;
+  --rule-strong: #404040;
+
+  --accent: #f1f1f1;
+  --accent-deep: #ffffff;
+  --accent-soft: #242424;
+  --accent-ink: #f1f1f1;
+
+  --warning: #e0b06a;
+  --warning-soft: #2a2116;
+  --danger: #e09292;
+  --danger-soft: #2a1a1a;
+  --note: #d0d0d0;
+  --note-soft: #1d1d1d;
+
+  /* Diagrams invert: light strokes, dark fills. */
+  --diagram-slate: #a8b8cb;
+  --diagram-slate-soft: #22303f;
+  --diagram-sage: #a3b8a7;
+  --diagram-sage-soft: #1f2a20;
+  --diagram-clay: #c79a8a;
+  --diagram-clay-soft: #2d201c;
+  --diagram-ochre: #c9ab6a;
+  --diagram-ochre-soft: #2b2417;
+  --diagram-plum: #b6a3bd;
+  --diagram-plum-soft: #261f2a;
+  --diagram-teal: #86b6b7;
+  --diagram-teal-soft: #17292a;
+  --diagram-ink: #d6d6d6;
+  --diagram-grid: #333333;
 }

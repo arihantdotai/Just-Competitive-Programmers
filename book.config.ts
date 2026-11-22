@@ -17,7 +17,7 @@ export interface BookConfig {
   cacheDir: string;
 
   page: {
-    size: "A4" | "Letter" | "6x9" | "7x9.1875";
+    size: "A4" | "Letter" | "6x9" | "7x9" | "7x9.1875";
     width: string;
     height: string;
     margin: string;
@@ -42,10 +42,16 @@ export interface BookConfig {
     cover?: string;
   };
 
+  site: {
+    /** Canonical base URL, used for QR codes and copied pinpoint links. */
+    baseUrl: string;
+  };
+
   outputs: {
     html: boolean;
     pdf: boolean;
     epub: boolean;
+    site: boolean;
   };
 }
 
@@ -65,10 +71,10 @@ const config: BookConfig = {
   cacheDir: ".cache",
 
   page: {
-    size: "7x9.1875",
+    size: "7x9",
     width: "7in",
-    height: "9.1875in",
-    margin: "22mm 20mm 24mm",
+    height: "9in",
+    margin: "0.75in 0.625in 1in 0.875in",
   },
 
   math: {
@@ -107,10 +113,15 @@ const config: BookConfig = {
 
   epub: {},
 
+  site: {
+    baseUrl: "https://justcompetitiveprogrammers.example",
+  },
+
   outputs: {
     html: true,
     pdf: true,
     epub: true,
+    site: true,
   },
 };
 

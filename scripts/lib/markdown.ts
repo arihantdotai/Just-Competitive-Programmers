@@ -10,22 +10,35 @@ import type { BookConfig } from '../../book.config'
 import { calloutsPlugin } from './callouts'
 import { mathPlugin } from './math'
 import { extractTikz, inlineTikz } from './tikz'
-import type { Chapter, RenderOptions, RenderResult } from './types'
+import type { Chapter, RenderOptions, RenderResult, RenderTarget } from './types'
 import { escapeAttr, escapeHtml, isExternalUrl, slugify } from './util'
 
 interface RenderEnv {
   chapter: Chapter
-  target: RenderOptions['target']
+  target: RenderTarget
   resolveImage: (src: string) => string
+  artifacts: boolean
+  chapterHref?: (slug: string, anchor?: string) => string
+  pinHref?: (pin: string) => string
   figureOnly?: boolean
 }
+
+const ADD_MARK = /^%%\s*add:\s?(.*)$/
+const ADD_BEGIN = /^%%\s*add\s+begin\b/
+const ADD_END = /^%%\s*add\s+end\b/
+const ARTIFACT_MARK = /^%%\s*artifact:\s*([\w.-]+)\s*\|\s*(.*)$/
+const LINK_MARK = /^%%\s*link:\s*(.+?)\s*->\s*(.+?)\s*$/
+const TODO_MARK = /^%%\s*todo:\s?(.*)$/
+const ASK_MARK = /^%%\s*ask:\s?(.*)$/
+const FENCE_MARK = /^\s*(```|~~~)/
 
 let shikiPlugin: Promise<(md: MarkdownIt) => void> | undefined
 
 function getShiki(): Promise<(md: MarkdownIt) => void> {
-  shikiPlugin ??= Shiki({ theme: 'vitesse-light' }) as unknown as Promise<
-    (md: MarkdownIt) => void
-  >
+  shikiPlugin ??= Shiki({
+    themes: { light: 'vitesse-light', dark: 'vitesse-dark' },
+    defaultColor: 'light',
+  }) as unknown as Promise<(md: MarkdownIt) => void>
   return shikiPlugin
 }
 
@@ -35,6 +48,7 @@ export async function renderChapter(
   options: RenderOptions,
 ): Promise<RenderResult> {
   const extracted = await extractTikz(chapter.content, chapter, config)
+  const pinPrefix = chapterPinPrefix(chapter)
 
   const md = new MarkdownIt({
     html: true,
@@ -45,7 +59,7 @@ export async function renderChapter(
   md.use(mathPlugin, {
     output: options.mathOutput,
     macros: config.math.macros,
-    idPrefix: chapter.slug,
+    idPrefix: pinPrefix,
   })
 
   md.use(anchor, {
@@ -56,36 +70,59 @@ export async function renderChapter(
   md.use(footnote)
   md.use(deflist)
   md.use(attrs as unknown as (md: MarkdownIt) => void)
-  md.use(calloutsPlugin)
+  md.use(calloutsPlugin, { pinPrefix })
   md.use(await getShiki())
 
-  // Author marks (`%% …`) are commands for the conversion agent, not content.
-  // Remove them — and any indented description block that belongs to them —
-  // before the block parser runs, so no target ever renders a raw mark.
-  md.core.ruler.before('normalize', 'book_strip_author_marks', (state) => {
-    state.src = stripAuthorMarks(state.src)
+  // Author marks (`%% …`) are commands, not content. Apply the ones this
+  // renderer can satisfy — `add`, `artifact`, `link`, `todo`, `ask` — and
+  // remove the rest before the block parser runs, so no target ever shows a
+  // raw mark.
+  md.core.ruler.before('normalize', 'book_author_marks', (state) => {
+    state.src = applyAuthorMarks(state.src, state.env as RenderEnv)
     return true
   })
 
-  // Number top-level sections per chapter. Subsection headings stay
-  // unnumbered. The number is inserted as inline HTML so it survives the
-  // HTML, PDF, and EPUB targets without relying on CSS counters.
+  // Number top-level sections per chapter and give every heading a pinpoint
+  // id. The number is inserted as inline HTML so it survives the HTML, PDF,
+  // and EPUB targets without relying on CSS counters.
   md.core.ruler.after('anchor', 'book_section_numbers', (state) => {
+    const prefix = chapterPinPrefix((state.env as RenderEnv).chapter)
     let section = 0
+    let subsection = 0
+    let subsubsection = 0
 
     for (let index = 0; index < state.tokens.length; index += 1) {
       const token = state.tokens[index]
-      if (token.type !== 'heading_open' || token.tag !== 'h2') continue
+      if (token.type !== 'heading_open') continue
 
-      section += 1
-      const inline = state.tokens[index + 1]
-      if (inline?.type !== 'inline') continue
+      if (token.tag === 'h2') {
+        section += 1
+        subsection = 0
+        subsubsection = 0
+        token.attrSet('data-pin', `${prefix}-sec-${section}`)
 
-      inline.children ??= []
-      inline.children.unshift({
-        type: 'html_inline',
-        content: `<span class="section-number">${section}.</span> `,
-      } as Token)
+        const inline = state.tokens[index + 1]
+        if (inline?.type !== 'inline') continue
+
+        inline.children ??= []
+        inline.children.unshift({
+          type: 'html_inline',
+          content: `<span class="section-number">${section}.</span> `,
+        } as Token)
+        continue
+      }
+
+      if (token.tag === 'h3') {
+        subsection += 1
+        subsubsection = 0
+        token.attrSet('data-pin', `${prefix}-sec-${section}-${subsection}`)
+        continue
+      }
+
+      if (token.tag === 'h4') {
+        subsubsection += 1
+        token.attrSet('data-pin', `${prefix}-sec-${section}-${subsection}-${subsubsection}`)
+      }
     }
 
     return true
@@ -180,10 +217,8 @@ export async function renderChapter(
 
   md.renderer.rules.footnote_block_close = () => '</ol>\n</aside>\n'
 
-  // A two-column chapter can opt a block out of the columns. This is useful
-  // for wide diagrams, large tables, and code that would be cramped in a
-  // single column. `single-column` is an alias for the same behavior. The
-  // `page` modifier additionally forces a page break around the block.
+  // `wide` and `single-column` remain accepted for compatibility. In the
+  // single-column book they have no layout effect beyond the page modifier.
   for (const name of ['wide', 'single-column']) {
     md.use(container, name, {
       render(tokens: Token[], index: number) {
@@ -275,11 +310,7 @@ export async function renderChapter(
 
     if (href.startsWith('chapter:')) {
       const [slug, anchorName] = href.slice('chapter:'.length).split('#')
-      const target =
-        renderEnv.target === 'epub'
-          ? `${slug}.xhtml${anchorName ? `#${slug}-${anchorName}` : ''}`
-          : `${anchorName ? `#${slug}-${anchorName}` : `#ch-${slug}`}`
-      token.attrSet('href', target)
+      token.attrSet('href', chapterHref(slug, anchorName, renderEnv))
     } else if (href.startsWith('#') && href.length > 1) {
       const anchorName = href.slice(1)
       if (!anchorName.startsWith(`${chapter.slug}-`)) {
@@ -297,6 +328,9 @@ export async function renderChapter(
     chapter,
     target: options.target,
     resolveImage: options.resolveImage,
+    artifacts: options.artifacts ?? false,
+    chapterHref: options.chapterHref,
+    pinHref: options.pinHref,
   }
 
   const rendered = md.render(extracted.markdown, env)
@@ -306,45 +340,219 @@ export async function renderChapter(
 }
 
 /**
- * Remove author marks and the indented description blocks attached to them.
- * Marks are `%%` command lines consumed by the conversion agent; `%% add begin`
- * / `%% add end` fences hide their verbatim payload as well.
+ * Apply the author's marks (`%% …`) to the Markdown source.
+ *
+ * Satisfied here: `add` (verbatim insertion), `artifact` (a hydratable figure
+ * on the website), `link` (a generated cross-reference line), `todo` and
+ * `ask` (visible markers). `scribe` and `qr` are consumed by the LaTeX
+ * conversion agent, and anything unknown is surfaced rather than dropped.
  */
-function stripAuthorMarks(source: string): string {
+function applyAuthorMarks(source: string, env: RenderEnv): string {
   const lines = source.split('\n')
-  const kept: string[] = []
-  let inAddBlock = false
-  let inIndentedDescription = false
+  const output: string[] = []
+  let pendingAdd: string[] = []
+  let fence: string | null = null
 
-  for (const line of lines) {
-    if (inAddBlock) {
-      if (/^%%\s*add\s+end\b/.test(line)) inAddBlock = false
-      continue
-    }
+  const flushAdd = (): void => {
+    if (pendingAdd.length === 0) return
 
-    if (/^%%\s*add\s+begin\b/.test(line)) {
-      inAddBlock = true
-      inIndentedDescription = false
-      continue
-    }
-
-    if (/^%%/.test(line)) {
-      inIndentedDescription = true
-      continue
-    }
-
-    if (inIndentedDescription) {
-      if (line.trim() === '' || /^(\t| {4,})/.test(line)) continue
-      inIndentedDescription = false
-    }
-
-    kept.push(line)
+    const text = pendingAdd.join(' ').replace(/\s+/g, ' ').trim()
+    pendingAdd = []
+    if (text) output.push(text, '')
   }
 
-  return kept.join('\n')
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index]
+    const fenceMatch = line.match(FENCE_MARK)
+
+    if (fenceMatch) {
+      fence = fence === null ? fenceMatch[1] : fence === fenceMatch[1] ? null : fence
+      flushAdd()
+      output.push(line)
+      continue
+    }
+
+    if (fence !== null) {
+      output.push(line)
+      continue
+    }
+
+    const add = line.match(ADD_MARK)
+    if (add) {
+      pendingAdd.push(add[1].trim())
+      continue
+    }
+    flushAdd()
+
+    if (ADD_BEGIN.test(line)) {
+      const block: string[] = []
+      let end = index + 1
+      while (end < lines.length && !ADD_END.test(lines[end])) {
+        block.push(lines[end])
+        end += 1
+      }
+
+      const text = block.join('\n').replace(/^\n+|\n+$/g, '')
+      if (text.trim()) output.push(text, '')
+      index = end
+      continue
+    }
+
+    const artifact = line.match(ARTIFACT_MARK)
+    if (artifact) {
+      const id = artifact[1]
+      const caption = artifact[2].trim()
+      const description: string[] = []
+      let end = index + 1
+
+      while (end < lines.length) {
+        const next = lines[end]
+        if (next.trim() === '') {
+          const after = lines[end + 1]
+          if (after !== undefined && /^(\t| {4,})/.test(after)) {
+            description.push('')
+            end += 1
+            continue
+          }
+          break
+        }
+        if (!/^(\t| {4,})/.test(next)) break
+        description.push(next.trim())
+        end += 1
+      }
+
+      if (env.artifacts) {
+        output.push(renderArtifact(id, caption, description.join('\n'), env), '')
+      }
+      index = end - 1
+      continue
+    }
+
+    const link = line.match(LINK_MARK)
+    if (link) {
+      output.push(renderLinkMark(link[1].trim(), link[2].trim(), env), '')
+      continue
+    }
+
+    const todo = line.match(TODO_MARK)
+    if (todo) {
+      output.push(renderTodo('TODO', todo[1], 'book-todo'), '')
+      continue
+    }
+
+    const ask = line.match(ASK_MARK)
+    if (ask) {
+      output.push(renderTodo('Author question', ask[1], 'book-todo book-todo--ask'), '')
+      continue
+    }
+
+    // `%% scribe:` and `%% qr:` are executed by the LaTeX conversion agent
+    // and the print build; they have no rendering here.
+    if (/^%%\s*(scribe|qr):/.test(line)) continue
+
+    if (/^%%/.test(line)) {
+      output.push(renderUnhandledMark(line), '')
+      continue
+    }
+
+    output.push(line)
+  }
+
+  flushAdd()
+  return output.join('\n')
 }
 
-function renderFootnoteInline(tokens: Token[], md: MarkdownIt, env: unknown): string {  const parts: string[] = []
+function renderArtifact(
+  id: string,
+  caption: string,
+  description: string,
+  env: RenderEnv,
+): string {
+  const pin = `${chapterPinPrefix(env.chapter)}-art-${id}`
+  const fallback = description.match(/^fallback:\s*(\S+)$/m)?.[1]
+  let preview = ''
+
+  if (fallback) {
+    try {
+      const src = env.resolveImage(fallback)
+      preview = `<img src="${escapeAttr(src)}" alt="${escapeAttr(caption)}">`
+    } catch {
+      preview = ''
+    }
+  }
+
+  if (!preview) {
+    preview = `<p class="artifact__fallback-text">Interactive artifact · requires JavaScript</p>`
+  }
+
+  return [
+    `<figure class="book-figure book-figure--artifact" id="${pin}" data-pin="${pin}" data-artifact="${escapeAttr(id)}" data-caption="${escapeAttr(caption)}">`,
+    `<div class="artifact" data-artifact-host="${escapeAttr(id)}">`,
+    `<div class="artifact__fallback">${preview}</div>`,
+    `</div>`,
+    `<figcaption>${escapeHtml(caption)}</figcaption>`,
+    `</figure>`,
+  ].join('\n')
+}
+
+function renderLinkMark(text: string, target: string, env: RenderEnv): string {
+  const markdownLink = text.match(/^\[(.+)\]\((.+)\)$/)
+  const label = markdownLink ? markdownLink[1] : text
+  const href = resolveMarkTarget(target, env)
+  const external = isExternalUrl(href)
+  const linkAttrs = external ? ' target="_blank" rel="noopener noreferrer"' : ''
+
+  return (
+    `<p class="book-seealso"><a href="${escapeAttr(href)}"${linkAttrs}>` +
+    `${escapeHtml(label)}</a></p>`
+  )
+}
+
+function resolveMarkTarget(target: string, env: RenderEnv): string {
+  if (target.startsWith('chapter:')) {
+    const [slug, anchorName] = target.slice('chapter:'.length).split('#')
+    return chapterHref(slug, anchorName, env)
+  }
+
+  if (target.startsWith('pin:')) {
+    return pinHref(target.slice('pin:'.length), env)
+  }
+
+  return target
+}
+
+function renderTodo(label: string, text: string, className: string): string {
+  return (
+    `<aside class="${className}" role="note">` +
+    `<span class="book-todo__label">${escapeHtml(label)}</span> ` +
+    `<span class="book-todo__text">${escapeHtml(text.trim())}</span>` +
+    `</aside>`
+  )
+}
+
+function renderUnhandledMark(line: string): string {
+  return (
+    `<aside class="book-todo book-todo--mark" role="note">` +
+    `<span class="book-todo__label">Unhandled mark</span> ` +
+    `<code>${escapeHtml(line.trim())}</code>` +
+    `</aside>`
+  )
+}
+
+function chapterHref(slug: string, anchorName: string | undefined, env: RenderEnv): string {
+  if (env.chapterHref) return env.chapterHref(slug, anchorName)
+  if (env.target === 'epub') {
+    return `${slug}.xhtml${anchorName ? `#${slug}-${anchorName}` : ''}`
+  }
+  return anchorName ? `#${slug}-${anchorName}` : `#ch-${slug}`
+}
+
+function pinHref(pin: string, env: RenderEnv): string {
+  return env.pinHref ? env.pinHref(pin) : `#${pin}`
+}
+
+function renderFootnoteInline(tokens: Token[], md: MarkdownIt, env: unknown): string {
+  const parts: string[] = []
 
   for (const token of tokens) {
     if (token.type === 'inline') {
@@ -365,25 +573,39 @@ function figureChapterNumber(chapter: Chapter): string {
   return String(number)
 }
 
+/** Pinpoint prefix derived from the printed chapter number, e.g. `ch-01`. */
+function chapterPinPrefix(chapter: Chapter): string {
+  const number = figureChapterNumber(chapter)
+  return `ch-${/^\d+$/.test(number) ? number.padStart(2, '0') : number}`
+}
+
 /**
- * Add chapter-based numbers to every figure. Numbering happens after Markdown
- * rendering so image figures and TikZ figures share one sequence.
+ * Add chapter-based numbers to every figure and artifact. Numbering happens
+ * after Markdown rendering so image figures and TikZ figures share one
+ * sequence. Every numbered element is also a pinpoint target.
  */
 function numberFigures(html: string, chapter: Chapter): string {
   const chapterNumber = figureChapterNumber(chapter)
+  const prefix = chapterPinPrefix(chapter)
   let figure = 0
+  let artifact = 0
 
   return html.replace(
     /<figure class="book-figure([^"]*)"([^>]*)>([\s\S]*?)<\/figure>/g,
-    (_match, classes: string, attrs: string, inner: string) => {
-      figure += 1
-      const label = `<span class="figure-number">Figure ${chapterNumber}.${figure}.</span>`
+    (_match, classes: string, attributes: string, inner: string) => {
+      const isArtifact = /\bdata-artifact=/.test(attributes)
+      const sequence = isArtifact ? (artifact += 1) : (figure += 1)
+      const kind = isArtifact ? 'Artifact' : 'Figure'
+      const pin = `${prefix}-${isArtifact ? 'art' : 'fig'}-${sequence}`
+      const labelClass = isArtifact ? 'artifact-number' : 'figure-number'
+      const label = `<span class="${labelClass}">${kind} ${chapterNumber}-${sequence}.</span>`
       const caption = inner.match(/<figcaption>([\s\S]*?)<\/figcaption>/)
       const body = caption
         ? inner.replace(caption[0], `<figcaption>${label} ${caption[1]}</figcaption>`)
         : `${inner}\n<figcaption>${label}</figcaption>`
+      const pinAttrs = /\bid=/.test(attributes) ? '' : ` id="${pin}" data-pin="${pin}"`
 
-      return `<figure class="book-figure${classes}"${attrs}>${body}</figure>`
+      return `<figure class="book-figure${classes}"${attributes}${pinAttrs}>${body}</figure>`
     },
   )
 }

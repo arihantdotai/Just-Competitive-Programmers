@@ -127,10 +127,10 @@ export function mathPlugin(md: MarkdownIt, options: MathPluginOptions): void {
     const token = tokens[index]
     equation += 1
     const body = renderMath(token.content, true, options)
-    const id = options.idPrefix ? `${options.idPrefix}-equation-${equation}` : `equation-${equation}`
+    const id = options.idPrefix ? `${options.idPrefix}-eq-${equation}` : `eq-${equation}`
 
     return (
-      `<div class="math-display" id="${id}">` +
+      `<div class="math-display" id="${id}" data-pin="${id}">` +
       `<span class="math-display__body">${body}</span>` +
       `<span class="math-display__number" aria-label="Equation ${equation}">(${equation})</span>` +
       `</div>\n`

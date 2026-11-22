@@ -59,8 +59,7 @@ export async function discoverChapters(config: BookConfig): Promise<BookParts> {
       throw new Error(`${relative}: invalid status "${status}" (expected ${STATUSES.join(', ')})`)
     }
 
-    const defaultLayout: ChapterLayout =
-      kind === 'chapter' || kind === 'appendix' ? 'two-column' : 'single-column'
+    const defaultLayout: ChapterLayout = 'single-column'
     const layout = (data.layout ?? defaultLayout) as ChapterLayout
     if (!LAYOUTS.includes(layout)) {
       throw new Error(`${relative}: invalid layout "${layout}" (expected ${LAYOUTS.join(', ')})`)

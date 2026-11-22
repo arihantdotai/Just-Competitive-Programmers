@@ -16,6 +16,7 @@
     "build:html": "bun scripts/build.ts --html",
     "build:pdf": "bun scripts/build.ts --pdf",
     "build:epub": "bun scripts/build.ts --epub",
+    "build:site": "bun scripts/build.ts --site",
     "lint:content": "bun scripts/lint.ts",
     "doctor": "bun scripts/doctor.ts",
     "prepare": "bun run fonts",

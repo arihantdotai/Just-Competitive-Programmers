@@ -25,19 +25,31 @@ const NOTES: Record<string, NoteMeta> = {
 
 export const CALLOUT_NAMES = Object.keys(NOTES)
 
+export interface CalloutsOptions {
+  /** Pinpoint id prefix, e.g. `ch-01`; notes become `ch-01-note-3`. */
+  pinPrefix?: string
+}
+
 function withPeriod(value: string): string {
   const trimmed = value.trim()
   if (!trimmed) return ''
   return /[.?!:]$/.test(trimmed) ? trimmed : `${trimmed}.`
 }
 
-export function calloutsPlugin(md: MarkdownIt): void {
+export function calloutsPlugin(md: MarkdownIt, options: CalloutsOptions = {}): void {
+  // Notes are numbered per chapter, in document order.
+  let note = 0
+
   for (const [name, meta] of Object.entries(NOTES)) {
     md.use(container, name, {
       render(tokens: Token[], index: number): string {
         const token = tokens[index]
 
         if (token.nesting === -1) return '</aside>\n'
+
+        note += 1
+        const pin = options.pinPrefix ? `${options.pinPrefix}-note-${note}` : undefined
+        const pinAttrs = pin ? ` id="${pin}" data-pin="${pin}"` : ''
 
         const info = token.info.trim()
         const customTitle = info.slice(name.length).trim()
@@ -59,11 +71,11 @@ export function calloutsPlugin(md: MarkdownIt): void {
             type: 'html_inline',
             content: labelMarkup,
           } as Token)
-          return `<aside class="${className}" role="note">\n`
+          return `<aside class="${className}"${pinAttrs} role="note">\n`
         }
 
         return (
-          `<aside class="${className}" role="note">\n` +
+          `<aside class="${className}"${pinAttrs} role="note">\n` +
           `<p class="note__title">${labelMarkup}</p>\n`
         )
       },
