@@ -59,6 +59,14 @@ export async function renderChapter(
   md.use(calloutsPlugin)
   md.use(await getShiki())
 
+  // Author marks (`%% …`) are commands for the conversion agent, not content.
+  // Remove them — and any indented description block that belongs to them —
+  // before the block parser runs, so no target ever renders a raw mark.
+  md.core.ruler.before('normalize', 'book_strip_author_marks', (state) => {
+    state.src = stripAuthorMarks(state.src)
+    return true
+  })
+
   // Number top-level sections per chapter. Subsection headings stay
   // unnumbered. The number is inserted as inline HTML so it survives the
   // HTML, PDF, and EPUB targets without relying on CSS counters.
@@ -297,8 +305,46 @@ export async function renderChapter(
   return { html: numberFigures(html, chapter), figures: extracted.figures }
 }
 
-function renderFootnoteInline(tokens: Token[], md: MarkdownIt, env: unknown): string {
-  const parts: string[] = []
+/**
+ * Remove author marks and the indented description blocks attached to them.
+ * Marks are `%%` command lines consumed by the conversion agent; `%% add begin`
+ * / `%% add end` fences hide their verbatim payload as well.
+ */
+function stripAuthorMarks(source: string): string {
+  const lines = source.split('\n')
+  const kept: string[] = []
+  let inAddBlock = false
+  let inIndentedDescription = false
+
+  for (const line of lines) {
+    if (inAddBlock) {
+      if (/^%%\s*add\s+end\b/.test(line)) inAddBlock = false
+      continue
+    }
+
+    if (/^%%\s*add\s+begin\b/.test(line)) {
+      inAddBlock = true
+      inIndentedDescription = false
+      continue
+    }
+
+    if (/^%%/.test(line)) {
+      inIndentedDescription = true
+      continue
+    }
+
+    if (inIndentedDescription) {
+      if (line.trim() === '' || /^(\t| {4,})/.test(line)) continue
+      inIndentedDescription = false
+    }
+
+    kept.push(line)
+  }
+
+  return kept.join('\n')
+}
+
+function renderFootnoteInline(tokens: Token[], md: MarkdownIt, env: unknown): string {  const parts: string[] = []
 
   for (const token of tokens) {
     if (token.type === 'inline') {

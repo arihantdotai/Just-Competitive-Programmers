@@ -18,7 +18,7 @@ const findings: Finding[] = [];
 const IMAGE_PATTERN =
   /!\[[^\]]*\]\(\s*(<[^>]+>|[^)\s]+)(?:\s+["'][^"']*["'])?\s*\)/g;
 const CHAPTER_LINK_PATTERN = /\]\(chapter:([^)\s#]+)(?:#[^)\s]*)?\)/g;
-const CALLOUT_PATTERN = /^:::\s*([\w-]+)/gm;
+const CALLOUT_PATTERN = /^:::[ \t]*([\w-]+)/gm;
 
 try {
   const { chapters } = await discoverChapters(config);
