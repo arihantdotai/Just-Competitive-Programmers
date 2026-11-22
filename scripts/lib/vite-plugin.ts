@@ -2,7 +2,7 @@ import path from "node:path";
 import type { Plugin, ViteDevServer } from "vite";
 import config from "../../book.config";
 import { resolveDevImage } from "./assets";
-import { chapterLabel, discoverChapters } from "./chapters";
+import { chapterLabel, discoverChapters, renderEpigraph } from "./chapters";
 import { renderChapter } from "./markdown";
 import type { Chapter, RenderResult } from "./types";
 import { escapeAttr, escapeHtml } from "./util";
@@ -87,6 +87,7 @@ export function bookDevPlugin(): Plugin {
 
     const label = chapterLabel(chapter);
     const layoutClass = chapter.layout === "single-column" ? " book-chapter--single" : "";
+    const epigraph = renderEpigraph(chapter);
 
     return `<section class="book-chapter${layoutClass}" id="ch-${escapeAttr(chapter.slug)}" data-chapter="${escapeAttr(
       chapter.slug,
@@ -99,6 +100,7 @@ export function bookDevPlugin(): Plugin {
       ? `<p class="chapter-summary">${escapeHtml(chapter.summary)}</p>`
       : ""
   }
+  ${epigraph ? `<blockquote class="chapter-epigraph">\n${epigraph}\n</blockquote>` : ""}
   </header>
   <div class="book-chapter__body">
 ${result.html}

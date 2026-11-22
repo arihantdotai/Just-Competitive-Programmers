@@ -10,7 +10,7 @@ import type {
   ChapterStatus,
   Part,
 } from './types'
-import { slugify, stripNumericPrefix } from './util'
+import { escapeHtml, slugify, stripNumericPrefix } from './util'
 
 const KINDS: ChapterKind[] = [
   'chapter',
@@ -154,6 +154,47 @@ export function chapterLabel(chapter: Chapter): string {
   if (chapter.kind === 'appendix') return chapter.number ? `Appendix ${chapter.number}` : 'Appendix'
   if (chapter.kind === 'chapter') return chapter.number ? `Chapter ${chapter.number}` : 'Chapter'
   return ''
+}
+
+export function renderEpigraph(chapter: Chapter): string {
+  const rawText = chapter.data.epigraph
+  if (typeof rawText !== 'string' || !rawText.trim()) return ''
+
+  const text = rawText.trim()
+  const rawAttribution = chapter.data.epigraphAttribution
+  const rawAuthor = chapter.data.epigraphAuthor
+  const rawSource = chapter.data.epigraphSource
+
+  let author = ''
+  let source = ''
+
+  if (typeof rawAuthor === 'string' && rawAuthor.trim()) {
+    author = rawAuthor.trim()
+    if (typeof rawSource === 'string' && rawSource.trim()) {
+      source = `, ${rawSource.trim()}`
+    }
+  } else if (typeof rawAttribution === 'string' && rawAttribution.trim()) {
+    const attr = rawAttribution.trim().replace(/^[\u2014\u2013-]+\s*/, '')
+    const commaIndex = attr.indexOf(',')
+    if (commaIndex !== -1) {
+      author = attr.slice(0, commaIndex).trim()
+      source = attr.slice(commaIndex).trim()
+    } else {
+      author = attr
+    }
+  }
+
+  const formattedSource = source
+    ? escapeHtml(source)
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/_([^_]+)_/g, '<em>$1</em>')
+    : ''
+
+  const citeHtml = author
+    ? `<cite class="chapter-epigraph__attribution"><span class="chapter-epigraph__dash">—</span><span class="chapter-epigraph__author">${escapeHtml(author)}</span>${formattedSource}</cite>`
+    : ''
+
+  return `<p class="chapter-epigraph__text">${escapeHtml(text)}</p>${citeHtml ? `\n  ${citeHtml}` : ''}`
 }
 
 function derivePartOrder(relativeDir: string, kind: ChapterKind): number {

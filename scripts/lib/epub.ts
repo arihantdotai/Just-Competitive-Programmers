@@ -4,7 +4,7 @@ import epub from "epub-gen-memory";
 import type { Chapter as EpubChapter } from "epub-gen-memory";
 import { allowedAttributes } from "epub-gen-memory/dist/lib/util/constants.js";
 import type { BookConfig } from "../../book.config";
-import { chapterLabel } from "./chapters";
+import { chapterLabel, renderEpigraph } from "./chapters";
 import { materializeTikz } from "./tikz";
 import type { Chapter, Part, RenderResult } from "./types";
 import { escapeHtml, formatBytes } from "./util";
@@ -118,6 +118,7 @@ export async function buildEpub(
     for (const chapter of partChapters) {
       const label = chapterLabel(chapter);
       const html = await renderEpubChapter(chapter, config, options);
+      const epigraph = renderEpigraph(chapter);
 
       content.push({
         title:
@@ -135,6 +136,7 @@ export async function buildEpub(
           (chapter.summary
             ? `<p class="chapter-summary">${escapeHtml(chapter.summary)}</p>\n`
             : "") +
+          (epigraph ? `<blockquote class="chapter-epigraph">\n${epigraph}\n</blockquote>\n` : "") +
           `</header>\n` +
           `<div class="book-chapter__body">\n${html}\n</div>\n</section>`,
         excludeFromToc: false,

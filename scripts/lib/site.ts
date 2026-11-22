@@ -1,7 +1,7 @@
 import { copyFile, mkdir, readdir, rm } from 'node:fs/promises'
 import path from 'node:path'
 import type { BookConfig } from '../../book.config'
-import { chapterLabel, isTocEntry, tocEntries } from './chapters'
+import { chapterLabel, isTocEntry, renderEpigraph, tocEntries } from './chapters'
 import type { Chapter, Part, RenderResult } from './types'
 import { escapeAttr, escapeHtml } from './util'
 
@@ -153,7 +153,7 @@ function renderChapterPage(
   const label = chapterLabel(chapter)
   const previous = entries[index - 1]
   const next = entries[index + 1]
-  const epigraph = readEpigraph(chapter)
+  const epigraph = renderEpigraph(chapter)
   const crumb = `<a href="../">Contents</a> <span class="site-crumb__sep" aria-hidden="true">/</span> ${
     label
       ? `<span class="site-crumb__label">${escapeHtml(label)}</span> <span class="site-crumb__sep" aria-hidden="true">/</span> `
@@ -385,19 +385,6 @@ function decodeEntities(value: string): string {
     .replaceAll('&#39;', "'")
     .replaceAll('&nbsp;', ' ')
     .replaceAll('&amp;', '&')
-}
-
-function readEpigraph(chapter: Chapter): string {
-  const text = chapter.data.epigraph
-  if (typeof text !== 'string' || !text.trim()) return ''
-
-  const attribution = chapter.data.epigraphAttribution
-  const cite =
-    typeof attribution === 'string' && attribution.trim()
-      ? `<cite>— ${escapeHtml(attribution.trim())}</cite>`
-      : ''
-
-  return `“${escapeHtml(text.trim())}”${cite}`
 }
 
 function chapterPin(chapter: Chapter): string {

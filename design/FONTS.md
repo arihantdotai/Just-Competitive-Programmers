@@ -22,8 +22,8 @@ this file, `design/css/tokens.css`, and the font pipeline.
 
 | Element | Font Family | Recommended Size / Leading | Styling & Alignment |
 | --- | --- | --- | --- |
-| **Chapter Number & Title** | Fira Sans Condensed | 20–24 pt / 1.15 | SemiBold (600) or Bold (700); left-aligned; `CHAPTER X` label (10–11 pt uppercase, tracked out) above the title. |
-| **Epigraph (Chapter Quote)** | Crimson Pro Italic | 9.5 pt / 13 pt | Left-aligned or slightly indented beneath the chapter title; regular attribution with em-dash. |
+| **Chapter Number & Title** | Fira Sans Condensed | 20–26 pt / 1.1 | Bold (700); title left-aligned under a full-width rule; `CHAPTER X` label (10–11 pt uppercase bold, tracked out) right-aligned above the rule. |
+| **Epigraph (Chapter Quote)** | Crimson Pro Italic | 9.5 pt / 13 pt | Left-aligned beneath the chapter title; em-dash attribution indented with author accented in crimson. |
 | **A-Level Heading (H1)** | Fira Sans Condensed | 15–16 pt / 1.2 | Bold (700); Title Case; generous top margin. |
 | **B-Level Heading (H2)** | Fira Sans Condensed | 12.5–13.5 pt / 1.25 | SemiBold (600); Title Case. |
 | **C-Level Heading (H3)** | Fira Sans Condensed | 11 pt / 1.3 | SemiBold Italic (600i) or Medium (500); Sentence case. |

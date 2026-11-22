@@ -1,5 +1,5 @@
 import type { BookConfig } from '../../book.config'
-import { chapterLabel, isTocEntry } from './chapters'
+import { chapterLabel, isTocEntry, renderEpigraph } from './chapters'
 import type { Chapter, Part, RenderResult, RenderTarget } from './types'
 import { escapeAttr, escapeHtml } from './util'
 
@@ -157,12 +157,14 @@ function renderChapterSection(chapter: Chapter, result: RenderResult | undefined
   const label = chapterLabel(chapter)
   const html = result?.html ?? ''
   const layoutClass = chapter.layout === 'single-column' ? ' book-chapter--single' : ''
+  const epigraph = renderEpigraph(chapter)
 
   return `<section class="book-chapter${layoutClass}" id="ch-${escapeAttr(chapter.slug)}" data-chapter="${escapeAttr(chapter.slug)}" data-layout="${escapeAttr(chapter.layout)}" data-running-title="${escapeAttr(chapter.runningTitle)}">
   <header class="book-chapter__header">
   ${label ? `<p class="chapter-label">${escapeHtml(label)}</p>` : ''}
   <h1 class="chapter-title">${escapeHtml(chapter.title)}</h1>
   ${chapter.summary ? `<p class="chapter-summary">${escapeHtml(chapter.summary)}</p>` : ''}
+  ${epigraph ? `<blockquote class="chapter-epigraph">\n${epigraph}\n</blockquote>` : ''}
   </header>
   <div class="book-chapter__body">
 ${html}

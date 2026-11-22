@@ -153,28 +153,76 @@ body {
   hyphens: auto;
 }
 
-h1.chapter-title {
-  font-size: 22pt;
-  line-height: 1.15;
+.chapter-label {
+  display: block;
+  font-family: "Fira Sans Condensed", sans-serif;
+  font-size: 15pt;
   font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #161616;
+  text-align: right;
+  margin: 0;
+  padding-bottom: 4pt;
+  border-bottom: 1.5pt solid #161616;
 }
 
-.chapter-label {
-  font-size: 10.5pt;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+h1.chapter-title {
+  font-family: "Fira Sans Condensed", sans-serif;
+  font-size: 26pt;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: left;
+  margin: 10pt 0 0;
 }
 
 .chapter-summary {
+  font-family: "Crimson Pro", serif;
   font-size: 10.5pt;
-  margin-bottom: 1.2em;
-  padding-bottom: 0.8em;
+  font-style: italic;
+  color: #3f3f3f;
+  margin: 14pt 0 0;
+  padding: 0;
+  border: 0;
 }
 
 .chapter-epigraph {
+  margin-top: 36pt;
+  margin-bottom: 24pt;
+  padding: 0;
+  border: 0;
+  max-width: 48ch;
+}
+
+.chapter-epigraph__text,
+.chapter-epigraph p {
+  font-family: "Crimson Pro", serif;
+  font-style: italic;
+  font-weight: 400;
   font-size: 9.5pt;
-  line-height: 1.368;
+  line-height: 13.5pt;
+  color: #161616;
+  margin: 0 0 6pt 0;
+  text-align: left;
+}
+
+.chapter-epigraph__attribution,
+.chapter-epigraph cite {
+  display: block;
+  font-family: "Crimson Pro", serif;
+  font-style: normal;
+  font-size: 9pt;
+  line-height: 12.5pt;
+  color: #161616;
+  padding-left: 2em;
+  margin-top: 6pt;
+  text-align: left;
+}
+
+.chapter-epigraph__author {
+  color: #8a1f1f;
+  font-weight: 600;
 }
 
 .book-chapter h2 {

@@ -56,9 +56,9 @@ inch sizes).
 
 Every chapter follows the same arc:
 
-1. **Chapter opener** — `CHAPTER N` label, title, and an optional epigraph
+1. **Chapter opener** — Right-aligned `CHAPTER N` label above a full-width divider rule (`1.5pt`), large bold title below the rule, and an optional epigraph
    (frontmatter `epigraph` + `epigraphAttribution`, set in Crimson Pro italic, 9.5 pt / 13 pt,
-   with an em-dash attribution).
+   with an em-dash attribution and author accented in crimson).
 2. **Framing and roadmap** — 2–4 paragraphs on why the topic matters, then a short
    roadmap of the chapter's sections.
 3. **Core sections** — A/B/C headings (`##`, `###`, `####`).

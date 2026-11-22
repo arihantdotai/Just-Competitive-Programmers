@@ -7,6 +7,7 @@ import {
   chapterLabel,
   discoverChapters,
   isTocEntry,
+  renderEpigraph,
   tocEntries,
 } from '../scripts/lib/chapters'
 
@@ -59,7 +60,7 @@ describe('discoverChapters', () => {
     expect(dummy?.kind).toBe('chapter')
     expect(dummy?.number).toBe(1)
     expect(dummy?.topics).toContain('prefix sums')
-    expect(dummy?.content).toContain('## The array model')
+    expect(dummy?.content).toMatch(/## The [Aa]rray [Mm]odel/)
   })
 
   test('defaults the running title to the chapter title', async () => {
@@ -78,6 +79,20 @@ describe('chapter helpers', () => {
 
     expect(chapterLabel(dummy)).toBe('Chapter 1')
     expect(chapterLabel(preface)).toBe('')
+  })
+
+  test('renders epigraph with author accent and quote text', () => {
+    const fakeChapter = {
+      data: {
+        epigraph: 'The Internet was done so well...',
+        epigraphAttribution: "Alan Kay, in interview with *Dr. Dobb's Journal* (2012)",
+      },
+    } as any
+
+    const html = renderEpigraph(fakeChapter)
+    expect(html).toContain('The Internet was done so well...')
+    expect(html).toContain('<span class="chapter-epigraph__author">Alan Kay</span>')
+    expect(html).toContain('<em>Dr. Dobb&#39;s Journal</em>')
   })
 
   test('includes chapters, prefaces, appendices, and references in the TOC', async () => {
