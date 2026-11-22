@@ -67,28 +67,28 @@ await checkDirectory("node_modules", path.resolve("node_modules"));
 await checkFile("book.config.ts", path.resolve("book.config.ts"));
 
 await checkFile(
-  "Minion Pro (web)",
-  path.join(config.designDir, "fonts", "minion-pro-webfont", "MinionPro-Regular.woff"),
+  "Crimson Pro (web)",
+  path.join(config.designDir, "fonts", "CrimsonPro-Regular.woff2"),
 );
 await checkFile(
   "JetBrains Mono (web)",
   path.join(config.designDir, "fonts", "JetBrainsMono-Regular.woff2"),
 );
 await checkFile(
-  "Barlow Condensed (web)",
-  path.join(config.designDir, "fonts", "BarlowCondensed-Regular.woff2"),
+  "Fira Sans Condensed (web)",
+  path.join(config.designDir, "fonts", "FiraSansCondensed-Regular.woff2"),
 );
 await checkFile(
-  "Minion Pro (EPUB)",
-  path.join(config.designDir, "fonts", "minion-pro", "MinionPro-Regular.otf"),
+  "Crimson Pro (EPUB)",
+  path.join(config.designDir, "fonts", "CrimsonPro-Regular.ttf"),
 );
 await checkFile(
   "JetBrains Mono (EPUB)",
   path.join(config.designDir, "fonts", "JetBrainsMono.ttf"),
 );
 await checkFile(
-  "Barlow Condensed (EPUB)",
-  path.join(config.designDir, "fonts", "BarlowCondensed-Regular.ttf"),
+  "Fira Sans Condensed (EPUB)",
+  path.join(config.designDir, "fonts", "FiraSansCondensed-Regular.ttf"),
 );
 
 await checkFile(
@@ -167,7 +167,7 @@ if (failed.length > 0) {
   if (
     checks.some(
       (check) =>
-        !check.ok && /Minion|JetBrains|Barlow/.test(check.name),
+        !check.ok && /Crimson|JetBrains|Fira/.test(check.name),
     )
   ) {
     console.log("Missing fonts? Run: bun run prepare");

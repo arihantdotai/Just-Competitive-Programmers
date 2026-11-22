@@ -143,14 +143,19 @@ export async function buildEpub(
   }
 
   const fonts = [
-    { filename: "MinionPro-Regular.otf", subfolder: "minion-pro" },
-    { filename: "MinionPro-It.otf", subfolder: "minion-pro" },
-    { filename: "MinionPro-Bold.otf", subfolder: "minion-pro" },
-    { filename: "MinionPro-BoldIt.otf", subfolder: "minion-pro" },
+    { filename: "CrimsonPro-Regular.ttf", subfolder: "" },
+    { filename: "CrimsonPro-Italic.ttf", subfolder: "" },
+    { filename: "CrimsonPro-SemiBold.ttf", subfolder: "" },
+    { filename: "CrimsonPro-SemiBoldItalic.ttf", subfolder: "" },
+    { filename: "CrimsonPro-Bold.ttf", subfolder: "" },
+    { filename: "CrimsonPro-BoldItalic.ttf", subfolder: "" },
     { filename: "JetBrainsMono.ttf", subfolder: "" },
-    { filename: "BarlowCondensed-Regular.ttf", subfolder: "" },
-    { filename: "BarlowCondensed-SemiBold.ttf", subfolder: "" },
-    { filename: "BarlowCondensed-Bold.ttf", subfolder: "" },
+    { filename: "FiraSansCondensed-Regular.ttf", subfolder: "" },
+    { filename: "FiraSansCondensed-Italic.ttf", subfolder: "" },
+    { filename: "FiraSansCondensed-Medium.ttf", subfolder: "" },
+    { filename: "FiraSansCondensed-SemiBold.ttf", subfolder: "" },
+    { filename: "FiraSansCondensed-SemiBoldItalic.ttf", subfolder: "" },
+    { filename: "FiraSansCondensed-Bold.ttf", subfolder: "" },
   ].map(({ filename, subfolder }) => ({
     filename,
     url: pathToFileURL(path.join(config.designDir, "fonts", subfolder, filename)).href,

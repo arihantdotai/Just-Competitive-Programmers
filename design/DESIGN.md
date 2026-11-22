@@ -46,7 +46,7 @@ inch sizes).
 
 - **Verso (left page):** page number at the outer edge, book title on the right.
 - **Recto (right page):** chapter title on the left, page number at the outer edge.
-- Type: Barlow Condensed, 8–8.5 pt, `--ink-muted`, small caps or uppercase.
+- Type: Fira Sans Condensed, 8 pt, `--ink-muted`, small caps or uppercase.
 - Mechanism: `string-set: chapter-title attr(data-running-title)`; frontmatter
   `runningTitle` overrides a long visible title.
 - Suppressed on the cover, part-title pages, and the TOC. **No page number at the
@@ -57,7 +57,7 @@ inch sizes).
 Every chapter follows the same arc:
 
 1. **Chapter opener** — `CHAPTER N` label, title, and an optional epigraph
-   (frontmatter `epigraph` + `epigraphAttribution`, set in Minion Pro italic, 9–9.5 pt,
+   (frontmatter `epigraph` + `epigraphAttribution`, set in Crimson Pro italic, 9.5 pt / 13 pt,
    with an em-dash attribution).
 2. **Framing and roadmap** — 2–4 paragraphs on why the topic matters, then a short
    roadmap of the chapter's sections.
@@ -178,8 +178,8 @@ Notes are set at the **bottom of the page**, not at the end of the chapter:
 
 | Element | Family | Size / leading | Alignment |
 | --- | --- | --- | --- |
-| Footnote text | Minion Pro Regular | 7.5 pt / 10 pt | Left, ragged right |
-| Footnote marker | Minion Pro | superscript, body size | in text |
+| Footnote text | Crimson Pro Regular | 7.5–8 pt / 10 pt | Left, ragged right |
+| Footnote marker | Crimson Pro | superscript, body size | in text |
 | Separator | — | hairline `--rule` | full measure |
 
 ### 8.3 Per-output behavior

@@ -15,7 +15,7 @@ what to keep, what the interim site must match, and what to retire.
 One repo, two products, one source of truth:
 
 1. **A PDF book** — typeset in *pure LaTeX*, using the exact typography of
-   `design/FONTS.md` (Minion Pro body, Barlow Condensed headings, JetBrains Mono code).
+   `design/FONTS.md` (Crimson Pro body, Fira Sans Condensed headings, JetBrains Mono code).
 2. **A book website** — not a normal website. A reading environment with:
    - a **left sidebar**: book name on top, then the chapter / part / subsection tree;
    - a **one-column main content area** on the right (never two columns on screen);
@@ -206,8 +206,8 @@ the preamble discussion, and the preamble is updated once, by a human-approved e
   actual font files in `design/fonts/` load directly via `fontspec`.
 - `preamble.tex` reproduces the design specs (`design/FONTS.md`, `design/COLOR.md`,
   `design/DESIGN.md` §§7–8):
-  - `fontspec`: Minion Pro (body, from `design/fonts/minion-pro/*.otf`),
-    Barlow Condensed (display, via `\setmainfont`-style family), JetBrains Mono
+  - `fontspec`: Crimson Pro (body, from `design/fonts/CrimsonPro-*.otf`),
+    Fira Sans Condensed (display, via `\setmainfont`-style family), JetBrains Mono
     (`\setmonofont`);
   - `microtype` for justified, tightly hyphenated paragraphs;
   - custom environments for the seven note types (run-in bold label, italic body for

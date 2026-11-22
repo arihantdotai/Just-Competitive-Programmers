@@ -1,27 +1,41 @@
 @font-face {
-  font-family: "Minion Pro";
-  src: url("fonts/minion-pro/MinionPro-Regular.otf") format("opentype");
+  font-family: "Crimson Pro";
+  src: url("fonts/CrimsonPro-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Minion Pro";
-  src: url("fonts/minion-pro/MinionPro-It.otf") format("opentype");
+  font-family: "Crimson Pro";
+  src: url("fonts/CrimsonPro-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
 }
 
 @font-face {
-  font-family: "Minion Pro";
-  src: url("fonts/minion-pro/MinionPro-Bold.otf") format("opentype");
+  font-family: "Crimson Pro";
+  src: url("fonts/CrimsonPro-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Crimson Pro";
+  src: url("fonts/CrimsonPro-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Crimson Pro";
+  src: url("fonts/CrimsonPro-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Minion Pro";
-  src: url("fonts/minion-pro/MinionPro-BoldIt.otf") format("opentype");
+  font-family: "Crimson Pro";
+  src: url("fonts/CrimsonPro-BoldItalic.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
 }
@@ -34,22 +48,43 @@
 }
 
 @font-face {
-  font-family: "Barlow Condensed";
-  src: url("fonts/BarlowCondensed-Regular.ttf") format("truetype");
+  font-family: "Fira Sans Condensed";
+  src: url("fonts/FiraSansCondensed-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Barlow Condensed";
-  src: url("fonts/BarlowCondensed-SemiBold.ttf") format("truetype");
+  font-family: "Fira Sans Condensed";
+  src: url("fonts/FiraSansCondensed-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans Condensed";
+  src: url("fonts/FiraSansCondensed-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans Condensed";
+  src: url("fonts/FiraSansCondensed-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Barlow Condensed";
-  src: url("fonts/BarlowCondensed-Bold.ttf") format("truetype");
+  font-family: "Fira Sans Condensed";
+  src: url("fonts/FiraSansCondensed-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans Condensed";
+  src: url("fonts/FiraSansCondensed-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
@@ -63,7 +98,7 @@ body {
   padding: 0;
   color: #161616;
   background: #ffffff;
-  font-family: "Minion Pro", serif;
+  font-family: "Crimson Pro", serif;
   font-size: 1em;
   line-height: 1.55;
   hyphens: auto;
@@ -75,7 +110,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Barlow Condensed", sans-serif;
+  font-family: "Fira Sans Condensed", sans-serif;
   font-weight: 600;
   line-height: 1.15;
   margin: 1.4em 0 0.45em;
@@ -164,7 +199,7 @@ pre {
 }
 
 code {
-  font-size: 0.9em;
+  font-size: 0.78em;
   background: #f4f4f4;
   border-radius: 2px;
   padding: 0.06em 0.26em;
@@ -181,8 +216,8 @@ pre {
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
-  font-size: 0.82em;
-  line-height: 1.5;
+  font-size: 0.78em;
+  line-height: 1.45;
 }
 
 pre code {
@@ -240,8 +275,8 @@ td {
 th {
   background: none;
   border-bottom: 1px solid #161616;
-  font-family: "Barlow Condensed", sans-serif;
-  font-weight: 600;
+  font-family: "Fira Sans Condensed", sans-serif;
+  font-weight: 700;
 }
 
 .book-figure {
@@ -319,7 +354,7 @@ dd {
 }
 
 .footnotes__title {
-  font-family: "Barlow Condensed", sans-serif;
+  font-family: "Fira Sans Condensed", sans-serif;
   font-size: 1em;
   font-weight: 600;
   margin: 0 0 0.4em;
@@ -356,7 +391,7 @@ dd {
 }
 
 .chapter-label {
-  font-family: "Barlow Condensed", sans-serif;
+  font-family: "Fira Sans Condensed", sans-serif;
   font-size: 0.82em;
   font-weight: 500;
   letter-spacing: 0.12em;
